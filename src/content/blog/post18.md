@@ -2,6 +2,7 @@
 title: 'R.E.P.O.の完全MODガイド - 導入からおすすめMODまで徹底解説【2025年最新版】'
 description: 'R.E.P.O.（Reliquary of Eden Post-Obscurus）のMOD導入方法から、おすすめMOD40種類以上を詳しく紹介。初心者でも簡単にMODを導入できるよう、画像付きで分かりやすく解説します。'
 pubDate: 2025-07-14
+updatedDate: '2025-07-31'
 heroImage: '/pcgame/repo/repomod.png'
 category: 'others'
 ---
@@ -37,43 +38,43 @@ category: 'others'
 #### ステップ1: Thunderstore Mod Managerのインストール
 
 1. [Thunderstore公式サイト](https://www.overwolf.com/app/Thunderstore-Thunderstore_Mod_Manager)にアクセス(公式サイトのリンクへ飛べます)
-2. **「Download」**をクリックしてダウンロード
+2. **「Download」** をクリックしてダウンロード
 3. インストーラーを実行し、画面の指示に従ってインストール
 
 #### ステップ2: R.E.P.O.の設定
 
 1. Thunderstore Mod Managerを起動
-2. 検索バーで**「R.E.P.O」**を検索
-3. ゲームを選択し、**「プロファイルを作成」**をクリック
+2. 検索バーで **「R.E.P.O」** を検索
+3. ゲームを選択し、**「プロファイルを作成」** をクリック
 4. プロファイル名を入力（例：「Default」）
 
 #### ステップ3: BepInExPackの導入
 
-1. 左メニューの**「Get Mods」**をクリック
-2. 検索バーで**「BepInExPack」**を検索
-3. **「Download」**をクリック
+1. 左メニューの **「Get Mods」** をクリック
+2. 検索バーで **「BepInExPack」** を検索
+3. **「Download」** をクリック
 4. 自動的にゲームフォルダに配置されます
 
 #### ステップ4: MODの導入
 
 1. 導入したいMODを検索
-2. **「Download」**をクリック
-3. **「Modded」**タブからゲームを起動
+2. **「Download」** をクリック
+3. **「Modded」** タブからゲームを起動
 
 ### 方法2: 手動インストール
 
-**上級者向け**の方法です。より細かい設定が可能ですが、手間がかかります。
+**上級者向け** の方法です。より細かい設定が可能ですが、手間がかかります。
 
 #### ステップ1: BepInExPackのダウンロード
 
 1. [BepInExPack Thunderstoreページ](https://thunderstore.io/c/repo/p/BepInEx/BepInExPack/)にアクセス(MODページのリンクへ飛べます)
-2. **「Manual Download」**をクリック
+2. **「Manual Download」** をクリック
 3. ZIPファイルをダウンロード
 
 #### ステップ2: R.E.P.O.のゲームフォルダを確認
 
-1. Steamライブラリで**R.E.P.O.**を右クリック
-2. **「プロパティ」** → **「インストールされたファイル」** → **「参照」**をクリック
+1. Steamライブラリで **R.E.P.O.** を右クリック
+2. **「プロパティ」** → **「インストールされたファイル」** → **「参照」** をクリック
 3. ゲームフォルダが開きます（通常は`C:\Program Files (x86)\Steam\steamapps\common\REPO\`）
 
 #### ステップ3: BepInExの配置
@@ -350,3 +351,7 @@ R.E.P.O.のMODは、**ゲームの楽しさを大幅に拡張する**優れた�
 R.E.P.O.のMODコミュニティは今後も成長が期待されます。新しいMODが日々リリースされているので、定期的にチェックして、あなたのゲーム体験をより豊かにしてください！
 
 **楽しいR.E.P.O.ライフを！** 🎮👻
+
+---
+
+～*7/31:ページ文の崩れている個所を修正しました*～

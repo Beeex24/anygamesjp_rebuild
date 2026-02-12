@@ -168,44 +168,6 @@ Amazon上での評価は **4.2星（38,368件のレビュー）** と高評価�
   </ul>
 </div>
 
-<style>
-.simple-related {
-  background: #f8f9fa;
-  border-left: 4px solid #667eea;
-  border-radius: 0 8px 8px 0;
-  padding: 1.5rem;
-  margin: 2rem 0;
-}
-
-.simple-related h3 {
-  color: #333;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.simple-related ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.simple-related li {
-  margin-bottom: 0.75rem;
-}
-
-.simple-related a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.simple-related a:hover {
-  color: #5a6fd8;
-  text-decoration: underline;
-}
-</style>
-
 
 <style>
 .simple-related {

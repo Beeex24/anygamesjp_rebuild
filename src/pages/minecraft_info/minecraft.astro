@@ -1,0 +1,1094 @@
+---
+// src/pages/blog/[...page].astro
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+import {
+  getCollection,
+  type CollectionEntry,
+} from "astro:content";
+
+type BlogPage = {
+  data: CollectionEntry<"blog">[];
+  start: number;
+  end: number;
+  total: number;
+  currentPage: number;
+  lastPage: number;
+  url: {
+    prev?: string;
+    next?: string;
+  };
+};
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const allPosts = await getCollection("blog");
+  const sortedPosts = allPosts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  return paginate(sortedPosts, { pageSize: 100 });
+}
+
+const { page } = Astro.props as { page: BlogPage };
+
+function getPostUrl(post: CollectionEntry<'blog'>) {
+  if ('url' in post.data && post.data.url) {
+    return `/${post.data.url}/`;
+  }
+  return `/blog/${post.id}/`;
+}
+
+const displayCurrentPage = page.lastPage === 0 ? 1 : page.currentPage;
+const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
+
+
+
+// Minecraftの紹介ページ
+const pageTitle = "CraftInfo | マインクラフト情報サイト";
+const pageDescription = "マインクラフトの最新情報、攻略ガイド、アップデート情報などをお届けする総合情報サイト";
+
+// 記事データ（実際のプロジェクトではコレクションから取得）
+const latestArticles = [
+  {
+    id: 1,
+    title: "1.27 新次元「奈落 (The Void)」 — 2026年大型アップデート速報",
+    description: "Minecraft最新アップデート1.27で追加される新次元「奈落」の詳細が明らかに。新たなボスMob、建材、エンチャント、音楽ディスクが追加予定。",
+    category: "アップデート",
+    date: "2026.02.04",
+    tag: "最新",
+    thumbnail: "void"
+  },
+  {
+    id: 2,
+    title: "Vibrant Visuals — 次世代リアルタイムレイトレーシングMOD登場",
+    description: "グローバルイルミネーション、リアルタイム反射、物理ベースレンダリングに対応した新世代のビジュアルMODを徹底レビュー。",
+    category: "MOD",
+    date: "2026.01.31",
+    tag: "MOD",
+    thumbnail: "raytracing"
+  },
+  {
+    id: 3,
+    title: "2026年コミュニティ最期待「エンドアップデート」— 期待できる新要素を予想",
+    description: "エンドの刷新はMinecraftコミュニティが長年望んできた夢。現時点での情報・噂・根拠を整理して解説。",
+    category: "特集",
+    date: "2026.01.08",
+    tag: "特集",
+    thumbnail: "enderman"
+  },
+  {
+    id: 4,
+    title: "初心者向け完全スタートガイド 2025年版 — 最初の夜をどう乗り越えるか",
+    description: "マインクラフトを始めたばかりの方向けに、最初のサバイバル夜を乗り越えるための基礎を丁寧に解説します。",
+    category: "初心者",
+    date: "2025.10.05",
+    tag: "初心者",
+    thumbnail: "steve"
+  }
+];
+
+// ランキングデータ
+const popularArticles = [
+  { rank: 1, title: "ハッピーガストの乗り方・繁殖・活用術完全ガイド" },
+  { rank: 2, title: "Vibrant Visuals 設定方法と推奨スペック" },
+  { rank: 3, title: "槍(スピア)の入手・強化・エンチャント一覧" },
+  { rank: 4, title: "オウムガイで海中拠点を作る方法" },
+  { rank: 5, title: "2026年に期待したいアップデート予想まとめ" },
+  { rank: 6, title: "効率的なダイヤ採掘ルート最新版" }
+];
+
+// タグデータ
+const tags = [
+  "アップデート", "Java版", "統合版", "攻略", "建築", "MOD", 
+  "初心者", "モブ", "武器・装備", "ネザー", "エンド", "サーバー", 
+  "Switch", "マルチ"
+];
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #21262d;
+      --green: #3fb950;
+      --green-bright: #7ee787;
+      --green-dim: #1a3f22;
+      --dirt: #8b6530;
+      --dirt-light: #c4913e;
+      --stone: #484f58;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --gold: #f0c040;
+      --red: #f85149;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ===== PIXEL GRID BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(63,185,80,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(63,185,80,0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 13px;
+      color: var(--green-bright);
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-block {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #6ab04c, #3d7a27);
+      border: 2px solid #2d5c1c;
+      box-shadow: inset -3px -3px 0 rgba(0,0,0,0.4), 2px 2px 0 rgba(0,0,0,0.5);
+      image-rendering: pixelated;
+      flex-shrink: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--text);
+      background: var(--bg3);
+    }
+
+    nav a.active {
+      color: var(--green-bright);
+      border: 1px solid var(--green-dim);
+    }
+
+    .header-btn {
+      background: var(--green);
+      color: #000;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .header-btn:hover { background: var(--green-bright); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(63,185,80,0.12) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(13,17,23,0) 0%, var(--bg) 100%);
+      z-index: 1;
+    }
+
+    .hero-blocks {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      display: flex;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .block {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      animation: blockFloat 3s ease-in-out infinite;
+    }
+
+    .block-grass {
+      background: linear-gradient(180deg, #5a9e3a 30%, #8b6530 30%);
+      border: 2px solid rgba(0,0,0,0.3);
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.2);
+    }
+
+    .block-dirt {
+      background: #8b6530;
+      border: 2px solid rgba(0,0,0,0.3);
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.2);
+    }
+
+    .block-stone {
+      background: #7a7a7a;
+      border: 2px solid rgba(0,0,0,0.3);
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.2);
+    }
+
+    @keyframes blockFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 80px 24px 120px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-dim);
+      border: 1px solid var(--green);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 11px;
+      color: var(--green-bright);
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--green-bright);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(22px, 4vw, 42px);
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 20px;
+      text-shadow: 0 0 40px rgba(63,185,80,0.4);
+    }
+
+    .hero h1 span {
+      color: var(--green-bright);
+      display: block;
+      margin-top: 12px;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-bright);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--bg3);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg2);
+      border-color: var(--green);
+    }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 40px;
+      padding: 60px 0;
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+    /* ===== MAIN ===== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .section-badge {
+      background: var(--green-dim);
+      color: var(--green-bright);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ===== ARTICLES ===== */
+    .articles-grid {
+      display: grid;
+      gap: 28px;
+      margin-bottom: 60px;
+    }
+
+    .article-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+    }
+
+    @media (max-width: 768px) {
+      .article-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .article-card:hover {
+      border-color: var(--green);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(63,185,80,0.15);
+    }
+
+    .card-thumb {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb-inner {
+      background: var(--bg3);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .thumb-void { background: linear-gradient(180deg, #0a0015 0%, #1a0530 100%); }
+    .thumb-nether { background: linear-gradient(180deg, #3f1a1a 0%, #1a0a0a 100%); }
+    .thumb-grass { background: #1a3f22; }
+
+    .card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-body h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .card-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .tag-news { background: var(--green-dim); color: var(--green-bright); }
+    .tag-mod { background: rgba(255,100,100,0.2); color: #ff6464; }
+    .tag-guide { background: rgba(88,166,255,0.2); color: var(--accent); }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .sidebar-widget {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .widget-header {
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--green-bright);
+      letter-spacing: 1px;
+    }
+
+    .widget-body {
+      padding: 18px;
+    }
+
+    /* Game Info */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .info-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .info-cell-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .info-cell-value {
+      font-size: 11px;
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* Ranking */
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rank-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .rank-item:hover {
+      background: var(--bg3);
+      border-color: var(--green);
+    }
+
+    .rank-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .rank-num.gold {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #000;
+    }
+
+    .rank-num.silver {
+      background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+      color: #000;
+    }
+
+    .rank-num.bronze {
+      background: linear-gradient(135deg, #cd7f32, #e5a76e);
+      color: #000;
+    }
+
+    .rank-num.other {
+      background: var(--bg3);
+      color: var(--text-muted);
+    }
+
+    .rank-title {
+      font-size: 12px;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* Tags */
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-cloud-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .tag-cloud-item:hover {
+      background: var(--bg3);
+      border-color: var(--green);
+      color: var(--green-bright);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+    }
+
+    .footer-brand p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 16px;
+    }
+
+    .footer-col h4 {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--green-bright);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      text-align: center;
+    }
+
+    .footer-bottom p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .footer-disclaimer {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-block"></div>
+      CRAFTINFO
+    </a>
+    <nav>
+      <a href="/" class="active">ホーム</a>
+      <a href="/news">ニュース</a>
+      <a href="/updates">アップデート</a>
+      <a href="/guides">攻略</a>
+      <a href="/mods">MOD</a>
+    </nav>
+    <a href="/subscribe" class="header-btn">通知登録</a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-blocks">
+    <div class="block block-grass"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-stone"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-stone"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-stone"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-stone"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-grass"></div>
+    <div class="block block-dirt"></div>
+    <div class="block block-stone"></div>
+    <div class="block block-grass"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">最新情報配信中</div>
+    <h1>
+      Minecraft総合情報サイト
+      <span>CraftInfo</span>
+    </h1>
+    <p class="hero-subtitle">
+      マインクラフトの最新アップデート情報、攻略ガイド、MOD紹介、建築テクニックまで、プレイヤーに役立つ情報を毎日更新しています。
+    </p>
+    <div class="hero-cta">
+      <a href="#latest" class="btn btn-primary">最新記事を見る</a>
+      <a href="/guides" class="btn btn-secondary">攻略ガイド</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container">
+  <div class="layout">
+    
+    <!-- LEFT: Main -->
+    <main>
+      <div class="section-header" id="latest">
+        <h2 class="section-title">LATEST</h2>
+        <span class="section-badge">最新記事</span>
+      </div>
+
+      <div class="articles-grid">
+        {latestArticles.map((article) => (
+          <a href={`/article/${article.id}`} class="article-card fade-in">
+            <div class={`card-thumb thumb-${article.thumbnail} card-thumb-inner`}>
+              {article.thumbnail === 'void' && (
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                  <rect width="320" height="200" fill="#0a0015"/>
+                  <circle cx="60" cy="40" r="2" fill="#7ee787" opacity="0.5"/>
+                  <circle cx="120" cy="80" r="1.5" fill="#7ee787" opacity="0.7"/>
+                  <circle cx="180" cy="50" r="2.5" fill="#7ee787" opacity="0.6"/>
+                  <circle cx="240" cy="90" r="1" fill="#7ee787" opacity="0.8"/>
+                  <circle cx="280" cy="60" r="2" fill="#7ee787" opacity="0.4"/>
+                  <rect x="120" y="80" width="80" height="100" fill="#1a0530"/>
+                  <rect x="130" y="70" width="60" height="90" fill="#2a1050"/>
+                  <ellipse cx="160" cy="110" rx="15" ry="20" fill="#7ee787" opacity="0.3"/>
+                  <ellipse cx="160" cy="150" rx="12" ry="18" fill="#7ee787" opacity="0.3"/>
+                </svg>
+              )}
+              {article.thumbnail === 'raytracing' && (
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                  <defs>
+                    <radialGradient id="glow" cx="50%" cy="50%">
+                      <stop offset="0%" stop-color="#ffd700" stop-opacity="0.8"/>
+                      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="320" height="200" fill="#0a0a0a"/>
+                  <rect x="80" y="100" width="160" height="80" fill="#3a2010"/>
+                  <rect x="90" y="90" width="140" height="70" fill="#5a3010"/>
+                  <rect x="100" y="110" width="40" height="40" fill="#ffd700" opacity="0.9"/>
+                  <circle cx="120" cy="130" r="60" fill="url(#glow)"/>
+                  <line x1="120" y1="130" x2="180" y2="70" stroke="#ffed4e" stroke-width="2" opacity="0.6"/>
+                  <line x1="120" y1="130" x2="60" y2="80" stroke="#ffed4e" stroke-width="2" opacity="0.5"/>
+                  <rect x="100" y="180" width="120" height="4" fill="#2a2a2a" opacity="0.8"/>
+                </svg>
+              )}
+              {article.thumbnail === 'enderman' && (
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                  <rect width="320" height="200" fill="#0d0d15"/>
+                  <circle cx="80" cy="60" r="1" fill="#00ff80" opacity="0.6"/>
+                  <circle cx="130" cy="95" r="1.5" fill="#00ff80" opacity="0.7"/>
+                  <circle cx="160" cy="75" r="2" fill="#00ff80" opacity="0.8"/>
+                  <circle cx="190" cy="90" r="1.5" fill="#00ff80" opacity="0.6"/>
+                  <circle cx="215" cy="80" r="2" fill="#00ff80" opacity="0.9"/>
+                  <rect x="120" y="60" width="80" height="120" fill="#000"/>
+                  <rect x="100" y="80" width="20" height="80" fill="#000"/>
+                  <rect x="200" y="80" width="20" height="80" fill="#000"/>
+                  <rect x="130" y="170" width="20" height="40" fill="#000"/>
+                  <rect x="170" y="170" width="20" height="40" fill="#000"/>
+                  <ellipse cx="145" cy="100" rx="8" ry="12" fill="#a855f7"/>
+                  <ellipse cx="175" cy="100" rx="8" ry="12" fill="#a855f7"/>
+                </svg>
+              )}
+              {article.thumbnail === 'steve' && (
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                  <rect width="320" height="200" fill="#1a3f22"/>
+                  <rect width="320" height="30" y="170" fill="#5a9e3a"/>
+                  <rect x="130" y="70" width="60" height="55" fill="#c88040"/>
+                  <rect x="136" y="60" width="48" height="44" fill="#d4956a"/>
+                  <rect x="144" y="70" width="10" height="10" fill="#fff"/>
+                  <rect x="144" y="70" width="10" height="10" fill="#4a74c8" opacity="0.8"/>
+                  <rect x="146" y="72" width="6" height="6" fill="#222"/>
+                  <rect x="165" y="70" width="10" height="10" fill="#fff"/>
+                  <rect x="165" y="70" width="10" height="10" fill="#4a74c8" opacity="0.8"/>
+                  <rect x="167" y="72" width="6" height="6" fill="#222"/>
+                  <rect x="151" y="85" width="18" height="4" fill="#7a3020"/>
+                  <rect x="136" y="60" width="48" height="10" fill="#6b4226"/>
+                  <rect x="136" y="60" width="8" height="20" fill="#6b4226"/>
+                  <rect x="126" y="114" width="68" height="66" fill="#5890c8"/>
+                  <rect x="108" y="114" width="22" height="50" fill="#5890c8"/>
+                  <rect x="190" y="114" width="22" height="50" fill="#5890c8"/>
+                  <rect x="138" y="168" width="20" height="40" fill="#4a78b8"/>
+                  <rect x="162" y="168" width="20" height="40" fill="#4a78b8"/>
+                </svg>
+              )}
+            </div>
+            <div class="card-body">
+              <div style="margin-bottom:8px">
+                <span class={`tag tag-${article.tag === '最新' ? 'news' : article.tag === 'MOD' ? 'mod' : 'guide'}`}>
+                  {article.category}
+                </span>
+              </div>
+              <h3>{article.title}</h3>
+              <p>{article.description}</p>
+              <div class="card-meta">
+                <span class={`tag tag-${article.tag === '最新' ? 'news' : article.tag === 'MOD' ? 'mod' : 'guide'}`}>
+                  {article.tag}
+                </span>
+                <span style="font-size:11px;color:var(--text-muted)">{article.date}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </main>
+
+    <!-- RIGHT: Sidebar -->
+    <aside class="sidebar">
+
+      <!-- Game Info -->
+      <div class="sidebar-widget fade-in">
+        <div class="widget-header">GAME INFO</div>
+        <div class="widget-body">
+          <div class="info-grid">
+            <div class="info-cell">
+              <div class="info-cell-label">開発元</div>
+              <div class="info-cell-value">Mojang<br>Studios</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-label">リリース</div>
+              <div class="info-cell-value">2011.11<br>Java版</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-label">最新Ver.</div>
+              <div class="info-cell-value">Java<br>26.1 SC</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-label">統合版</div>
+              <div class="info-cell-value">BE<br>26.0.X</div>
+            </div>
+            <div class="info-cell" style="grid-column:span 2">
+              <div class="info-cell-label">対応プラットフォーム</div>
+              <div class="info-cell-value" style="font-size:8px">
+                PC / Switch / PS / Xbox / iOS / Android
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ranking -->
+      <div class="sidebar-widget fade-in">
+        <div class="widget-header">POPULAR ランキング</div>
+        <div class="widget-body">
+          <div class="rank-list">
+            {popularArticles.map((item) => (
+              <a href="#" class="rank-item">
+                <span class={`rank-num ${
+                  item.rank === 1 ? 'gold' : 
+                  item.rank === 2 ? 'silver' : 
+                  item.rank === 3 ? 'bronze' : 'other'
+                }`}>
+                  {item.rank}
+                </span>
+                <span class="rank-title">{item.title}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="sidebar-widget fade-in">
+        <div class="widget-header">TAGS タグ一覧</div>
+        <div class="widget-body">
+          <div class="tag-cloud">
+            {tags.map((tag) => (
+              <a href={`/tag/${tag}`} class="tag-cloud-item">{tag}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- MOD Link -->
+      <div class="sidebar-widget fade-in" style="border-color: var(--red);">
+        <div class="widget-body" style="padding:20px">
+          <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--red);margin-bottom:10px">
+            MOD 紹介
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:14px">
+            人気MODの紹介・導入方法・おすすめ構成まで、MOD専用ページで詳しく解説しています。
+          </p>
+          <a 
+            href="/mods" 
+            style="display:block;text-align:center;background:var(--red);color:#fff;text-decoration:none;padding:10px;border-radius:6px;font-size:12px;font-weight:700;transition:opacity 0.2s"
+            onmouseover="this.style.opacity=0.8" 
+            onmouseout="this.style.opacity=1"
+          >
+            MOD紹介ページへ →
+          </a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="font-size:11px">
+          <div class="logo-block" style="width:22px;height:22px"></div>
+          CRAFTINFO
+        </a>
+        <p>
+          マインクラフトの最新情報、攻略、MOD紹介などをまとめたファンサイトです。
+          Mojang Studios公式のサイトではありません。
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>コンテンツ</h4>
+        <ul>
+          <li><a href="/news">最新ニュース</a></li>
+          <li><a href="/updates">アップデート情報</a></li>
+          <li><a href="/guides">攻略ガイド</a></li>
+          <li><a href="/mods">MOD紹介</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ゲーム情報</h4>
+        <ul>
+          <li><a href="/java">Java版</a></li>
+          <li><a href="/bedrock">統合版</a></li>
+          <li><a href="/versions">バージョン履歴</a></li>
+          <li><a href="/mobs">モブ図鑑</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>サイト</h4>
+        <ul>
+          <li><a href="/about">このサイトについて</a></li>
+          <li><a href="/privacy">プライバシーポリシー</a></li>
+          <li><a href="/contact">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CraftInfo — ファンサイト</p>
+      <p class="footer-disclaimer">
+        Minecraft および関連コンテンツの著作権はMojang Studios / Microsoft Corporationに帰属します。
+        本サイトはMojangおよびMicrosoftとは一切関係ありません。
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

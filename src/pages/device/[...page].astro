@@ -737,6 +737,13 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
+
+      /* アドセンス広告（モバイル）の高さを指定*/
+        @media screen and (max-width: 768px) {
+          .wpaw-google-adsense {
+            min-height: 320px;
+          }
+      }
     </style>
   </head>
 
@@ -748,20 +755,29 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
   <body>
     <Header />
 
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
     <!-- モバイルフィルターボタン -->
     <button class="mobile-filter-button" id="mobile-filter-toggle"> ☰ </button>
 
     <!-- サイドバーオーバーレイ -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-    <section class="affiliate-banner">
-      <a href="https://www.amazon.co.jp/" target="_blank">
-        <img
-          src="https://via.placeholder.com/1200x200"
-          alt="おすすめ商品バナー"
-        />
-      </a>
-    </section>
 
     <main>
       <div class="main-container">
@@ -1077,6 +1093,24 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         filterPosts("all");
       });
     </script>
+
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 
     <Footer />
   </body>

@@ -1,0 +1,275 @@
+---
+// サイトの構造を定義
+const siteStructure = {
+  'ホーム': {
+    '/': 'ホーム',
+  },
+  'About':  {
+    '/infosite': 'サイトについて',
+    '/Link': 'リンク',
+    '/about': 'お問い合わせ',
+  },
+  '記事一覧': {
+    '/blog': 'PCゲーム記事',
+    '/mobileblog': 'モバイル・ゲーム機記事',
+    '/device': 'デバイス記事',
+  },
+  '規約・ポリシー': {
+    '/terms': '利用規約',
+    '/policy': 'プライバシーポリシー',
+  },
+  'ページネーション':{
+    '/all/2': 'すべての記事',
+    '/blog/page/2': 'PCゲーム記事',
+    '/mobileblog/page/2': 'スマホ・ゲーム機記事',
+    '/device/page/2': 'デバイス記事',
+  },
+};
+
+// ページメタ情報
+const pageTitle = 'サイトマップ';
+const pageDescription = 'サイト内の全ページへのリンクを整理したサイトマップです。';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription}>
+  
+  <!-- SEO -->
+  <meta property="og:title" content={pageTitle}>
+  <meta property="og:description" content={pageDescription}>
+  <meta property="og:type" content="website">
+  
+  <!-- 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "サイトマップ",
+    "description": "サイト内の全ページへのリンクを整理したサイトマップです。",
+    "url": `${Astro.site}sitemap/`
+  }
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #6c757d;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .sitemap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .sitemap-section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sitemap-section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #3498db;
+    }
+
+    .page-list {
+      list-style: none;
+    }
+
+    .page-list li {
+      margin-bottom: 0.8rem;
+    }
+
+    .page-list a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #495057;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .page-list a:hover {
+      background-color: #f8f9fa;
+      color: #3498db;
+      transform: translateX(5px);
+    }
+
+    .page-list a::before {
+      content: '→';
+      margin-right: 0.5rem;
+      color: #3498db;
+      font-weight: bold;
+    }
+
+    .single-page {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .single-page a {
+      display: block;
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .single-page a:hover {
+      color: #3498db;
+    }
+
+    .breadcrumb {
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .breadcrumb a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-info {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e9ecef;
+      color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .sitemap-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .sitemap-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- パンくずリスト -->
+    <nav class="breadcrumb">
+      <a href="/">ホーム</a>  サイトマップ
+    </nav>
+
+    <!-- ヘッダー -->
+    <header class="header">
+      <h1>サイトマップ</h1>
+      <p>サイト内の全ページを整理してご案内しています。お探しのページがございましたら、こちらからアクセスしてください。</p>
+    </header>
+
+    <!-- サイトマップコンテンツ -->
+    <main>
+      <div class="sitemap-grid">
+        {Object.entries(siteStructure).map(([key, value]) => {
+          if (typeof value === 'string') {
+            // 単一ページの場合
+            return (
+              <div class="single-page">
+                <a href={value}>{key}</a>
+              </div>
+            );
+          } else if (typeof value === 'object') {
+            // セクションの場合
+            return (
+              <div class="sitemap-section">
+                <h2 class="section-title">{key}</h2>
+                <ul class="page-list">
+                  {Object.entries(value).map(([url, title]) => (
+                    <li>
+                      <a href={url}>{title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+        })}
+      </div>
+    </main>
+
+    <!-- フッター情報 -->
+    <footer class="footer-info">
+      <p>最終更新日: {new Date().toLocaleDateString('ja-JP')}</p>
+      <p>ページが見つからない場合は、<a href="/about/" style="color: #3498db;">お問い合わせ</a>ください。</p>
+    </footer>
+  </div>
+</body>
+</html>

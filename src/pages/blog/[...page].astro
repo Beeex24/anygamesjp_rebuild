@@ -309,7 +309,7 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         border-color: rgba(255, 193, 0, 0.3);
       }
 
-      .blog-card[data-category="rainbowsixsiege"] {
+      .blog-card[data-category="battlefield6"] {
         border-color: rgba(255, 107, 107, 0.3);
       }
 
@@ -404,7 +404,7 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         color: white;
       }
 
-      .blog-card-category.rainbowsixsiege {
+      .blog-card-category.battlefield6 {
         background: linear-gradient(135deg, #dc3545, #e74c3c);
         color: white;
       }
@@ -750,6 +750,13 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
+
+            /* アドセンス広告（モバイル）の高さを指定*/
+        @media screen and (max-width: 768px) {
+          .wpaw-google-adsense {
+            min-height: 320px;
+        }
+      }
     </style>
   </head>
 
@@ -761,20 +768,29 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
   <body>
     <Header />
 
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
     <!-- モバイルフィルターボタン -->
     <button class="mobile-filter-button" id="mobile-filter-toggle"> ☰ </button>
 
     <!-- サイドバーオーバーレイ -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-    <section class="affiliate-banner">
-      <a href="https://www.amazon.co.jp/" target="_blank">
-        <img
-          src="https://via.placeholder.com/1200x200"
-          alt="おすすめ商品バナー"
-        />
-      </a>
-    </section>
 
     <main>
       <div class="main-container">
@@ -803,8 +819,8 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
               </button>
             </li>
             <li class="category-item">
-              <button class="category-button" data-category="rainbowsixsiege">
-                レインボーシックスシージ
+              <button class="category-button" data-category="battlefield6">
+                バトルフィールド6
               </button>
             </li>
             <li class="category-item">
@@ -832,7 +848,7 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
 
         <!-- メインコンテンツエリア -->
         <section class="content-area">
-          <h1>最新のブログ記事</h1>
+          <h1>最新のPCゲーム記事</h1>
           <div class="blog-grid" id="blog-grid">
             {
               page.data.map((post) => {
@@ -845,8 +861,8 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
                   category = "overwatch2";
                 } else if (title.includes("apexlegends") || title.includes("エーペックスレジェンズ")) {
                   category = "apexlegends";
-                } else if (title.includes("rainbowsixsiege") || title.includes("レインボーシックスシージ") || title.includes("シージ")) {
-                  category = "rainbowsixsiege";
+                } else if (title.includes("battlefield6") || title.includes("バトルフィールド6") || title.includes("battlefield")) {
+                  category = "battlefield6";
                 } else if (title.includes("minecraft") || title.includes("マインクラフト")) {
                   category = "minecraft";
                 } else if (title.includes("grandtheftautovi") || title.includes("グランド・セフト・オートVI") || title.includes("gta")) {
@@ -874,8 +890,8 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
                           ? "オーバーウォッチ2"
                           : category === "apexlegends"
                             ? "エーペックスレジェンズ"
-                            : category === "rainbowsixsiege"
-                              ? "レインボーシックスシージ"
+                            : category === "battlefield6"
+                              ? "バトルフィールド6"
                               : category === "minecraft"
                                 ? "マインクラフト"
                                 : category === "grandtheftautovi"
@@ -1100,6 +1116,24 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         filterPosts("all");
       });
     </script>
+
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+      <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 
     <Footer />
   </body>

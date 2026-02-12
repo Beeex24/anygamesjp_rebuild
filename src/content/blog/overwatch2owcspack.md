@@ -1,5 +1,5 @@
 ---
-title: '【Overwatch 2】OWCS パートナー・チーム・パック配信開始！お気に入りチームを直接応援しよう'
+title: '【オーバーウォッチ2】OWCS パートナー・チーム・パック配信開始！お気に入りチームを直接応援しよう'
 description: 'OWCS Midseason Championship開幕に先駆けて、パートナーチームの公式スキンパック配信がスタート！購入金額の一部がチームに寄付される特別なシステムと、美しいマーシーの新レジェンダリースキンを詳しく解説します。'
 pubDate: '2025-07-24'
 updatedDate: '2025-07-24'
@@ -135,9 +135,9 @@ eスポーツファンにとって、これほど充実した応援システム�
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-    <li><a href="/blog/lawsonbluearchive">【ブルアカ】ローソン×ブルーアーカイブコラボキャンペーン 2025年夏！セミナー4人組のグッズ詳細・入手方法</a></li>
-    <li><a href="/blog/post19">【Neon Abyss 2】最大4人協力プレイ対応！サイバーパンクな世界で無限シナジーを楽しむローグライクアクション</a></li>
-    <li><a href="/blog/mamonoro">【9月25日発売】まものろKAI！～まもるクンは呪われてしまった！～価格・特典・ゲームシステムを詳しく解説</a></li>
+    <li><a href="/blog/overwatch2-news-nerf">【オーバーウォッチ2】ナーフとの夢のコラボ実現！限定スキンと新モード「やっぱナーフでしょ」</a></li>
+    <li><a href="/blog/overwatch2-news-directer">【オーバーウォッチ2】ディレクターが語る透明性の重要性と新機能「Hero Stats」「Advanced Info」の詳細</a></li>
+    <li><a href="/blog/overwatch-patch-20250814">【オーバーウォッチ2】新サポートヒーロー「ウーヤン」先行体験開始！水系アビリティの全貌を徹底解説</a></li>
   </ul>
 </div>
 

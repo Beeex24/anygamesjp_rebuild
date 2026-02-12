@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../components/FormattedDate.astro";
+import RankingWidget from "../components/RankingWidget.astro";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -21,20 +22,36 @@ const devicePosts = (await getCollection("device")).sort(
 const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+// ページネーション設定
+const POSTS_PER_PAGE = 9; // 1ページあたりの記事数
 ---
 
 <!doctype html>
 <html lang="ja">
+
+    <BaseHead 
+      title={SITE_TITLE} 
+      description={SITE_DESCRIPTION} 
+      image="/placeholder-image.jpg"
+    />
+
   <head>
     <!-- Swiper.js のスタイルとスクリプト -->
+
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/swiper/swiper-bundle.min.css,"
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
     />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const swiperContainer = document.querySelector('.swiper-container');
+      if (swiperContainer instanceof HTMLElement) {
+        // 初期高さを設定（カードの想定高さ）
+        swiperContainer.style.minHeight = '320px';
+      }
         // Swiperライブラリが読み込まれるまで待機
         function initSwiper() {
           // TypeScript型エラー回避のためanyとして扱う
@@ -67,32 +84,38 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                   spaceBetween: 30, // スライド間の余白
                 },
               },
-            });
-          } else {
-            // Swiperがまだ読み込まれていない場合、少し待ってから再試行
-            setTimeout(initSwiper, 100);
-          }
+            on: {
+              init: function() {
+                // 初期化完了後に高さ制限を解除
+                setTimeout(() => {
+                  if (swiperContainer instanceof HTMLElement) {
+                    swiperContainer.style.minHeight = 'auto';
+                  }
+                }, 100);
+              }
+            }
+          });
+        } else {
+          setTimeout(initSwiper, 50); // 待機時間を短縮
         }
-        
-        initSwiper();
-      });
-    </script>
-    <BaseHead 
-      title={SITE_TITLE} 
-      description={SITE_DESCRIPTION} 
-      image="/placeholder-image.jpg"
-    />
+      }
+      
+      initSwiper();
+    });
+  </script>
+
     <style>
       /* スライダーセクションのスタイル */
       .blog-slider-section {
-        padding: 2rem;
-        background-color: #f9f9f9;
+        padding: 1rem;
+        background-color: #ffffff;
         border-radius: 8px;
-        margin: 3.5rem auto;
-        max-width: 100vw;
-        width: 100vw;
+        margin: 0.5rem auto;
+        max-width: calc(100vw - 1rem);
+        width: calc(100vw - 1rem);
         position: relative;
         box-sizing: border-box;
+        min-height: 400px;
       }
 
       .blog-slider-section h2 {
@@ -107,6 +130,26 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         max-width: 1400px;
         margin: 0 auto;
         overflow: hidden; /* 画面外に出る部分を隠す */
+        height: 320px;
+        background: linear-gradient(90deg, #8f8f8f 80%, #e0e0e0 50%, #8f8f8f 80%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 12px;
+      }
+
+      .swiper-container.swiper-initialized {
+        animation: none;
+        background: none;
+        height: auto; /* 初期化後は自動高さに */
+      }
+
+      @keyframes loading {
+      0% {
+      background-position: 200% 0;
+        }
+      100% {
+      background-position: -200% 0;
+        }
       }
 
       .swiper,
@@ -129,22 +172,25 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         box-sizing: border-box;
         flex-shrink: 0;
         height: 100%;
-        width: 100%;
+        width: auto;
       }
 
       .blog-card {
-        width: 95%;
+        width: 100%;
         max-width: 350px;
-        background: #fff;
+        background: #ffffff;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-decoration: none;
         color: inherit;
-        margin: 0 10px;
+        margin: 0 auto;
         transition:
           box-shadow 0.3s,
           transform 0.3s;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
       }
 
       .blog-card:hover {
@@ -156,6 +202,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         width: 100%;
         height: 180px;
         object-fit: cover;
+        flex-shrink: 0;
       }
 
       .blog-card-content {
@@ -163,16 +210,10 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
       }
 
       .blog-card-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
         color: #222;
-      }
-
-      .blog-card-description {
-        font-size: 0.9rem;
-        color: #555;
-        margin-bottom: 1rem;
       }
 
       .blog-card-date {
@@ -241,6 +282,84 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         opacity: 1;
       }
 
+      /* ページネーションスタイル */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 1rem 0;
+      }
+
+      .pagination button,
+      .pagination a {
+        padding: 0.5rem 1rem;
+        background: #fff;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        color: #333;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .pagination button:hover:not(:disabled),
+      .pagination a:hover {
+        background: #4781ff;
+        color: white;
+        border-color: #4781ff;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(71, 129, 255, 0.3);
+      }
+
+      .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .pagination .page-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0;
+        font-size: 0.95rem;
+      }
+
+      .pagination .page-number.active {
+        background: #4781ff;
+        color: white;
+        border-color: #4781ff;
+      }
+
+      .pagination .ellipsis {
+        padding: 0.5rem;
+        color: #666;
+      }
+
+      .view-all-link {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(135deg, #4781ff, #3366ff);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(71, 129, 255, 0.3);
+      }
+
+      .view-all-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(71, 129, 255, 0.4);
+        background: linear-gradient(135deg, #3366ff, #4781ff);
+      }
+
       @media (max-width: 1024px) {
         .blog-slider-section {
           max-width: 100vw;
@@ -253,7 +372,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
       @media (max-width: 768px) {
         .blog-slider-section {
           padding: 1rem 0.5rem;
-          margin: 2rem 0;
+          margin: 0;
           max-width: 100vw;
           width: 100vw;
         }
@@ -263,7 +382,17 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         .blog-card {
           max-width: 95vw;
           margin: 0 2px;
+          max-height: 480px;
         }
+
+        .blog-card-title {
+          font-size: 1.2rem; 
+        }
+
+        .blog-card-description {
+          font-size: 0.92rem; /* 説明のフォントサイズをさらに小さく */
+        }
+
         .swiper-button-next,
         .swiper-button-prev {
           width: 32px;
@@ -274,6 +403,21 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         }
         .swiper-button-prev {
           left: 4px;
+        }
+
+        .pagination {
+          gap: 0.3rem;
+        }
+
+        .pagination button,
+        .pagination a {
+          padding: 0.4rem 0.8rem;
+          font-size: 0.85rem;
+        }
+
+        .pagination .page-number {
+          min-width: 35px;
+          height: 35px;
         }
       }
     </style>
@@ -357,119 +501,11 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
 
   <body>
     <Header />
-    <!-- サイド広告セクション -->
-
-    <div class="side-ads">
-      <a
-        href="https://www.example.com/ad1"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告1" />
-      </a>
-      <a
-        href="https://www.example.com/ad2"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告2" />
-      </a>
-      <a
-        href="https://www.example.com/ad3"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告3" />
-      </a>
-      <a
-        href="https://www.example.com/ad4"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告4" />
-      </a>
-      <a
-        href="https://www.example.com/ad5"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告5" />
-      </a>
-      <a
-        href="https://www.example.com/ad6"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="https://via.placeholder.com/150" alt="広告6" />
-      </a>
-    </div>
-
-    <!-- filepath: d:\ProgramData\vsc\UNCHI\smoggy-series\src\pages\index.astro -->
-    <style>
-      .side-ads {
-        margin-top: 50rem;
-        margin-right: 4rem;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        float: right; /* デフォルトでは右側に配置 */
-      }
-
-      .side-ads img {
-        width: 150px;
-        height: 150px;
-        border: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      /* モバイル画面用のスタイル */
-      @media (max-width: 768px) {
-        .side-ads {
-          display: none; /* モバイル画面では非表示 */
-        }
-      }
-    </style>
-
-    <!-- 上部ポップアップバナー -->
-
-    <div class="notification-bar">
-      <p>
-        <a href="/aboutsite" target="_blank" rel="noopener noreferrer">
-          🎉Anygames放送局サイトリリース！！！🎉
-        </a>
-      </p>
-    </div>
-
-    <style>
-      .notification-bar {
-        background-color: #4781ff; /* 鮮やかな赤色 */
-        color: white;
-        text-align: center;
-        padding: 0.5rem 1rem;
-        font-size: 1.5rem;
-        font-weight: bold;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .notification-bar a {
-        color: white;
-        text-decoration: none;
-        transition: color 0.3s ease;
-      }
-
-      .notification-bar a:hover {
-        color: #ffe066; /* ホバー時に黄色に変更 */
-      }
-    </style>
-
     <main>
       <!-- javascriptのスワイパーコンテンツ表示 -->
 
       <section class="blog-slider-section">
-        <h2>最新の投稿記事</h2>
+        <h2>最 新 記 事</h2>
         <div class="swiper-container">
           <div class="swiper-wrapper">
             {
@@ -479,12 +515,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                     <img src={post.data.heroImage} alt={post.data.title} />
                     <div class="blog-card-content">
                       <div class="blog-card-title">{post.data.title}</div>
-                      <div class="blog-card-description">
-                        {post.data.description}
-                      </div>
-                      <div class="blog-card-date">
-                        <FormattedDate date={post.data.pubDate} />
-                      </div>
+                      <div class="blog-card-date"><FormattedDate date={post.data.pubDate} /></div>
                     </div>
                   </a>
                 </div>
@@ -518,7 +549,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
 
             body {
               font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              background: linear-gradient(135deg, #e2e2e2 100%);
               min-height: 100vh;
               padding: 2rem;
             }
@@ -860,17 +891,157 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                 display: none;
               }
             }
+
+           /* アドセンス広告（モバイル）の高さを指定*/
+            @media screen and (max-width: 768px) {
+              .wpaw-google-adsense {
+                min-height: 320px;
+              }
+            }
           </style>
         </head>
 
-        <body>
+  <body>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content: center;">
+  <RankingWidget
+    title="ゲーム・映画全般（人気TOP10）"
+    posts={allPosts}
+    baseUrl="/blog"
+    viewAllUrl="/blog"
+    viewAllLabel="ゲーム・映画記事をすべて見る"
+  />
+  <RankingWidget
+    title="マインクラフト（最新記事TOP10）"
+    posts={posts}
+    baseUrl="/blog"
+    viewAllUrl="/blog/minecraft"
+    viewAllLabel="マインクラフト記事をすべて見る"
+    accentColor="#4caf50"
+  />
+  <RankingWidget
+    title="ガジェット・お役立ち情報（最新記事TOP10）"
+    posts={devicePosts}
+    baseUrl="/device"
+    viewAllUrl="/device"
+    viewAllLabel="ガジェット記事をすべて見る"
+  />
+</div>
+
+<!-- 画像リンクセクション -->
+<section class="image-links-section">
+  <a href="/blog/ps5-xsx" class="image-link-item">
+    <img src="/indexpage/minecraft_image/minecraft_java_image.png" alt="PS5・XSX タイトルレビュー特集" />
+    <span class="image-link-text">PS5・XSX タイトル<br />レビュー特集</span>
+  </a>
+  <a href="/blog" class="image-link-item">
+    <img src="/indexpage/minecraft_image/minecraft_java_image.png" alt="最新ゲームレビュー一覧はコチラ" />
+    <span class="image-link-text">最新ゲームレビュー<br />一覧はコチラ</span>
+  </a>
+  <a href="/blog/minecraft" class="image-link-item">
+    <img src="/indexpage/minecraft_image/minecraft_java_image.png" alt="マインクラフト MOD一覧はコチラ" />
+    <span class="image-link-text">マインクラフト<br />MOD一覧はコチラ</span>
+  </a>
+</section>
+
+<style>
+  .image-links-section {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    max-width: 1200px;
+    box-sizing: border-box;
+  }
+
+  .image-link-item {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+    max-width: 320px;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    aspect-ratio: 16 / 9;
+  }
+
+  .image-link-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .image-link-item:hover img {
+    transform: scale(1.05);
+  }
+
+  .image-link-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
+    transition: background 0.3s ease;
+  }
+
+  .image-link-item:hover .image-link-text {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    .image-links-section {
+      gap: 8px;
+      padding: 0 0.5rem;
+    }
+
+    .image-link-item {
+      min-width: 140px;
+    }
+
+    .image-link-text {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
           <!-- ページ中央　タブリスト表示 -->
           <section class="tab-section">
             <h1>記事一覧</h1>
             <ul class="tab-list">
               <li class="tab-item active" data-tab="all">最新記事</li>
-              <li class="tab-item" data-tab="blog">ゲーム記事</li>
-              <li class="tab-item" data-tab="mobileblog">モバイルゲーム記事</li>
+              <li class="tab-item" data-tab="blog">PCゲーム記事</li>
+              <li class="tab-item" data-tab="mobileblog">スマホ＆ゲーム機記事</li>
               <li class="tab-item" data-tab="device">デバイス記事</li>
             </ul>
           </section>
@@ -880,8 +1051,8 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
               <button class="tab-button active" data-tab="all"
                 >すべての記事</button
               >
-              <button class="tab-button" data-tab="blog">ゲーム記事</button>
-              <button class="tab-button" data-tab="mobileblog">モバイルゲーム記事</button>
+              <button class="tab-button" data-tab="blog">PCゲーム記事</button>
+              <button class="tab-button" data-tab="mobileblog">スマホ＆ゲーム機記事</button>
               <button class="tab-button" data-tab="device">デバイス記事</button>
 
             </div>
@@ -892,7 +1063,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
               <div class="tab-panel active" id="all">
                 <div class="article-grid">
                   {
-                    allPosts.map((post) => (
+                    allPosts.slice(0, POSTS_PER_PAGE).map((post) => (
                       <a
                         href={`/${post.collection}/${post.id}/`}
                         class="article-card-link"
@@ -923,13 +1094,18 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                     ))
                   }
                 </div>
+                {allPosts.length > POSTS_PER_PAGE && (
+                  <div class="pagination">
+                    <a href="/all/2" class="view-all-link">すべての記事を見る →</a>
+                  </div>
+                )}
               </div>
 
               <!-- ブログ記事タブ -->
               <div class="tab-panel" id="blog">
                 <div class="article-grid">
                   {
-                    posts.map((post) => (
+                    posts.slice(0, POSTS_PER_PAGE).map((post) => (
                       <a href={`/blog/${post.id}/`} class="article-card-link">
                         <article class="article-card">
                           <img
@@ -938,7 +1114,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                             class="article-image"
                           />
                           <div class="article-content">
-                            <span class="article-category">ブログ</span>
+                            <span class="article-category">PCゲーム</span>
                             <h3 class="article-title">{post.data.title}</h3>
                             <p class="article-description">
                               {post.data.description}
@@ -955,13 +1131,18 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                     ))
                   }
                 </div>
+                {posts.length > POSTS_PER_PAGE && (
+                  <div class="pagination">
+                    <a href="/blog/page/2" class="view-all-link">すべてのゲーム記事を見る →</a>
+                  </div>
+                )}
               </div>
 
               <!-- モバイルゲーム記事タブ -->
               <div class="tab-panel" id="mobileblog">
                 <div class="article-grid">
                   {
-                    mobilePosts.map((post) => (
+                    mobilePosts.slice(0, POSTS_PER_PAGE).map((post) => (
                       <a href={`/mobileblog/${post.id}/`} class="article-card-link">
                         <article class="article-card">
                           <img
@@ -970,7 +1151,7 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                             class="article-image"
                           />
                           <div class="article-content">
-                            <span class="article-category">デバイス</span>
+                            <span class="article-category">スマホ＆ゲーム機</span>
                             <h3 class="article-title">{post.data.title}</h3>
                             <p class="article-description">
                               {post.data.description}
@@ -987,13 +1168,18 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                     ))
                   }
                 </div>
+                {mobilePosts.length > POSTS_PER_PAGE && (
+                  <div class="pagination">
+                    <a href="/mobileblog/page/2" class="view-all-link">すべてのモバイルゲーム記事を見る →</a>
+                  </div>
+                )}
               </div>
 
               <!-- デバイス記事タブ -->
               <div class="tab-panel" id="device">
                 <div class="article-grid">
                   {
-                    devicePosts.map((post) => (
+                    devicePosts.slice(0, POSTS_PER_PAGE).map((post) => (
                       <a href={`/device/${post.id}/`} class="article-card-link">
                         <article class="article-card">
                           <img
@@ -1019,6 +1205,11 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
                     ))
                   }
                 </div>
+                {devicePosts.length > POSTS_PER_PAGE && (
+                  <div class="pagination">
+                    <a href="/device/page/2" class="view-all-link">すべてのデバイス記事を見る →</a>
+                  </div>
+                )}
               </div>
 
           <script>
@@ -1091,6 +1282,24 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
         </body>
       </html>
 
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
       <!-- ページ下部　アフィリエイトリンク(amazon) -->
 
     <section class="affiliate-section">
@@ -1153,7 +1362,9 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
           background-color: #f9f9f9;
           border-radius: 8px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          margin: 2rem 0;
+          margin: 2rem auto;
+          max-width: calc(100vw - 4rem);
+          box-sizing: border-box;
         }
 
         .affiliate-section h2 {
@@ -1226,44 +1437,26 @@ const allPosts = [...posts, ...mobilePosts, ...devicePosts].sort(
           background-color: #cc7a00;
         }
       </style>
+
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  
     </main>
-
-    <!-- ページ下部　ad-section -->
-
-    <section class="ad-section">
-      <div class="ad-container">
-        <a
-          href="https://www.example.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src="https://via.placeholder.com/728x90"
-            alt="ディスプレイ広告"
-          />
-        </a>
-      </div>
-    </section>
-
-    <style>
-      .ad-section {
-        padding: 1rem 0;
-        background-color: #f9f9f9;
-        text-align: center;
-      }
-
-      .ad-container {
-        max-width: 728px;
-        margin: 0 auto;
-      }
-
-      .ad-container img {
-        width: 100%;
-        height: auto;
-        border: none;
-      }
-    </style>
-
     <Footer />
   </body>
 </html>

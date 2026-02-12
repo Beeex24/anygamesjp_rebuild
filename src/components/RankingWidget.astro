@@ -1,0 +1,268 @@
+---
+/**
+ * RankingWidget.astro
+ * 
+ * 使い方:
+ *   <RankingWidget
+ *     title="ゲーム・映画全般（人気TOP10）"
+ *     posts={posts}
+ *     baseUrl="/blog"
+ *     viewAllUrl="/blog"
+ *     viewAllLabel="ゲーム・映画記事をすべて見る"
+ *   />
+ *
+ * Props:
+ *   - title      : ランキングウィジェットのヘッダータイトル
+ *   - posts      : Astro getCollection() で取得した記事の配列（最大10件表示）
+ *   - baseUrl    : 各記事のベースURL（例: "/blog", "/device"）
+ *   - viewAllUrl : 「すべて見る」ボタンのリンク先
+ *   - viewAllLabel: 「すべて見る」ボタンのラベル（省略可）
+ *   - accentColor: ヘッダーの背景色（省略可、デフォルト #29b5e8）
+ */
+
+interface Props {
+  title: string;
+  posts: any[];
+  baseUrl: string;
+  viewAllUrl: string;
+  viewAllLabel?: string;
+  accentColor?: string;
+}
+
+const {
+  title,
+  posts,
+  baseUrl,
+  viewAllUrl,
+  viewAllLabel = "関連記事をすべて見る",
+  accentColor = "#29b5e8",
+} = Astro.props;
+
+// 最大10件に絞る
+const rankingPosts = posts.slice(0, 10);
+---
+
+<div class="ranking-widget">
+  <!-- ヘッダー -->
+  <div class="ranking-header" style={`background-color: ${accentColor};`}>
+    <span class="ranking-header-icon">&#9733;</span>
+    <h3 class="ranking-header-title">{title}</h3>
+  </div>
+
+  <!-- ランキングリスト（最大高さを設定してスクロール可能に） -->
+  <div class="ranking-list-wrapper">
+    <ol class="ranking-list">
+      {rankingPosts.map((post, index) => (
+        <li class="ranking-item">
+          <a href={`${baseUrl}/${post.id}/`} class="ranking-link">
+            <!-- 順位バッジ -->
+            <span
+              class={`ranking-badge ${index < 3 ? "ranking-badge--top" : ""}`}
+              style={index < 3 ? `background-color: ${accentColor};` : ""}
+            >
+              {index + 1}
+            </span>
+
+            <!-- サムネイル -->
+            {post.data.heroImage ? (
+              <img
+                src={post.data.heroImage}
+                alt={post.data.title}
+                class="ranking-thumb"
+                loading="lazy"
+              />
+            ) : (
+              <div class="ranking-thumb ranking-thumb--placeholder">
+                <span>No Image</span>
+              </div>
+            )}
+
+            <!-- タイトル -->
+            <span class="ranking-title">{post.data.title}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <!-- すべて見るボタン -->
+  <div class="ranking-footer">
+    <a href={viewAllUrl} class="ranking-view-all" style={`border-color: ${accentColor}; color: ${accentColor};`}>
+      {viewAllLabel}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<style>
+  /* ===== ウィジェット全体 ===== */
+  .ranking-widget {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.5rem;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== ヘッダー ===== */
+  .ranking-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+  }
+
+  .ranking-header-icon {
+    color: #fff;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .ranking-header-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== スクロール可能なリスト領域 ===== */
+  .ranking-list-wrapper {
+    max-height: 440px;   /* 10件がちょうど収まる高さ。必要に応じて調整 */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f9f9f9;
+  }
+
+  .ranking-list-wrapper::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .ranking-list-wrapper::-webkit-scrollbar-track {
+    background: #f9f9f9;
+  }
+
+  .ranking-list-wrapper::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
+
+  /* ===== リスト ===== */
+  .ranking-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ranking-item {
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .ranking-item:last-child {
+    border-bottom: none;
+  }
+
+  /* ===== 各記事リンク ===== */
+  .ranking-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.15s ease;
+  }
+
+  .ranking-link:hover {
+    background-color: #f5f8ff;
+  }
+
+  .ranking-link:hover .ranking-title {
+    text-decoration: underline;
+    color: #0066cc;
+  }
+
+  /* ===== 順位バッジ ===== */
+  .ranking-badge {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background-color: #aaa;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .ranking-badge--top {
+    /* accentColor はインラインスタイルで付与 */
+  }
+
+  /* ===== サムネイル ===== */
+  .ranking-thumb {
+    flex-shrink: 0;
+    width: 56px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 2px;
+    background: #e8e8e8;
+  }
+
+  .ranking-thumb--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: #999;
+  }
+
+  /* ===== 記事タイトル ===== */
+  .ranking-title {
+    flex: 1;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #222;
+    /* 3行でクランプ */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ===== フッター「すべて見る」 ===== */
+  .ranking-footer {
+    padding: 8px 10px;
+    border-top: 1px solid #e0e0e0;
+    text-align: right;
+    background: #fafafa;
+  }
+
+  .ranking-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid;   /* border-color はインラインスタイル */
+    border-radius: 3px;
+    padding: 4px 10px;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .ranking-view-all:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+  }
+</style>

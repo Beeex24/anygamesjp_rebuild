@@ -309,15 +309,15 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         border-color: rgba(255, 193, 0, 0.3);
       }
 
-      .blog-card[data-category="zenzero"] {
+      .blog-card[data-category="stellasora"] {
         border-color: rgba(255, 107, 107, 0.3);
       }
 
-      .blog-card[data-category="buruaka"] {
+      .blog-card[data-category="playstation"] {
         border-color: rgba(255, 193, 7, 0.3);
       }
 
-      .blog-card[data-category="gakumasu"] {
+      .blog-card[data-category="switch2"] {
         border-color: rgba(220, 53, 69, 0.3);
       }
 
@@ -404,17 +404,17 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         color: white;
       }
 
-      .blog-card-category.zenzero {
+      .blog-card-category.stellasora {
         background: linear-gradient(135deg, #dc3545, #e74c3c);
         color: white;
       }
 
-      .blog-card-category.buruaka {
+      .blog-card-category.playstation {
         background: linear-gradient(135deg, #ffc107, #fd7e14);
         color: white;
       }
 
-      .blog-card-category.gakumasu {
+      .blog-card-category.switch2 {
         background: linear-gradient(135deg, #ffc100, #ff8f00);
         color: white;
       }
@@ -750,6 +750,13 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
+
+      /* アドセンス広告（モバイル）の高さを指定*/
+      @media screen and (max-width: 768px) {
+        .wpaw-google-adsense {
+          min-height: 320px;
+        }
+      }
     </style>
   </head>
 
@@ -761,20 +768,29 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
   <body>
     <Header />
 
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
     <!-- モバイルフィルターボタン -->
     <button class="mobile-filter-button" id="mobile-filter-toggle"> ☰ </button>
 
     <!-- サイドバーオーバーレイ -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-    <section class="affiliate-banner">
-      <a href="https://www.amazon.co.jp/" target="_blank">
-        <img
-          src="https://via.placeholder.com/1200x200"
-          alt="おすすめ商品バナー"
-        />
-      </a>
-    </section>
 
     <main>
       <div class="main-container">
@@ -803,21 +819,21 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
               </button>
             </li>
             <li class="category-item">
-              <button class="category-button" data-category="zenzero">
-                ゼンレスゾーンゼロ
+              <button class="category-button" data-category="stellasora">
+                ステラソラ
               </button>
             </li>
             <li class="category-item">
-              <button class="category-button" data-category="buruaka">
-                ブルーアーカイブ
+              <button class="category-button" data-category="playstation">
+                プレイステーション 5
               </button>
             </li>
             <li class="category-item">
-              <button class="category-button" data-category="gakumasu">
-                学園アイドルマスター
+              <button class="category-button" data-category="switch2">
+                ニンテンドースイッチ 2
               </button>
             </li>
-                        <li class="category-item">
+            <li class="category-item">
               <button class="category-button" data-category="sale">
                最新セール情報
               </button>
@@ -832,7 +848,7 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
 
         <!-- メインコンテンツエリア -->
         <section class="content-area">
-          <h1>最新のブログ記事</h1>
+          <h1>最新のモバイルゲーム記事</h1>
           <div class="blog-grid" id="blog-grid">
             {
               page.data.map((post) => {
@@ -845,12 +861,12 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
                   category = "pazudora";
                 } else if (title.includes("pokepoke") || title.includes("ポケポケ") || title.includes("ポケモン TCG ポケット")) {
                   category = "pokepoke";
-                } else if (title.includes("zenzero") || title.includes("ゼンゼロ") || title.includes("ゼンレスゾーンゼロ")) {
-                  category = "zenzero";
-                } else if (title.includes("buruaka") || title.includes("ブルアカ") || title.includes("ブルーアーカイブ")) {
-                  category = "buruaka";
-                } else if (title.includes("gakumasu") || title.includes("学マス") || title.includes("学園アイドルマスター")) {
-                  category = "gakumasu";
+                } else if (title.includes("stellasora") || title.includes("ステラソラ")) {
+                  category = "stellasora";
+                } else if (title.includes("playstation") || title.includes("プレイステーション") || title.includes("プレステ")) {
+                  category = "playstation";
+                } else if (title.includes("switch2") || title.includes("Nintendo Switch") || title.includes("ニンテンドースイッチ")) {
+                  category = "switch2";
                 } else if (title.includes("sale") || title.includes("セール")) {
                   category = "sale";
                 }
@@ -874,12 +890,12 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
                           ? "パズル＆ドラゴンズ"
                           : category === "pokepoke"
                             ? "ポケモン TCG ポケット"
-                            : category === "zenzero"
-                              ? "ゼンレスゾーンゼロ"
-                              : category === "buruaka"
-                                ? "ブルーアーカイブ"
-                                : category === "grandtheftautovi"
-                                  ? "グランド・セフト・オートVI"
+                            : category === "stellasora"
+                              ? "ステラソラ"
+                              : category === "playstation"
+                                ? "プレイステーション"
+                                : category === "switch2"
+                                  ? "ニンテンドースイッチ"
                                   : category === "sale"
                                     ? "セール"
                                     : "その他"}
@@ -1100,6 +1116,24 @@ const displayLastPage = page.lastPage === 0 ? 1 : page.lastPage;
         filterPosts("all");
       });
     </script>
+
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
 
     <Footer />
   </body>

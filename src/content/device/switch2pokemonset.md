@@ -13,8 +13,6 @@ category: 'others'
 
 ### 🎮 Nintendo Switch 2 ポケモンレジェンズZ-A エディション セット 基本情報
 
-
-
 **製品名：** Nintendo Switch 2（日本語・国内専用）Pokémon LEGENDS Z-A Nintendo Switch 2 Edition セット
 
 **発売日：** 2025年10月16日（木）予定
@@ -23,11 +21,11 @@ category: 'others'
 
 **発売・販売：** 任天堂株式会社
 
-**⚠️ 数量限定生産商品**のため、購入を検討している方は早めの予約をおすすめします。
+**数量限定生産商品**のため、購入を検討している方は早めの予約をおすすめします。
 
-## 📦 セット内容の詳細
+## セット内容の詳細
 
-Nintendo Switch 2 ポケモンエディションセットには以下が含まれています：
+Nintendo Switch 2 ポケモンエディションセットには以下が含まれています
 
 ![blog placeholder](/devicese/device/switch/photo1.png)
 
@@ -45,7 +43,7 @@ Nintendo Switch 2 ポケモンエディションセットには以下が含ま�
 - 本体をインターネットに接続してニンテンドーeショップからダウンロードが必要
 - ダウンロード版のため物理カートリッジは含まれません
 
-## 💰 価格比較とお得度分析
+## 価格比較とお得度分析
 
 ### 単品購入との価格比較
 
@@ -70,7 +68,7 @@ Nintendo Switch 2 ポケモンエディションセットには以下が含ま�
 - 通常版：7,100円（税込）
 - Nintendo Switch 2 Edition：8,100円（税込）
 
-## 📅 予約開始日情報
+## 予約開始日情報
 
 ### ゲームソフト単体の予約開始日
 
@@ -85,7 +83,7 @@ Nintendo Switch 2 ポケモンエディションセットには以下が含ま�
 -  電気量販店などのゲーム販売店での予約受付はもしかすればあるかもしれません！
 
 
-## 🔥 購入を検討すべき理由
+## 購入を検討すべき理由
 
 ### 1. 次世代ゲーム機の先行体験
 
@@ -103,22 +101,22 @@ Nintendo Switch 2は任天堂の最新ハードウェアです。従来のSwitch
 
 単品購入よりもかなりお得な価格設定で、新型Switchとソフトを同時に入手できます。
 
-## 📝 購入前のチェックポイント
+## 購入前のチェックポイント
 
-### ✅ 確認すべき事項
+### 確認すべき事項
 
 1. **予約開始日の確認**：セット商品の予約開始日は後日発表
 2. **販売店の選定**：信頼できる販売店での予約を推奨
 3. **インターネット環境**：ダウンロード版のため安定したネット環境が必要
 4. **保存容量**：Nintendo Switch 2の内蔵ストレージ容量を確認
 
-### ⚠️ 注意事項
+### 注意事項
 
 - 数量限定生産のため、予約できない可能性があります
 - ダウンロード版のため、ゲームカートリッジは付属しません
 - 発売日は予定であり、変更される可能性があります
 
-## 🎯 まとめ：Nintendo Switch 2 ポケモンエディションは買えたら買いたい
+## まとめ：Nintendo Switch 2 ポケモンエディションは買えたら買いたい
 
 Nintendo Switch 2 ポケモンレジェンズZ-A エディションは、以下の方に特におすすめします
 
@@ -141,8 +139,8 @@ Nintendo Switch 2 ポケモンレジェンズZ-A エディションは、以下�
 **制作：** 株式会社ゲームフリーク
 **発売：** 株式会社ポケモン
 
-
 ---
+
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
@@ -188,3 +186,84 @@ Nintendo Switch 2 ポケモンレジェンズZ-A エディションは、以下�
   color: #5a6fd8;
   text-decoration: underline;
 }
+/* スマホ版サイトの横はみ出し防止 */
+@media (max-width: 768px) {
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  
+  .container {
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  
+  .main-content {
+    padding: 0 10px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  .article-area {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  .prose {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* テーブルの横スクロール対応 */
+  table {
+    display: block !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    max-width: 100% !important;
+  }
+  
+  /* 画像の横はみ出し防止 */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    width: auto !important;
+  }
+  
+  /* 長いURL・テキストの改行 */
+  a, p, span, div, h1, h2, h3, h4, h5, h6 {
+    word-break: break-all !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+  
+  /* コードブロックの横スクロール */
+  pre, code {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+  
+  .main-content {
+    padding: 0 5px !important;
+  }
+}
+</style>

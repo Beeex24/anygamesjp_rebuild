@@ -12,22 +12,26 @@ type Props = CollectionEntry<"mobileblog">;
 const post = Astro.props as Props;
 const { title, description, pubDate, updatedDate, heroImage } = post.data;
 
-const posts = (await getCollection("blog")).sort(
+const posts = (await getCollection("mobileblog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-const siteUrl = Astro.site?.toString() || `${Astro.url.protocol}//${Astro.url.host}`;
+const siteUrl =
+  Astro.site?.toString() || `${Astro.url.protocol}//${Astro.url.host}`;
 
 // Markdown本文をHTMLとして描画
 const { Content } = await render(post);
 
 // OGP用の画像URL（絶対URLに変換）
-const ogImage = heroImage 
-  ? (heroImage.startsWith('http') ? heroImage : `${siteUrl}${heroImage.startsWith('/') ? '' : '/'}${heroImage}`)
+const ogImage = heroImage
+  ? heroImage.startsWith("http")
+    ? heroImage
+    : `${siteUrl}${heroImage.startsWith("/") ? "" : "/"}${heroImage}`
   : `${siteUrl}/placeholder-image.jpg`;
 
 // 現在のページURL
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin).href;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
+  .href;
 
 // サイト名
 const siteName = "ANYGAMES放送局";
@@ -36,9 +40,19 @@ const siteName = "ANYGAMES放送局";
 <html lang="ja">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <BaseHead   title={title} description={description} image={heroImage} ogType="article" siteName="ANYGAMES放送局" pubDate={pubDate} updatedDate={updatedDate} section="ブログ" tags={["ブログ記事"]} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={heroImage}
+      ogType="article"
+      siteName="ANYGAMES放送局"
+      pubDate={pubDate}
+      updatedDate={updatedDate}
+      section="モバイルブログ"
+      tags={["モバイルブログ記事"]}
+    />
 
-    <!-- OGP (Open Graph Protocol) メタタグ - 1つの画像のみ指定 -->
+    <!-- OGP (Open Graph Protocol) メタタグ -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -49,23 +63,33 @@ const siteName = "ANYGAMES放送局";
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:locale" content="ja_JP" />
-    
+
     <!-- 記事固有のOGPタグ -->
     <meta property="article:published_time" content={pubDate.toISOString()} />
-    {updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
-    <meta property="article:section" content="ブログ" />
-    <meta property="article:tag" content="ブログ記事" />
-    
+    {
+      updatedDate && (
+        <meta
+          property="article:modified_time"
+          content={updatedDate.toISOString()}
+        />
+      )
+    }
+    <meta property="article:section" content="モバイルブログ" />
+    <meta property="article:tag" content="モバイルブログ記事" />
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    
+
     <!-- 追加のメタタグ -->
     <link rel="canonical" href={canonicalURL} />
     <meta name="robots" content="index, follow" />
-    
+
+    <!-- プリロード重要リソース -->
+    {heroImage && <link rel="preload" as="image" href={heroImage} />}
+
     <style>
       :root {
         --content-width: 1200px;
@@ -86,8 +110,8 @@ const siteName = "ANYGAMES放送局";
       }
 
       body {
-        font-family: "Zen Kaku Gothic New", "Segoe UI", Tahoma, Geneva, Verdana,
-          sans-serif;
+        font-family:
+          "Zen Kaku Gothic New", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: rgb(var(--gray-light-rgb));
         line-height: 1.6;
       }
@@ -151,7 +175,7 @@ const siteName = "ANYGAMES放送局";
         top: 20px;
       }
 
-      /* ヒーローセクション */
+      /* ヒーローセクション - CLS改善 */
       .hero-section {
         position: relative;
         overflow: hidden;
@@ -159,16 +183,22 @@ const siteName = "ANYGAMES放送局";
 
       .hero-image {
         width: 100%;
-        height: 400px;
+        height: 0;
+        padding-bottom: 33.33%; /* 3:1のアスペクト比を確保 */
+        position: relative;
         overflow: hidden;
       }
 
       .hero-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: var(--transition);
         filter: brightness(0.9);
+        display: block;
       }
 
       .hero-image:hover img {
@@ -301,7 +331,7 @@ const siteName = "ANYGAMES放送局";
         background: #95a5a6;
       }
 
-      /* 商品カードスタイル */
+      /* 商品カードスタイル - CLS改善 */
       .product-card {
         background: white;
         border-radius: 12px;
@@ -338,11 +368,12 @@ const siteName = "ANYGAMES放送局";
 
       .product-image {
         width: 100%;
-        height: 150px;
+        aspect-ratio: 16/9;
         object-fit: cover;
         border-radius: 8px;
         margin-bottom: 12px;
         transition: var(--transition);
+        display: block;
       }
 
       .product-card:hover .product-image {
@@ -641,6 +672,90 @@ const siteName = "ANYGAMES放送局";
         margin-bottom: 8px;
       }
 
+      /* 関連記事スタイル - CLS改善 */
+      .recommended-posts {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .recommended-posts h3 {
+        color: rgb(var(--gray-dark-rgb));
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        border-bottom: 3px solid rgb(var(--accent-rgb));
+        padding-bottom: 1rem;
+      }
+
+      .post-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .related-post-item {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .related-post-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .post-image {
+        width: 100%;
+        height: 0;
+        padding-bottom: 60%; /* 5:3のアスペクト比 */
+        position: relative;
+        overflow: hidden;
+      }
+
+      .post-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+        display: block;
+      }
+
+      .related-post-item:hover .post-image img {
+        transform: scale(1.05);
+      }
+
+      .post-content {
+        padding: 1.5rem;
+      }
+
+      .post-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: rgb(var(--gray-dark-rgb));
+        line-height: 1.4;
+        margin-bottom: 0.8rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .post-meta {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin: 0;
+      }
+
       /* レスポンシブデザイン */
       @media (max-width: 1024px) {
         .main-content {
@@ -721,6 +836,45 @@ const siteName = "ANYGAMES放送局";
           padding: 8px 12px;
           font-size: 0.85rem;
         }
+
+        .post-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .recommended-posts {
+          padding: 1.5rem;
+          margin: 2rem 0;
+        }
+
+        .recommended-posts h3 {
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .post-image {
+          height: 150px;
+        }
+
+        .post-content {
+          padding: 1rem;
+        }
+
+        .post-content h4 {
+          font-size: 0.95rem;
+          -webkit-line-clamp: 2;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        html,
+        body {
+          overflow-x: hidden !important;
+          width: 100% !important;
+          max-width: 100vw !important;
+        }
       }
 
       /* 480px以下のスマホ向け */
@@ -763,7 +917,21 @@ const siteName = "ANYGAMES放送局";
           padding: 10px;
           font-size: 0.95rem;
         }
+
+        .post-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .post-image {
+          height: 120px;
+        }
+
+        .recommended-posts {
+          padding: 1rem;
+          margin: 1.5rem 0;
+        }
       }
+
       /* アニメーション */
       @keyframes fadeInUp {
         from {
@@ -789,301 +957,281 @@ const siteName = "ANYGAMES放送局";
       .sidebar {
         animation-delay: 0.4s;
       }
-            /* 関連記事スタイル */
-      .recommended-posts {
-        margin: 3rem 0;
-        padding: 2rem;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      }
 
-      .recommended-posts h3 {
-        color: rgb(var(--gray-dark-rgb));
-        margin-bottom: 2rem;
-        font-size: 1.8rem;
-        font-weight: 700;
-        text-align: center;
-        border-bottom: 3px solid rgb(var(--accent-rgb));
-        padding-bottom: 1rem;
-      }
-
-      .post-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .related-post-item {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        transition: var(--transition);
-        cursor: pointer;
-      }
-
-      .related-post-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
-
-      .post-image {
-        width: 100%;
-        height: 180px;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .post-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: var(--transition);
-      }
-
-      .related-post-item:hover .post-image img {
-        transform: scale(1.05);
-      }
-
-      .post-content {
-        padding: 1.5rem;
-      }
-
-      .post-content h4 {
-        font-size: 1rem;
-        font-weight: 600;
-        color: rgb(var(--gray-dark-rgb));
-        line-height: 1.4;
-        margin-bottom: 0.8rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .post-meta {
-        font-size: 0.85rem;
-        color: #6c757d;
-        margin: 0;
-      }
-
-      /* レスポンシブ対応 */
-      @media (max-width: 768px) {
-        .post-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-
-        .recommended-posts {
-          padding: 1.5rem;
-          margin: 2rem 0;
-        }
-
-        .recommended-posts h3 {
-          font-size: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .post-image {
-          height: 150px;
-        }
-
-        .post-content {
-          padding: 1rem;
-        }
-
-        .post-content h4 {
-          font-size: 0.95rem;
-          -webkit-line-clamp: 2;
-        }
-        * {
-          box-sizing: border-box;
-        }
-        html, body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .post-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .post-image {
-          height: 120px;
-        }
-
-        .recommended-posts {
-          padding: 1rem;
-          margin: 1.5rem 0;
+      /* アドセンス広告（モバイル）の高さを指定*/
+      @media screen and (max-width: 768px) {
+        .wpaw-google-adsense {
+          min-height: 320px;
         }
       }
     </style>
   </head>
 
-  <head>
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-     crossorigin="anonymous"></script>
-  </head>
-
-  <body>
-    <Header />
-    <main>
-      <div class="container">
-
-
-        <article>
-          {
-            heroImage && (
-              <div class="hero-section">
-                <div class="hero-image">
-                  <img src={heroImage} alt={title} />
-                  <div class="hero-overlay" />
-                </div>
-              </div>
-            )
-          }
-
-          <div class="article-header">
-            <div class="metadata">
-              <span class="date-badge"><FormattedDate date={pubDate} /></span>
-              {
-                updatedDate && (
-                  <span class="updated-badge">
-                    更新: <FormattedDate date={updatedDate} />
-                  </span>
-                )
-              }
-            </div>
-            <h1 class="article-title">{title}</h1>
-            <hr class="title-divider" />
-          </div>
-
-          <div class="main-content">
-            <div class="article-area">
-
-
-              <div class="prose">
-                <Content />
-              </div>
-
-
-
-              <!-- おすすめの記事 -->
-              <div class="recommended-posts">
-                <h3>📚 おすすめの記事</h3>
-                <div class="post-grid">
-                  {
-                    posts.slice(0, 8).map((post) => (
-                      <a
-                        href={`/blog/${post.id}/`}
-                        class="related-post-item"
-                        style="text-decoration:none;"
-                      >
-                        <div class="post-image">
-                          <img
-                            src={
-                              post.data.heroImage ?? "/placeholder-image.jpg"
-                            }
-                            alt={post.data.title}
-                          />
-                        </div>
-                        <div class="post-content">
-                          <h4>{post.data.title}</h4>
-                          <p class="post-meta">
-                            {post.data.pubDate
-                              ? new Date(post.data.pubDate).toLocaleDateString(
-                                  "ja-JP"
-                                )
-                              : ""}
-                          </p>
-                        </div>
-                      </a>
-                    ))
-                  }
-                </div>
-              </div>
-
-              <div class="tips">
-                <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
-                <ul>
-                  <li>
-                    <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a href="https://coff.ee/anygamesjp" target="_blank" rel="noopener noreferrer">コーヒーを買って応援</a>していただけると嬉しいです。
-                  </li>
-                  <li>
-                    <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br />
-                    <a href="https://forms.gle/your-feedback-form" target="_blank" rel="noopener noreferrer">こちらから</a>ご連絡ください。
-                  </li>
-                  <li>
-                    <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a href="/about" target="_blank" rel="noopener noreferrer">こちらから</a>お問い合わせください。
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="sidebar">
-              <div class="sidebar-section">
-                <h3>🍩 ゲームのお供に！</h3>
-                <div class="product-card">
-                  <img src="/affiliate/otoko.png" alt="ノーベル製菓 男梅ソフトキャンデー" class="product-image" />
-                  <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
-                  <p>旨さの神髄ここにあり！</p>
-                  <p class="price">¥927</p>
-                  <a href="https://amzn.to/40I0D6r" target="_blank" class="button">Amazonで見る</a>
-                </div>
-              </div>
-
-              <div class="sidebar-section">
-                <h3>📈 人気ランキング</h3>
-                <div class="product-card">
-                  <img src="/affiliate/head.png" alt="Logitech G PRO X" class="product-image" />
-                  <h4>Logitech G PRO X</h4>
-                  <p>プロゲーマー仕様の高性能ヘッドセット</p>
-                  <p class="price">¥12,800</p>
-                  <a href="https://amzn.to/46urmHn" target="_blank" class="button">Amazonで見る</a>
-                </div>
-              </div>
-
-              <div class="sidebar-section">
-                <h3>🔥 今週のセール</h3>
-                <div class="product-card sale">
-                  <div class="sale-badge">6% OFF</div>
-                  <img src="/affiliate/chair.png" alt="GTRACING JP-GT002F-CF" class="product-image" />
-                  <h4>GTRACING ゲーミングチェア  オットマン付き</h4>
-                  <p>快適な座り心地で長時間のゲームプレイも安心</p>
-                  <p class="price">¥20,500 <span class="original-price">¥21,800</span></p>
-                  <a href="https://amzn.to/4kLUQUA" target="_blank" class="button sale-button">セール価格で見る</a>
-                </div>
-              </div>
-
-              <div class="sidebar-section">
-                <div class="product-card sale">
-                  <div class="sale-badge">6% OFF</div>
-                  <img src="/affiliate/razerv4.png" alt="Razer BlackWidow V4 Pro" class="product-image" />
-                  <h4>Razer BlackWidow V4 Pro</h4>
-                  <p>最新のメカニカルゲーミングキーボード</p>
-                  <p class="price">¥34,870 <span class="original-price">¥36,960</span></p>
-                  <a href="https://amzn.to/4nAYUK0" target="_blank" class="button sale-button">セール価格で見る</a>
-                </div>
-              </div>
-
-              <div class="sidebar-section">
-                <div class="product-card">
-                  <img src="/affiliate/mouse.png" alt="Logicool G PRO 2 LIGHTSPEED" class="product-image" />
-                  <h4>Logicool G PRO 2 LIGHTSPEED</h4>
-                  <p>次世代ワイヤレスゲーミングマウス</p>
-                  <p class="price">¥17,600</p>
-                  <a href="https://amzn.to/44OmvQ1" target="_blank" class="button">Amazonで見る</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </main>
-    <Footer />
-  </body>
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+    crossorigin="anonymous"></script>
 </html>
+
+<body>
+  <Header />
+  <main>
+  
+  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+    <!-- ads2 -->
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4929223237591717"
+      data-ad-slot="5954046828"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+    <div class="container">
+      <article>
+        {
+          heroImage && (
+            <div class="hero-section">
+              <div class="hero-image">
+                <img
+                  src={heroImage}
+                  alt={title}
+                  width="1200"
+                  height="400"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+                <div class="hero-overlay" />
+              </div>
+            </div>
+          )
+        }
+
+        <div class="article-header">
+          <div class="metadata">
+            <span class="date-badge"><FormattedDate date={pubDate} /></span>
+            {
+              updatedDate && (
+                <span class="updated-badge">
+                  更新: <FormattedDate date={updatedDate} />
+                </span>
+              )
+            }
+          </div>
+          <h1 class="article-title">{title}</h1>
+          <hr class="title-divider" />
+        </div>
+
+        <div class="main-content">
+          <div class="article-area">
+            <div class="prose">
+              <Content />
+            </div>
+
+          <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+              crossorigin="anonymous"></script>
+            <!-- ads2 -->
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-4929223237591717"
+              data-ad-slot="5954046828"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script is:inline>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+
+            <!-- おすすめの記事 -->
+            <div class="recommended-posts">
+              <h3>📚 おすすめの記事</h3>
+              <div class="post-grid">
+                {
+                  posts.slice(0, 8).map((post) => (
+                    <a
+                      href={`/mobileblog/${post.id}/`}
+                      class="related-post-item"
+                      style="text-decoration:none;"
+                    >
+                      <div class="post-image">
+                        <img
+                          src={post.data.heroImage ?? "/placeholder-image.jpg"}
+                          alt={post.data.title}
+                          width="300"
+                          height="180"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="post-content">
+                        <h4>{post.data.title}</h4>
+                        <p class="post-meta">
+                          {post.data.pubDate
+                            ? new Date(post.data.pubDate).toLocaleDateString(
+                                "ja-JP"
+                              )
+                            : ""}
+                        </p>
+                      </div>
+                    </a>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="tips">
+              <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
+              <ul>
+                <li>
+                  <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a
+                    href="https://coff.ee/anygamesjp"
+                    target="_blank"
+                    rel="noopener noreferrer">コーヒーを買って応援</a
+                  >していただけると嬉しいです。
+                </li>
+                <li>
+                  <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br
+                  />
+                  <a
+                    href="https://forms.gle/your-feedback-form"
+                    target="_blank"
+                    rel="noopener noreferrer">こちらから</a
+                  >ご連絡ください。
+                </li>
+                <li>
+                  <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a
+                    href="/about"
+                    target="_blank"
+                    rel="noopener noreferrer">こちらから</a
+                  >お問い合わせください。
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sidebar">
+            <div class="sidebar-section">
+              <h3>🍩 ゲームのお供に！</h3>
+              <div class="product-card">
+                <img
+                  src="/affiliate/otoko.png"
+                  alt="ノーベル製菓 男梅ソフトキャンデー"
+                  class="product-image"
+                  width="280"
+                  height="150"
+                  loading="lazy"
+                />
+                <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
+                <p>旨さの神髄ここにあり！</p>
+                <p class="price">¥927</p>
+                <a href="https://amzn.to/40I0D6r" target="_blank" class="button"
+                  >Amazonで見る</a
+                >
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h3>📈 人気ランキング</h3>
+              <div class="product-card">
+                <img
+                  src="/affiliate/head.png"
+                  alt="Logitech G PRO X"
+                  class="product-image"
+                  width="280"
+                  height="150"
+                  loading="lazy"
+                />
+                <h4>Logitech G PRO X</h4>
+                <p>プロゲーマー仕様の高性能ヘッドセット</p>
+                <p class="price">¥12,800</p>
+                <a href="https://amzn.to/46urmHn" target="_blank" class="button"
+                  >Amazonで見る</a
+                >
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <h3>🔥 今週のセール</h3>
+              <div class="product-card sale">
+                <div class="sale-badge">6% OFF</div>
+                <img
+                  src="/affiliate/chair.png"
+                  alt="GTRACING JP-GT002F-CF"
+                  class="product-image"
+                  width="280"
+                  height="150"
+                  loading="lazy"
+                />
+                <h4>GTRACING ゲーミングチェア オットマン付き</h4>
+                <p>快適な座り心地で長時間のゲームプレイも安心</p>
+                <p class="price">
+                  ¥20,500 <span class="original-price">¥21,800</span>
+                </p>
+                <a
+                  href="https://amzn.to/4kLUQUA"
+                  target="_blank"
+                  class="button sale-button">セール価格で見る</a
+                >
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="product-card sale">
+                <div class="sale-badge">6% OFF</div>
+                <img
+                  src="/affiliate/razerv4.png"
+                  alt="Razer BlackWidow V4 Pro"
+                  class="product-image"
+                  width="280"
+                  height="150"
+                  loading="lazy"
+                />
+                <h4>Razer BlackWidow V4 Pro</h4>
+                <p>最新のメカニカルゲーミングキーボード</p>
+                <p class="price">
+                  ¥34,870 <span class="original-price">¥36,960</span>
+                </p>
+                <a
+                  href="https://amzn.to/4nAYUK0"
+                  target="_blank"
+                  class="button sale-button">セール価格で見る</a
+                >
+              </div>
+            </div>
+
+            <div class="sidebar-section">
+              <div class="product-card">
+                <img
+                  src="/affiliate/mouse.png"
+                  alt="Logicool G PRO 2 LIGHTSPEED"
+                  class="product-image"
+                  width="280"
+                  height="150"
+                  loading="lazy"
+                />
+                <h4>Logicool G PRO 2 LIGHTSPEED</h4>
+                <p>次世代ワイヤレスゲーミングマウス</p>
+                <p class="price">¥17,600</p>
+                <a href="https://amzn.to/44OmvQ1" target="_blank" class="button"
+                  >Amazonで見る</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+  <Footer />
+</body>
