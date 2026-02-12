@@ -1,0 +1,16 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BlogPost from '../../layouts/minecraftPost.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('minecraft_blog');
+  return posts.map(post => ({
+    params: { id: post.id },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'minecraft_blog'> };
+---
+
+<BlogPost {...post} />

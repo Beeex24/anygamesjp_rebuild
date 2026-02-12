@@ -1,0 +1,663 @@
+---
+// src/pages/minecraft_info/[page].astro
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_TITLE } from "../../consts";
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+  // minecraft_blogコレクションから記事を取得し、日付順にソート
+  const minecraftPosts = (await getCollection("minecraft_blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  const POSTS_PER_PAGE = 12;
+  const totalPages = Math.ceil(minecraftPosts.length / POSTS_PER_PAGE);
+
+  const paths = [];
+  for (let i = 1; i <= totalPages; i++) {
+    const start = (i - 1) * POSTS_PER_PAGE;
+    const end = start + POSTS_PER_PAGE;
+    
+    paths.push({
+      params: { page: i.toString() },
+      props: {
+        posts: minecraftPosts.slice(start, end),
+        currentPage: i,
+        totalPages,
+        totalPosts: minecraftPosts.length
+      }
+    });
+  }
+
+  return paths;
+}
+
+const { posts, currentPage, totalPages, totalPosts } = Astro.props;
+const POSTS_PER_PAGE = 12;
+
+// ページネーション用の計算
+const showPages = 5;
+let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
+let endPage = Math.min(totalPages, startPage + showPages - 1);
+
+if (endPage - startPage + 1 < showPages) {
+  startPage = Math.max(1, endPage - showPages + 1);
+}
+
+const pages = [];
+for (let i = startPage; i <= endPage; i++) {
+  pages.push(i);
+}
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead 
+      title={`マインクラフト記事一覧 - ページ ${currentPage} | ${SITE_TITLE}`} 
+      description="マインクラフトに関する最新情報、攻略法、MOD紹介、建築アイデアなどをお届けします。" 
+      image="/minecraft-header.jpg"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Hiragino Maru Gothic Pro', 'ヒラギノ丸ゴ Pro', 'Hiragino Maru Gothic', 'Yu Gothic', 'Meiryo', system-ui, sans-serif;
+        background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #1a472a 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* マインクラフト風の背景パターン */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page-container {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ヒーローセクション */
+      .hero-section {
+        background: linear-gradient(150deg, rgba(42, 157, 143, 0.75) 0%, rgba(38, 70, 83, 0.75) 100%),
+                    url('/image3.png') center/cover;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center center;
+        padding: 4rem 2rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border-bottom: 4px solid #8b4513;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 8px,
+            rgba(255, 255, 255, 0.02) 8px,
+            rgba(255, 255, 255, 0.02) 16px
+          );
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-section h1 {
+        color: #ffffff;
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 
+          3px 3px 0 #000,
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          4px 4px 12px rgba(0, 0, 0, 0.6);
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+
+      .hero-section p {
+        color: #e0f7fa;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        font-weight: 600;
+      }
+
+      .page-info {
+        color: #b2dfdb;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+      }
+
+      /* メインコンテナ */
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem 2rem;
+      }
+
+      /* 記事グリッド */
+      .article-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+      }
+
+      /* 記事カード */
+      .article-card {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 
+          0 8px 16px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 3px solid #8b4513;
+      }
+
+      .article-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4caf50, #8bc34a, #cddc39, #4caf50);
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .article-card:hover::before {
+        opacity: 1;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .article-card:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.3),
+          0 0 0 4px rgba(76, 175, 80, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border-color: #4caf50;
+      }
+
+      .article-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+      }
+
+      /* 記事画像 */
+      .article-image-container {
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+        background: linear-gradient(135deg, #2a9d8f 0%, #264653 100%);
+      }
+
+      .article-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: brightness(0.95);
+      }
+
+      .article-card:hover .article-image {
+        transform: scale(1.15);
+        filter: brightness(1.05);
+      }
+
+      /* 画像オーバーレイ */
+      .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        pointer-events: none;
+      }
+
+      /* 記事コンテンツ */
+      .article-content {
+        padding: 1.5rem;
+        background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+      }
+
+      /* カテゴリータグ */
+      .article-category {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .article-category::before {
+        content: '⛏️';
+        font-size: 1.1rem;
+      }
+
+      /* 記事タイトル */
+      .article-title {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #1a472a;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        transition: color 0.3s ease;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 4rem;
+      }
+
+      .article-card:hover .article-title {
+        color: #2a9d8f;
+      }
+
+      /* 記事説明 */
+      .article-description {
+        color: #555;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 1.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 4.8rem;
+      }
+
+      /* メタ情報 */
+      .article-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 2px solid #e0e0e0;
+      }
+
+      .article-date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .article-date::before {
+        content: '📅';
+      }
+
+      /* 続きを読むボタン */
+      .read-more {
+        background: linear-gradient(135deg, #2a9d8f, #1a7a6a);
+        color: white;
+        padding: 0.6rem 1.3rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .read-more::after {
+        content: '→';
+        transition: transform 0.3s ease;
+      }
+
+      .article-card:hover .read-more {
+        background: linear-gradient(135deg, #1a7a6a, #2a9d8f);
+        transform: translateX(5px);
+        box-shadow: 0 6px 20px rgba(42, 157, 143, 0.5);
+      }
+
+      .article-card:hover .read-more::after {
+        transform: translateX(5px);
+      }
+
+      /* ページネーション */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 4rem 0 3rem 0;
+        padding: 2rem 1rem;
+        flex-wrap: wrap;
+      }
+
+      .pagination a,
+      .pagination span {
+        padding: 0.8rem 1.3rem;
+        background: rgba(255, 255, 255, 0.95);
+        border: 3px solid #8b4513;
+        border-radius: 8px;
+        color: #1a472a;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        min-width: 48px;
+        text-align: center;
+      }
+
+      .pagination a:hover {
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
+        color: white;
+        border-color: #4caf50;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+      }
+
+      .pagination .page-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 48px;
+        height: 48px;
+        padding: 0;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+
+      .pagination .current {
+        background: linear-gradient(135deg, #2a9d8f, #1a7a6a);
+        color: white;
+        border-color: #2a9d8f;
+        box-shadow: 0 6px 16px rgba(42, 157, 143, 0.4);
+        transform: scale(1.1);
+      }
+
+      .pagination .disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: #e0e0e0;
+        border-color: #bdbdbd;
+      }
+
+      .pagination .ellipsis {
+        padding: 0.5rem;
+        color: #666;
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+
+      /* レスポンシブデザイン */
+      @media (max-width: 1024px) {
+        .article-grid {
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-section {
+          padding: 3rem 1.5rem;
+        }
+
+        .hero-section h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero-section p {
+          font-size: 1.1rem;
+        }
+
+        .article-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .container {
+          padding: 0 1rem 3rem 1rem;
+        }
+
+        .article-image-container {
+          height: 180px;
+        }
+
+        .article-content {
+          padding: 1.2rem;
+        }
+
+        .article-title {
+          font-size: 1.2rem;
+          min-height: 3.6rem;
+        }
+
+        .article-description {
+          font-size: 0.9rem;
+          min-height: 4.5rem;
+        }
+
+        .pagination {
+          gap: 0.5rem;
+          padding: 1.5rem 0.5rem;
+        }
+
+        .pagination a,
+        .pagination span {
+          padding: 0.6rem 1rem;
+          font-size: 0.9rem;
+          min-width: 42px;
+        }
+
+        .pagination .page-number {
+          min-width: 42px;
+          height: 42px;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+        
+        html, body {
+          overflow-x: hidden !important;
+          width: 100% !important;
+          max-width: 100vw !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-section h1 {
+          font-size: 2rem;
+        }
+
+        .hero-section p {
+          font-size: 1rem;
+        }
+
+        .page-info {
+          font-size: 0.95rem;
+        }
+
+        .article-title {
+          font-size: 1.1rem;
+        }
+
+        .pagination a,
+        .pagination span {
+          padding: 0.5rem 0.8rem;
+          font-size: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page-container">
+      <Header />
+
+      <!-- ヒーローセクション -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <h1>⛏️ マインクラフト記事 ⛏️</h1>
+          <p>最新情報・攻略法・MOD紹介・建築アイデア</p>
+          <div class="page-info">
+            全 {totalPosts} 件中 {(currentPage - 1) * POSTS_PER_PAGE + 1} - {Math.min(currentPage * POSTS_PER_PAGE, totalPosts)} 件を表示
+          </div>
+        </div>
+      </div>
+
+      <!-- メインコンテンツ -->
+      <div class="container">
+        <div class="article-grid">
+          {posts.map((post) => (
+            <a
+              href={`/minecraft_blog/${post.id}/`}
+              class="article-card-link"
+            >
+              <article class="article-card">
+                <div class="article-image-container">
+                  <img
+                    src={post.data.heroImage || '/minecraft-default.jpg'}
+                    alt={post.data.title}
+                    class="article-image"
+                  />
+                  <div class="image-overlay"></div>
+                </div>
+                <div class="article-content">
+                  <span class="article-category">Minecraft</span>
+                  <h3 class="article-title">{post.data.title}</h3>
+                  <p class="article-description">
+                    {post.data.description}
+                  </p>
+                  <div class="article-meta">
+                    <span class="article-date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </span>
+                    <span class="read-more">続きを読む</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+
+        <!-- ページネーション -->
+        <div class="pagination">
+          {currentPage > 1 && (
+            <a href={currentPage === 2 ? "/minecraft_info/1" : `/minecraft_info/${currentPage - 1}`}>
+              ← 前へ
+            </a>
+          )}
+          
+          {/* 最初のページ */}
+          {startPage > 1 && (
+            <>
+              <a href="/minecraft_info/1" class="page-number">1</a>
+              {startPage > 2 && <span class="ellipsis">...</span>}
+            </>
+          )}
+
+          {/* ページ番号 */}
+          {pages.map(page => 
+            page === currentPage ? (
+              <span class="page-number current">{page}</span>
+            ) : (
+              <a href={`/minecraft_info/${page}`} class="page-number">{page}</a>
+            )
+          )}
+
+          {/* 最後のページ */}
+          {endPage < totalPages && (
+            <>
+              {endPage < totalPages - 1 && <span class="ellipsis">...</span>}
+              <a href={`/minecraft_info/${totalPages}`} class="page-number">{totalPages}</a>
+            </>
+          )}
+
+          {currentPage < totalPages && (
+            <a href={`/minecraft_info/${currentPage + 1}`}>
+              次へ →
+            </a>
+          )}
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  </body>
+</html>
