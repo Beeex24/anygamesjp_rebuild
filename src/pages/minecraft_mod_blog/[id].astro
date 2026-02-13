@@ -1,0 +1,659 @@
+---
+// src/pages/minecraft_mod_info/[id].astro
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('minecraft_mod_blog');
+  return posts.map(post => ({
+    params: { id: post.id },
+    props: { post }
+  }));
+}
+
+type Props = { post: CollectionEntry<'minecraft_mod_blog'> };
+const { post } = Astro.props;
+
+// Astro 5.x: render関数を使用してコンテンツをレンダリング
+const { Content } = await render(post);
+
+// 関連記事を取得（同じカテゴリー）
+const allPosts = await getCollection('minecraft_mod_blog');
+const relatedPosts = allPosts
+  .filter(p => p.id !== post.id && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead title={post.data.title} description={post.data.description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --dirt-brown: #8B6F47;
+        --stone-gray: #7F7F7F;
+        --grass-green: #7CB342;
+        --dark-stone: #3A3A3A;
+        --wood-tan: #9C6D3E;
+        --light-bg: #E8E1D5;
+        --diamond-cyan: #4DD0E1;
+        --redstone-red: #D32F2F;
+        --emerald-green: #00C853;
+        --shadow: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: var(--light-bg);
+        background-image: 
+          repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px),
+          repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px);
+        color: var(--dark-stone);
+        line-height: 1.8;
+      }
+
+      /* Header */
+      header.mod-header {
+        background: linear-gradient(180deg, var(--dirt-brown) 0%, var(--wood-tan) 100%);
+        border-bottom: 6px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem 1.5rem;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        transition: all 0.2s;
+      }
+
+      .back-link:hover {
+        transform: translateX(-4px);
+      }
+
+      h1.page-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        color: #FFF;
+        text-shadow: 
+          4px 4px 0 var(--dark-stone),
+          4px 4px 8px rgba(0,0,0,0.5);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+        line-height: 1.5;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        max-width: 1200px;
+        margin: -30px auto 3rem;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 10;
+      }
+
+      .hero-card {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero-image {
+        width: 100%;
+        height: 400px;
+        background: linear-gradient(135deg, var(--grass-green) 0%, var(--emerald-green) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+        border-bottom: 4px solid var(--dark-stone);
+      }
+
+      .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-info {
+        padding: 2rem;
+        background: white;
+      }
+
+      .mod-meta-large {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .mod-tag-large {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 6px;
+        border: 3px solid;
+      }
+
+      .mod-tag-large.version {
+        background: #E3F2FD;
+        border-color: #2196F3;
+        color: #1976D2;
+      }
+
+      .mod-tag-large.category {
+        background: #F3E5F5;
+        border-color: #9C27B0;
+        color: #7B1FA2;
+      }
+
+      .mod-tag-large.downloads {
+        background: #E8F5E9;
+        border-color: #4CAF50;
+        color: #388E3C;
+      }
+
+      .mod-tag-large.difficulty {
+        background: #FFF3E0;
+        border-color: #FF9800;
+        color: #F57C00;
+      }
+
+      .mod-tag-large.author {
+        background: #FCE4EC;
+        border-color: #E91E63;
+        color: #C2185B;
+      }
+
+      .mod-description-large {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .mod-dates {
+        display: flex;
+        gap: 2rem;
+        font-size: 0.9rem;
+        color: #666;
+        padding-top: 1rem;
+        border-top: 2px solid #eee;
+      }
+
+      .mod-date-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .mod-date-label {
+        font-weight: 700;
+        color: var(--dark-stone);
+      }
+
+      /* Download Buttons */
+      .download-section {
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+        padding: 0 2rem;
+      }
+
+      .download-buttons {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        padding: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .download-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border: 3px solid var(--dark-stone);
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        font-family: 'Noto Sans JP', sans-serif;
+      }
+
+      .download-btn.primary {
+        background: var(--grass-green);
+        color: white;
+        box-shadow: 0 4px 0 #558B2F;
+      }
+
+      .download-btn.primary:hover {
+        background: #8BC34A;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #558B2F;
+      }
+
+      .download-btn.secondary {
+        background: var(--diamond-cyan);
+        color: white;
+        box-shadow: 0 4px 0 #0097A7;
+      }
+
+      .download-btn.secondary:hover {
+        background: #4DD0E1;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #0097A7;
+      }
+
+      .download-btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #558B2F;
+      }
+
+      /* Content Area */
+      .content-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 3rem;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 2rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        padding: 3rem;
+      }
+
+      .main-content h2 {
+        font-size: 1.8rem;
+        color: var(--dark-stone);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 4px solid var(--grass-green);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .main-content h2:first-child {
+        margin-top: 0;
+      }
+
+      .main-content h3 {
+        font-size: 1.4rem;
+        color: var(--dark-stone);
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .main-content h4 {
+        font-size: 1.2rem;
+        color: var(--dark-stone);
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .main-content p {
+        margin-bottom: 1.2rem;
+        font-size: 1.05rem;
+      }
+
+      .main-content ul, .main-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 2rem;
+      }
+
+      .main-content li {
+        margin-bottom: 0.5rem;
+      }
+
+      .main-content strong {
+        color: var(--dark-stone);
+        font-weight: 700;
+      }
+
+      .main-content code {
+        background: #f5f5f5;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        border: 1px solid #ddd;
+      }
+
+      .main-content pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 1.5rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 1.5rem;
+        border: 3px solid var(--dark-stone);
+      }
+
+      .main-content pre code {
+        background: none;
+        border: none;
+        padding: 0;
+        color: inherit;
+      }
+
+      .main-content blockquote {
+        border-left: 6px solid var(--grass-green);
+        background: #f9f9f9;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+      }
+
+      .main-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        border: 3px solid var(--dark-stone);
+      }
+
+      .main-content th {
+        background: var(--stone-gray);
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        border: 2px solid var(--dark-stone);
+      }
+
+      .main-content td {
+        padding: 0.75rem 1rem;
+        border: 2px solid #ddd;
+      }
+
+      .main-content tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+
+      /* Sidebar */
+      .sidebar-section {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        background: var(--stone-gray);
+        color: white;
+        padding: 1rem 1.25rem;
+        font-weight: 700;
+        border-bottom: 3px solid var(--dark-stone);
+      }
+
+      .sidebar-content {
+        padding: 1.5rem;
+      }
+
+      .requirements-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .requirements-list li {
+        padding: 0.75rem;
+        background: #f5f5f5;
+        border-left: 4px solid var(--grass-green);
+        margin-bottom: 0.5rem;
+      }
+
+      .tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .tag-item {
+        background: var(--light-bg);
+        padding: 0.5rem 1rem;
+        border: 2px solid var(--stone-gray);
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      /* Related Posts */
+      .related-posts {
+        margin-top: 1.5rem;
+      }
+
+      .related-post-item {
+        display: block;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-left: 4px solid var(--diamond-cyan);
+        margin-bottom: 1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s;
+      }
+
+      .related-post-item:hover {
+        background: var(--light-bg);
+        transform: translateX(4px);
+      }
+
+      .related-post-title {
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin-bottom: 0.25rem;
+      }
+
+      .related-post-desc {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .content-wrapper {
+          grid-template-columns: 1fr;
+        }
+
+        .main-content {
+          padding: 2rem;
+        }
+
+        h1.page-title {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-image {
+          height: 250px;
+          font-size: 4rem;
+        }
+
+        .main-content {
+          padding: 1.5rem;
+        }
+
+        h1.page-title {
+          font-size: 1rem;
+        }
+
+        .download-buttons {
+          flex-direction: column;
+        }
+
+        .content-wrapper {
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <Header />
+
+  <body>
+    <header class="mod-header">
+      <div class="header-content">
+        <a href="/minecraft_mod_info/1" class="back-link">
+          ← MOD一覧に戻る
+        </a>
+        <h1 class="page-title">{post.data.title}</h1>
+      </div>
+    </header>
+
+    <div class="hero-section">
+      <div class="hero-card">
+        <div class="hero-image">
+          {post.data.heroImage ? (
+            <img src={post.data.heroImage} alt={post.data.title} />
+          ) : (
+            <span>🎮</span>
+          )}
+        </div>
+        <div class="hero-info">
+          <div class="mod-meta-large">
+            {post.data.version && (
+              <span class="mod-tag-large version">📦 {post.data.version}</span>
+            )}
+            {post.data.category && (
+              <span class="mod-tag-large category">📁 {post.data.category}</span>
+            )}
+            {post.data.downloads && (
+              <span class="mod-tag-large downloads">⬇️ {post.data.downloads}</span>
+            )}
+            {post.data.difficulty && (
+              <span class="mod-tag-large difficulty">🎯 {post.data.difficulty}</span>
+            )}
+            {post.data.author && (
+              <span class="mod-tag-large author">👤 {post.data.author}</span>
+            )}
+            {post.data.modLoader && (
+              <span class="mod-tag-large version">🔧 {post.data.modLoader}</span>
+            )}
+          </div>
+          
+          <p class="mod-description-large">{post.data.description}</p>
+          
+          <div class="mod-dates">
+            <div class="mod-date-item">
+              <span class="mod-date-label">公開日</span>
+              <FormattedDate date={post.data.pubDate} />
+            </div>
+            {post.data.updatedDate && (
+              <div class="mod-date-item">
+                <span class="mod-date-label">更新日</span>
+                <FormattedDate date={post.data.updatedDate} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {(post.data.downloadLink || post.data.curseforgeUrl || post.data.modrinthUrl) && (
+      <div class="download-section">
+        <div class="download-buttons">
+          {post.data.downloadLink && (
+            <a href={post.data.downloadLink} class="download-btn primary" target="_blank" rel="noopener noreferrer">
+              ⬇️ ダウンロード
+            </a>
+          )}
+          {post.data.curseforgeUrl && (
+            <a href={post.data.curseforgeUrl} class="download-btn secondary" target="_blank" rel="noopener noreferrer">
+              🔥 CurseForge
+            </a>
+          )}
+          {post.data.modrinthUrl && (
+            <a href={post.data.modrinthUrl} class="download-btn secondary" target="_blank" rel="noopener noreferrer">
+              🟢 Modrinth
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+
+    <div class="content-wrapper">
+      <article class="main-content">
+        <Content />
+      </article>
+
+      <aside>
+        {post.data.requirements && post.data.requirements.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">前提MOD</div>
+            <div class="sidebar-content">
+              <ul class="requirements-list">
+                {post.data.requirements.map((req) => (
+                  <li>{req}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">タグ</div>
+            <div class="sidebar-content">
+              <div class="tags-list">
+                {post.data.tags.map((tag) => (
+                  <span class="tag-item">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {relatedPosts.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">関連記事</div>
+            <div class="sidebar-content">
+              <div class="related-posts">
+                {relatedPosts.map((relatedPost) => (
+                  <a href={`/minecraft_mod_info/${relatedPost.id}`} class="related-post-item">
+                    <div class="related-post-title">{relatedPost.data.title}</div>
+                    <div class="related-post-desc">{relatedPost.data.description.slice(0, 60)}...</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </aside>
+    </div>
+
+    <Footer />
+  </body>
+</html>

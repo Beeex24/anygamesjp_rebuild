@@ -1,0 +1,914 @@
+---
+// src/pages/minecraft_mod/[page].astro
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+  // minecraft_mod_blogコレクションから記事を取得し、日付順にソート
+  const allModPosts = (await getCollection("minecraft_mod_blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  const POSTS_PER_PAGE = 12;
+  const totalPages = Math.ceil(allModPosts.length / POSTS_PER_PAGE);
+
+  const paths = [];
+  for (let i = 1; i <= totalPages; i++) {
+    const start = (i - 1) * POSTS_PER_PAGE;
+    const end = start + POSTS_PER_PAGE;
+    
+    paths.push({
+      params: { page: i.toString() },
+      props: {
+        posts: allModPosts.slice(start, end),
+        allPosts: allModPosts,
+        currentPage: i,
+        totalPages,
+        totalPosts: allModPosts.length
+      }
+    });
+  }
+
+  return paths;
+}
+
+type Props = {
+  posts: any[];
+  allPosts: any[];
+  currentPage: number;
+  totalPages: number;
+  totalPosts: number;
+};
+
+const { posts, allPosts, currentPage, totalPages, totalPosts } = Astro.props;
+const POSTS_PER_PAGE = 12;
+
+// カテゴリー別の記事数を計算
+const categoryCounts: Record<string, number> = {};
+allPosts.forEach(post => {
+  const category = post.data.category || "その他";
+  categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+});
+
+// バージョン別の記事数を計算
+const versionCounts: Record<string, number> = {};
+allPosts.forEach(post => {
+  const version = post.data.version || "不明";
+  versionCounts[version] = (versionCounts[version] || 0) + 1;
+});
+
+// 難易度別の記事数を計算
+const difficultyCounts: Record<string, number> = {};
+allPosts.forEach(post => {
+  const difficulty = post.data.difficulty || "不明";
+  difficultyCounts[difficulty] = (difficultyCounts[difficulty] || 0) + 1;
+});
+
+// ページネーション用の計算
+const showPages = 5;
+let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
+let endPage = Math.min(totalPages, startPage + showPages - 1);
+
+if (endPage - startPage + 1 < showPages) {
+  startPage = Math.max(1, endPage - showPages + 1);
+}
+
+const pages = [];
+for (let i = startPage; i <= endPage; i++) {
+  pages.push(i);
+}
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead title={`マインクラフトMOD解説 - ページ ${currentPage}`} description="マインクラフトのおすすめMODを詳しく解説。工業化、魔法、冒険など様々なMODを紹介します。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --dirt-brown: #8B6F47;
+        --stone-gray: #7F7F7F;
+        --grass-green: #7CB342;
+        --dark-stone: #3A3A3A;
+        --wood-tan: #9C6D3E;
+        --light-bg: #E8E1D5;
+        --diamond-cyan: #4DD0E1;
+        --redstone-red: #D32F2F;
+        --emerald-green: #00C853;
+        --shadow: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: var(--light-bg);
+        background-image: 
+          repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px),
+          repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px);
+        color: var(--dark-stone);
+      }
+
+      /* Header */
+      header.mod-header {
+        background: linear-gradient(180deg, var(--dirt-brown) 0%, var(--wood-tan) 100%);
+        border-bottom: 6px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
+        position: relative;
+      }
+
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 2rem 1.5rem;
+      }
+
+      h1.main-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        color: #FFF;
+        text-shadow: 
+          4px 4px 0 var(--dark-stone),
+          4px 4px 8px rgba(0,0,0,0.5);
+        margin-bottom: 0.5rem;
+        letter-spacing: 2px;
+        animation: slideDown 0.6s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 400;
+      }
+
+      /* Search Bar */
+      .search-container {
+        max-width: 1400px;
+        margin: -30px auto 0;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 10;
+      }
+
+      .search-box {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
+        padding: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both;
+      }
+
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        border: 3px solid var(--stone-gray);
+        font-size: 1rem;
+        font-family: 'Noto Sans JP', sans-serif;
+        background: #F5F5F5;
+        transition: all 0.2s;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--diamond-cyan);
+        background: white;
+        transform: translateY(-2px);
+      }
+
+      .search-button {
+        padding: 1rem 2.5rem;
+        background: var(--grass-green);
+        border: 3px solid var(--dark-stone);
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        font-family: 'Noto Sans JP', sans-serif;
+        box-shadow: 0 4px 0 #558B2F;
+        transition: all 0.1s;
+      }
+
+      .search-button:hover {
+        background: #8BC34A;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #558B2F;
+      }
+
+      .search-button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #558B2F;
+      }
+
+      /* Main Container */
+      .container {
+        max-width: 1400px;
+        margin: 3rem auto;
+        padding: 0 2rem 3rem;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        animation: slideRight 0.5s ease-out 0.3s both;
+      }
+
+      @keyframes slideRight {
+        from {
+          transform: translateX(-30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .filter-section {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+
+      .filter-header {
+        background: var(--stone-gray);
+        color: white;
+        padding: 1rem 1.25rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border-bottom: 3px solid var(--dark-stone);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .filter-header::before {
+        content: "▶";
+        font-size: 0.7rem;
+      }
+
+      .filter-content {
+        padding: 1rem;
+      }
+
+      .filter-item {
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        background: #F5F5F5;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .filter-item:hover {
+        background: var(--light-bg);
+        border-color: var(--stone-gray);
+        transform: translateX(4px);
+      }
+
+      .filter-item.active {
+        background: var(--diamond-cyan);
+        color: white;
+        border-color: var(--dark-stone);
+        font-weight: 700;
+      }
+
+      .filter-count {
+        background: var(--dark-stone);
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .filter-item.active .filter-count {
+        background: white;
+        color: var(--diamond-cyan);
+      }
+
+      /* MOD Grid */
+      main {
+        animation: fadeIn 0.6s ease-out 0.4s both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .mod-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .mod-card {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        cursor: pointer;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .mod-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 0 var(--shadow);
+      }
+
+      .mod-card:active {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 0 var(--shadow);
+      }
+
+      .mod-image {
+        height: 180px;
+        background: linear-gradient(135deg, var(--grass-green) 0%, var(--emerald-green) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        border-bottom: 4px solid var(--dark-stone);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mod-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .mod-image.placeholder::before {
+        content: "🎮";
+      }
+
+      .mod-content {
+        padding: 1.5rem;
+      }
+
+      .mod-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+      }
+
+      .mod-description {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .mod-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .mod-tag {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 4px;
+        border: 2px solid;
+      }
+
+      .mod-tag.version {
+        background: #E3F2FD;
+        border-color: #2196F3;
+        color: #1976D2;
+      }
+
+      .mod-tag.category {
+        background: #F3E5F5;
+        border-color: #9C27B0;
+        color: #7B1FA2;
+      }
+
+      .mod-tag.downloads {
+        background: #E8F5E9;
+        border-color: #4CAF50;
+        color: #388E3C;
+      }
+
+      .mod-tag.difficulty {
+        background: #FFF3E0;
+        border-color: #FF9800;
+        color: #F57C00;
+      }
+
+      /* Pagination */
+      .pagination {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .pagination-item {
+        padding: 0.75rem 1.25rem;
+        background: white;
+        border: 3px solid var(--dark-stone);
+        color: var(--dark-stone);
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s;
+        box-shadow: 0 4px 0 var(--shadow);
+        font-family: 'Noto Sans JP', sans-serif;
+      }
+
+      .pagination-item:hover:not(.active):not(.disabled) {
+        background: var(--light-bg);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 var(--shadow);
+      }
+
+      .pagination-item:active:not(.disabled) {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 var(--shadow);
+      }
+
+      .pagination-item.active {
+        background: var(--grass-green);
+        color: white;
+        border-color: var(--dark-stone);
+      }
+
+      .pagination-item.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Results Info */
+      .results-info {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .results-count {
+        font-weight: 700;
+        color: var(--dark-stone);
+      }
+
+      .results-count span {
+        color: var(--grass-green);
+        font-size: 1.2rem;
+      }
+
+      /* No Results */
+      .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+      }
+
+      .no-results-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .no-results h2 {
+        font-size: 1.5rem;
+        color: var(--dark-stone);
+        margin-bottom: 1rem;
+      }
+
+      .no-results p {
+        color: #666;
+        font-size: 1.1rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1.main-title {
+          font-size: 1rem;
+        }
+
+        .search-box {
+          flex-direction: column;
+        }
+
+        .mod-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          margin: 2rem auto;
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <header class="mod-header">
+      <div class="header-content">
+        <h1 class="main-title">MineCraft MOD Database</h1>
+        <p class="subtitle">マインクラフトMOD解説サイト - 分かり易い解説で楽しく！</p>
+      </div>
+    </header>
+
+    <div class="search-container">
+      <div class="search-box">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="searchInput"
+          placeholder="MOD名、キーワードで検索..."
+        />
+        <button class="search-button" id="searchButton">🔍 検索</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <aside class="sidebar">
+        <!-- バージョンフィルター -->
+        <div class="filter-section">
+          <div class="filter-header">マイクラバージョン</div>
+          <div class="filter-content">
+            <a href="/minecraft_mod/1" class="filter-item" data-filter-type="version" data-filter-value="all">
+              <span>📦 すべて</span>
+              <span class="filter-count">{totalPosts}</span>
+            </a>
+            {Object.entries(versionCounts).sort((a, b) => b[1] - a[1]).map(([version, count]) => (
+              <div class="filter-item" data-filter-type="version" data-filter-value={version}>
+                <span>📦 {version}</span>
+                <span class="filter-count">{count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- カテゴリーフィルター -->
+        <div class="filter-section">
+          <div class="filter-header">MODカテゴリー</div>
+          <div class="filter-content">
+            <a href="/minecraft_mod/1" class="filter-item" data-filter-type="category" data-filter-value="all">
+              <span>📚 すべて</span>
+              <span class="filter-count">{totalPosts}</span>
+            </a>
+            {Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]).map(([category, count]) => {
+              const emoji = {
+                '技術系': '⚙️',
+                '農業・食品': '🌿',
+                '冒険・戦闘': '⚔️',
+                '建築・装飾': '🏗️',
+                '魔法・呪文': '✨',
+                '見た目・UI': '🎨',
+                'ユーティリティ': '🔧',
+                'ワールド生成': '🌍'
+              }[category] || '📁';
+              
+              return (
+                <div class="filter-item" data-filter-type="category" data-filter-value={category}>
+                  <span>{emoji} {category}</span>
+                  <span class="filter-count">{count}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- 難易度フィルター -->
+        <div class="filter-section">
+          <div class="filter-header">難易度</div>
+          <div class="filter-content">
+            <a href="/minecraft_mod/1" class="filter-item" data-filter-type="difficulty" data-filter-value="all">
+              <span>🎯 すべて</span>
+              <span class="filter-count">{totalPosts}</span>
+            </a>
+            {Object.entries(difficultyCounts).filter(([difficulty]) => difficulty !== "不明").map(([difficulty, count]) => (
+              <div class="filter-item" data-filter-type="difficulty" data-filter-value={difficulty}>
+                <span>🎯 {difficulty}</span>
+                <span class="filter-count">{count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- 並び替え -->
+        <div class="filter-section">
+          <div class="filter-header">並び替え</div>
+          <div class="filter-content">
+            <div class="filter-item active" data-sort="latest">
+              <span>🆕 新着順</span>
+            </div>
+            <div class="filter-item" data-sort="updated">
+              <span>🔄 更新順</span>
+            </div>
+            <div class="filter-item" data-sort="downloads">
+              <span>⬇️ ダウンロード数</span>
+            </div>
+            <div class="filter-item" data-sort="name">
+              <span>🔤 名前順</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="results-info">
+          <div class="results-count">
+            全 <span>{totalPosts}</span> 件のMOD - ページ {currentPage} / {totalPages}
+          </div>
+        </div>
+
+        <div class="mod-grid" id="modGrid">
+          {posts.map((post) => (
+            <a href={`/minecraft_mod_info/${post.id}`} class="mod-card" 
+               data-version={post.data.version || ""}
+               data-category={post.data.category || ""}
+               data-difficulty={post.data.difficulty || ""}
+               data-downloads={post.data.downloads || ""}
+               data-title={post.data.title}
+               data-description={post.data.description}
+               data-pubdate={post.data.pubDate.valueOf()}
+               data-updatedate={(post.data.updatedDate || post.data.pubDate).valueOf()}>
+              <div class="mod-image">
+                {post.data.heroImage ? (
+                  <img src={post.data.heroImage} alt={post.data.title} />
+                ) : (
+                  <div class="placeholder">🎮</div>
+                )}
+              </div>
+              <div class="mod-content">
+                <h3 class="mod-title">{post.data.title}</h3>
+                <p class="mod-description">{post.data.description}</p>
+                <div class="mod-meta">
+                  {post.data.version && (
+                    <span class="mod-tag version">{post.data.version}</span>
+                  )}
+                  {post.data.category && (
+                    <span class="mod-tag category">{post.data.category}</span>
+                  )}
+                  {post.data.downloads && (
+                    <span class="mod-tag downloads">{post.data.downloads}</span>
+                  )}
+                  {post.data.difficulty && (
+                    <span class="mod-tag difficulty">{post.data.difficulty}</span>
+                  )}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <div class="pagination">
+            {currentPage > 1 ? (
+              <a href={`/minecraft_mod/${currentPage - 1}`} class="pagination-item">
+                ← 前へ
+              </a>
+            ) : (
+              <span class="pagination-item disabled">← 前へ</span>
+            )}
+
+            {startPage > 1 && (
+              <>
+                <a href="/minecraft_mod/1" class="pagination-item">1</a>
+                {startPage > 2 && <span class="pagination-item disabled">...</span>}
+              </>
+            )}
+
+            {pages.map((pageNum) => (
+              <a 
+                href={`/minecraft_mod/${pageNum}`}
+                class={`pagination-item ${pageNum === currentPage ? 'active' : ''}`}
+              >
+                {pageNum}
+              </a>
+            ))}
+
+            {endPage < totalPages && (
+              <>
+                {endPage < totalPages - 1 && <span class="pagination-item disabled">...</span>}
+                <a href={`/minecraft_mod/${totalPages}`} class="pagination-item">{totalPages}</a>
+              </>
+            )}
+
+            {currentPage < totalPages ? (
+              <a href={`/minecraft_mod/${currentPage + 1}`} class="pagination-item">
+                次へ →
+              </a>
+            ) : (
+              <span class="pagination-item disabled">次へ →</span>
+            )}
+          </div>
+        )}
+      </main>
+    </div>
+
+    <Footer />
+
+    <script is:inline>
+      // 検索機能
+      const searchInput = document.getElementById('searchInput');
+      const searchButton = document.getElementById('searchButton');
+      const modCards = document.querySelectorAll('.mod-card');
+
+      function performSearch() {
+        const query = (searchInput?.value || '').toLowerCase().trim();
+        let visibleCount = 0;
+
+        modCards.forEach((card) => {
+          const title = (card.dataset.title || '').toLowerCase();
+          const description = (card.dataset.description || '').toLowerCase();
+          
+          if (query === '' || title.includes(query) || description.includes(query)) {
+            card.style.display = 'block';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        updateResultsCount(visibleCount);
+      }
+
+      searchButton?.addEventListener('click', performSearch);
+      searchInput?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+
+      // フィルター機能
+      const filterItems = document.querySelectorAll('.filter-item[data-filter-type]');
+      
+      filterItems.forEach((item) => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const filterType = this.dataset.filterType || '';
+          const filterValue = this.dataset.filterValue || '';
+          
+          // 同じタイプのフィルターのアクティブ状態を解除
+          const section = this.closest('.filter-content');
+          section?.querySelectorAll('.filter-item').forEach((i) => i.classList.remove('active'));
+          this.classList.add('active');
+          
+          // フィルタリング実行
+          let visibleCount = 0;
+          modCards.forEach((card) => {
+            if (filterValue === 'all') {
+              card.style.display = 'block';
+              visibleCount++;
+            } else {
+              const cardValue = card.dataset[filterType] || '';
+              if (cardValue === filterValue) {
+                card.style.display = 'block';
+                visibleCount++;
+              } else {
+                card.style.display = 'none';
+              }
+            }
+          });
+          
+          updateResultsCount(visibleCount);
+        });
+      });
+
+      // ソート機能
+      const sortItems = document.querySelectorAll('.filter-item[data-sort]');
+      const modGrid = document.getElementById('modGrid');
+      
+      sortItems.forEach((item) => {
+        item.addEventListener('click', function() {
+          const sortType = this.dataset.sort || '';
+          
+          // アクティブ状態の切り替え
+          const section = this.closest('.filter-content');
+          section?.querySelectorAll('.filter-item').forEach((i) => i.classList.remove('active'));
+          this.classList.add('active');
+          
+          // カードを配列に変換
+          const cardsArray = Array.from(modCards);
+          
+          // ソート
+          cardsArray.sort((a, b) => {
+            switch(sortType) {
+              case 'latest':
+                return parseInt(b.dataset.pubdate || '0') - parseInt(a.dataset.pubdate || '0');
+              case 'updated':
+                return parseInt(b.dataset.updatedate || '0') - parseInt(a.dataset.updatedate || '0');
+              case 'downloads':
+                const aDownloads = parseDownloads(a.dataset.downloads || '');
+                const bDownloads = parseDownloads(b.dataset.downloads || '');
+                return bDownloads - aDownloads;
+              case 'name':
+                return (a.dataset.title || '').localeCompare(b.dataset.title || '', 'ja');
+              default:
+                return 0;
+            }
+          });
+          
+          // 再配置
+          if (modGrid) {
+            cardsArray.forEach((card) => modGrid.appendChild(card));
+          }
+        });
+      });
+
+      function parseDownloads(str) {
+        if (!str) return 0;
+        const num = parseFloat(str);
+        if (str.includes('M')) return num * 1000000;
+        if (str.includes('K')) return num * 1000;
+        return num;
+      }
+
+      function updateResultsCount(count) {
+        const resultsCount = document.querySelector('.results-count span');
+        if (resultsCount) {
+          resultsCount.textContent = count.toString();
+        }
+      }
+    </script>
+  </body>
+</html>
