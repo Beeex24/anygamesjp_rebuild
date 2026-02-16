@@ -86,7 +86,7 @@ for (let i = startPage; i <= endPage; i++) {
 <!doctype html>
 <html lang="ja">
   <head>
-    <BaseHead title={`マインクラフトMOD解説 - ページ ${currentPage}`} description="マインクラフトのおすすめMODを詳しく解説。工業化、魔法、冒険など様々なMODを紹介します。" />
+    <BaseHead title={`マインクラフトMOD解説 - ページ ${currentPage}`} description="マインクラフトのおすすめMODを詳しく解説。見てわかる導入方法で分かりやすくを第一に" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -95,6 +95,10 @@ for (let i = startPage; i <= endPage; i++) {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+      }
+
+      html {
+        overflow-x: hidden;
       }
 
       :root {
@@ -117,6 +121,7 @@ for (let i = startPage; i <= endPage; i++) {
           repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px),
           repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px);
         color: var(--dark-stone);
+        overflow-x: hidden;
       }
 
       /* Header */
@@ -131,6 +136,8 @@ for (let i = startPage; i <= endPage; i++) {
         max-width: 1400px;
         margin: 0 auto;
         padding: 2rem 2rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       h1.main-title {
@@ -169,6 +176,8 @@ for (let i = startPage; i <= endPage; i++) {
         padding: 0 2rem;
         position: relative;
         z-index: 10;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .search-box {
@@ -241,11 +250,14 @@ for (let i = startPage; i <= endPage; i++) {
         display: grid;
         grid-template-columns: 280px 1fr;
         gap: 2rem;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       /* Sidebar */
       .sidebar {
         animation: slideRight 0.5s ease-out 0.3s both;
+        width: 100%;
       }
 
       @keyframes slideRight {
@@ -265,6 +277,8 @@ for (let i = startPage; i <= endPage; i++) {
         box-shadow: 0 6px 0 var(--shadow);
         margin-bottom: 1.5rem;
         overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .filter-header {
@@ -282,10 +296,30 @@ for (let i = startPage; i <= endPage; i++) {
       .filter-header::before {
         content: "▶";
         font-size: 0.7rem;
+        transition: transform 0.3s ease;
       }
 
       .filter-content {
         padding: 1rem;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+      }
+      
+      /* モバイルでのみ開閉機能を有効化 */
+      @media (max-width: 768px) {
+        .filter-header {
+          cursor: pointer;
+          user-select: none;
+        }
+        
+        .filter-section.collapsed .filter-header::before {
+          transform: rotate(90deg);
+        }
+        
+        .filter-section.collapsed .filter-content {
+          max-height: 0;
+          padding: 0 1rem;
+        }
       }
 
       .filter-item {
@@ -332,6 +366,9 @@ for (let i = startPage; i <= endPage; i++) {
       /* MOD Grid */
       main {
         animation: fadeIn 0.6s ease-out 0.4s both;
+        max-width: 1200px;
+        width: 100%;
+        min-width: 0;
       }
 
       @keyframes fadeIn {
@@ -347,8 +384,9 @@ for (let i = startPage; i <= endPage; i++) {
 
       .mod-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.5rem;
+        width: 100%;
       }
 
       .mod-card {
@@ -361,6 +399,12 @@ for (let i = startPage; i <= endPage; i++) {
         text-decoration: none;
         color: inherit;
         display: block;
+        position: relative;
+      }
+
+      /* PC版では日付非表示 */
+      .mod-date-mobile {
+        display: none;
       }
 
       .mod-card:hover {
@@ -510,6 +554,8 @@ for (let i = startPage; i <= endPage; i++) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .results-count {
@@ -566,12 +612,92 @@ for (let i = startPage; i <= endPage; i++) {
           font-size: 1rem;
         }
 
-        .search-box {
-          flex-direction: column;
+        .subtitle {
+          font-size: 0.8rem;
         }
 
+        .header-content {
+          padding: 1.5rem 1rem 1rem;
+        }
+
+        .search-container {
+          padding: 0 1rem;
+          margin: 0.5rem auto;
+        }
+
+        .search-box {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .search-button {
+          width: 100%;
+        }
+
+        /* モバイルで2列グリッド表示 */
         .mod-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.85rem;
+        }
+
+        /* カードをコンパクトに */
+        .mod-card {
+          border-width: 3px;
+          box-shadow: 0 4px 0 var(--shadow);
+        }
+
+        .mod-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 6px 0 var(--shadow);
+        }
+
+        /* モバイルで日付を表示 */
+        .mod-date-mobile {
+          display: block;
+          position: absolute;
+          top: 0.5rem;
+          left: 0.5rem;
+          background: rgba(58, 58, 58, 0.9);
+          color: white;
+          padding: 0.4rem 0.7rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          border-radius: 4px;
+          z-index: 10;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .mod-image {
+          height: 130px;
+          font-size: 2.5rem;
+          border-bottom-width: 3px;
+        }
+
+        .mod-content {
+          padding: 0.85rem;
+        }
+
+        .mod-title {
+          font-size: 1rem;
+          margin-bottom: 0.6rem;
+          line-height: 1.4;
+        }
+
+        .mod-description {
+          font-size: 0.85rem;
+          margin-bottom: 0.8rem;
+          -webkit-line-clamp: 2;
+          line-height: 1.5;
+        }
+
+        .mod-meta {
+          gap: 0.4rem;
+        }
+
+        .mod-tag {
+          padding: 0.35rem 0.65rem;
+          font-size: 0.7rem;
+          border-width: 2px;
         }
 
         .sidebar {
@@ -582,6 +708,71 @@ for (let i = startPage; i <= endPage; i++) {
           margin: 2rem auto;
           padding: 0 1rem 2rem;
         }
+
+        .results-info {
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+        }
+
+        .results-count span {
+          font-size: 1rem;
+        }
+
+        .pagination {
+          margin-top: 2rem;
+          gap: 0.35rem;
+        }
+
+        .pagination-item {
+          padding: 0.6rem 0.9rem;
+          font-size: 0.85rem;
+        }
+      }
+
+      /* さらに小さい画面用（480px以下） */
+      @media (max-width: 480px) {
+        .search-container {
+          padding: 0 0.75rem;
+        }
+
+        .container {
+          padding: 0 0.75rem 2rem;
+        }
+
+        .mod-grid {
+          gap: 0.6rem;
+        }
+
+        .mod-date-mobile {
+          top: 0.4rem;
+          left: 0.4rem;
+          padding: 0.35rem 0.6rem;
+          font-size: 0.7rem;
+        }
+
+        .mod-image {
+          height: 110px;
+          font-size: 2rem;
+        }
+
+        .mod-content {
+          padding: 0.7rem;
+        }
+
+        .mod-title {
+          font-size: 0.9rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .mod-description {
+          font-size: 0.8rem;
+          margin-bottom: 0.7rem;
+        }
+
+        .mod-tag {
+          padding: 0.3rem 0.55rem;
+          font-size: 0.65rem;
+        }
       }
     </style>
   </head>
@@ -590,7 +781,7 @@ for (let i = startPage; i <= endPage; i++) {
     <header class="mod-header">
       <div class="header-content">
         <h1 class="main-title">MineCraft MOD Database</h1>
-        <p class="subtitle">マインクラフトMOD解説サイト - 分かり易い解説で楽しく！</p>
+        <p class="subtitle">マインクラフトMOD解説専門サイト - 見てわかる導入方法で分かりやすくを第一に</p>
       </div>
     </header>
 
@@ -710,6 +901,9 @@ for (let i = startPage; i <= endPage; i++) {
                data-description={post.data.description}
                data-pubdate={post.data.pubDate.valueOf()}
                data-updatedate={(post.data.updatedDate || post.data.pubDate).valueOf()}>
+              <div class="mod-date-mobile">
+                <FormattedDate date={post.data.pubDate} />
+              </div>
               <div class="mod-image">
                 {post.data.heroImage ? (
                   <img src={post.data.heroImage} alt={post.data.title} />
@@ -743,7 +937,7 @@ for (let i = startPage; i <= endPage; i++) {
         {totalPages > 1 && (
           <div class="pagination">
             {currentPage > 1 ? (
-              <a href={`/minecraft_mod/${currentPage - 1}`} class="pagination-item">
+              <a href={`/minecraft_mod_info/${currentPage - 1}`} class="pagination-item">
                 ← 前へ
               </a>
             ) : (
@@ -752,14 +946,14 @@ for (let i = startPage; i <= endPage; i++) {
 
             {startPage > 1 && (
               <>
-                <a href="/minecraft_mod/1" class="pagination-item">1</a>
+                <a href="/minecraft_mod_info/1" class="pagination-item">1</a>
                 {startPage > 2 && <span class="pagination-item disabled">...</span>}
               </>
             )}
 
             {pages.map((pageNum) => (
               <a 
-                href={`/minecraft_mod/${pageNum}`}
+                href={`/minecraft_mod_info/${pageNum}`}
                 class={`pagination-item ${pageNum === currentPage ? 'active' : ''}`}
               >
                 {pageNum}
@@ -769,12 +963,12 @@ for (let i = startPage; i <= endPage; i++) {
             {endPage < totalPages && (
               <>
                 {endPage < totalPages - 1 && <span class="pagination-item disabled">...</span>}
-                <a href={`/minecraft_mod/${totalPages}`} class="pagination-item">{totalPages}</a>
+                <a href={`/minecraft_mod_info/${totalPages}`} class="pagination-item">{totalPages}</a>
               </>
             )}
 
             {currentPage < totalPages ? (
-              <a href={`/minecraft_mod/${currentPage + 1}`} class="pagination-item">
+              <a href={`/minecraft_mod_info/${currentPage + 1}`} class="pagination-item">
                 次へ →
               </a>
             ) : (
@@ -909,6 +1103,53 @@ for (let i = startPage; i <= endPage; i++) {
           resultsCount.textContent = count.toString();
         }
       }
+
+      // モバイルでフィルターセクションの開閉機能
+      function initMobileFilterToggle() {
+        // モバイルかどうかをチェック
+        function isMobile() {
+          return window.innerWidth <= 768;
+        }
+
+        const filterSections = document.querySelectorAll('.filter-section');
+        
+        filterSections.forEach((section) => {
+          const header = section.querySelector('.filter-header');
+          
+          if (header) {
+            header.addEventListener('click', function() {
+              // モバイルの場合のみトグル機能を実行
+              if (isMobile()) {
+                section.classList.toggle('collapsed');
+              }
+            });
+          }
+        });
+
+        // 初期状態：モバイルの場合はすべて閉じた状態にする
+        if (isMobile()) {
+          filterSections.forEach((section) => {
+            section.classList.add('collapsed');
+          });
+        }
+
+        // ウィンドウサイズ変更時の処理
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            if (!isMobile()) {
+              // PC表示に戻った場合はcollapsedクラスを削除
+              filterSections.forEach((section) => {
+                section.classList.remove('collapsed');
+              });
+            }
+          }, 250);
+        });
+      }
+
+      // ページ読み込み時に初期化
+      initMobileFilterToggle();
     </script>
   </body>
 </html>

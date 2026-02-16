@@ -1,10 +1,25 @@
 ---
-title: '【2025年最新】MinecraftのCurseForge導入方法とおすすめMod10選！初心者でも簡単にMod生活を始める完全ガイド'
-description: 'MinecraftでMod生活を始めたい方必見！CurseForgeアプリの導入から使い方、おすすめMod10選まで画像付きで詳しく解説。初心者でも安全にMod環境を構築できる完全ガイドです。'
+title: '【2025年最新】MinecraftのCurseForge導入方法とおすすめMod10選！'
+description: 'MinecraftでMod生活を始めたい方必見！CurseForgeアプリの導入から使い方、おすすめMod10選まで画像付きで詳しく解説。'
 pubDate: '2025-07-27'
 updatedDate: '2025-07-27'
 heroImage: '/pcgame/minecraft/mods/forgesamune.png'
-category: 'minecraft'
+version: "1.18.1"
+category: "技術系"
+author: "IC2 Team"
+downloads: "2.3M"
+downloadLink: "https://www.curseforge.com/minecraft/mc-mods/industrial-craft"
+curseforgeUrl: "https://www.curseforge.com/minecraft/mc-mods/industrial-craft"
+requirements:
+  - "Minecraft Forge"
+  - "GregTech (オプション)"
+tags:
+  - "工業化"
+  - "自動化"
+  - "電力"
+  - "機械"
+difficulty: "中級者向け"
+modLoader: "Forge"
 ---
 
 Minecraftの世界をより豊かにするMod。導入は難しいと思われがちですが、**CurseForge**を使えば初心者でも簡単にMod生活を始められます！

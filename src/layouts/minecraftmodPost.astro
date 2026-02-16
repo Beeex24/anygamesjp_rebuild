@@ -1,28 +1,22 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import FormattedDate from "../components/FormattedDate.astro";
-import { render } from "astro:content";
+// src/layouts/MinecraftModLayout.astro
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
 
-type Props = CollectionEntry<"minecraft_mod_blog">;
+interface Props {
+  post: CollectionEntry<'minecraft_mod_blog'>;
+  Content: any;
+}
 
-const post = Astro.props as Props;
-const { title, description, pubDate, updatedDate, heroImage } = post.data;
-
-const posts = (await getCollection("minecraft_mod_blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-
-const siteUrl =
-  Astro.site?.toString() || `${Astro.url.protocol}//${Astro.url.host}`;
-
-// Markdown本文をHTMLとして描画
-const { Content } = await render(post);
+const { post, Content } = Astro.props;
 
 // OGP用の画像URL（絶対URLに変換）
+const siteUrl = Astro.site?.toString() || `${Astro.url.protocol}//${Astro.url.host}`;
+const heroImage = post.data.heroImage;
 const ogImage = heroImage
   ? heroImage.startsWith("http")
     ? heroImage
@@ -30,57 +24,59 @@ const ogImage = heroImage
   : `${siteUrl}/placeholder-image.jpg`;
 
 // 現在のページURL
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
-  .href;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin).href;
 
-// サイト名
-const siteName = "ANYGAMES放送局";
+// 関連記事を取得（同じカテゴリー）
+const allPosts = await getCollection('minecraft_mod_blog');
+const relatedPosts = allPosts
+  .filter(p => p.id !== post.id && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// おすすめの記事（最新8件）
+const recommendedPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 8);
 ---
 
+<!doctype html>
 <html lang="ja">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <BaseHead
-      title={title}
-      description={description}
+    <BaseHead 
+      title={post.data.title} 
+      description={post.data.description}
       image={heroImage}
       ogType="article"
       siteName="ANYGAMES放送局"
-      pubDate={pubDate}
-      updatedDate={updatedDate}
-      section="ブログ"
-      tags={["ブログ記事"]}
+      pubDate={post.data.pubDate}
+      updatedDate={post.data.updatedDate}
+      section="Minecraft MOD"
+      tags={post.data.tags || ["Minecraft", "MOD"]}
     />
 
-    <!-- OGP (Open Graph Protocol) メタタグ - 1つの画像のみ指定 -->
+    <!-- OGP (Open Graph Protocol) メタタグ -->
     <meta property="og:type" content="article" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={post.data.title} />
+    <meta property="og:description" content={post.data.description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:site_name" content={siteName} />
+    <meta property="og:site_name" content="ANYGAMES放送局" />
     <meta property="og:locale" content="ja_JP" />
 
     <!-- 記事固有のOGPタグ -->
-    <meta property="article:published_time" content={pubDate.toISOString()} />
-    {
-      updatedDate && (
-        <meta
-          property="article:modified_time"
-          content={updatedDate.toISOString()}
-        />
-      )
-    }
-    <meta property="article:section" content="ブログ" />
-    <meta property="article:tag" content="ブログ記事" />
+    <meta property="article:published_time" content={post.data.pubDate.toISOString()} />
+    {post.data.updatedDate && (
+      <meta property="article:modified_time" content={post.data.updatedDate.toISOString()} />
+    )}
+    <meta property="article:section" content="Minecraft MOD" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={post.data.title} />
+    <meta name="twitter:description" content={post.data.description} />
     <meta name="twitter:image" content={ogImage} />
 
     <!-- 追加のメタタグ -->
@@ -90,1145 +86,1190 @@ const siteName = "ANYGAMES放送局";
     <!-- プリロード重要リソース -->
     {heroImage && <link rel="preload" as="image" href={heroImage} />}
 
-    <style>
-      :root {
-        --content-width: 1200px;
-        --content-padding: 2rem;
-        --border-radius: 16px;
-        --transition: all 0.3s ease;
-        --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --accent-rgb: 102, 126, 234;
-        --gray-light-rgb: 245, 245, 245;
-        --gray-dark-rgb: 44, 62, 80;
-      }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 
+    <!-- Google AdSense -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+      crossorigin="anonymous"></script>
+
+    <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      html {
+        overflow-x: hidden;
+      }
+
+      :root {
+        --dirt-brown: #8B6F47;
+        --stone-gray: #7F7F7F;
+        --grass-green: #7CB342;
+        --dark-stone: #3A3A3A;
+        --wood-tan: #9C6D3E;
+        --light-bg: #E8E1D5;
+        --diamond-cyan: #4DD0E1;
+        --redstone-red: #D32F2F;
+        --emerald-green: #00C853;
+        --shadow: rgba(0, 0, 0, 0.3);
+      }
+
       body {
-        font-family:
-          "Zen Kaku Gothic New", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: rgb(var(--gray-light-rgb));
-        line-height: 1.6;
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: var(--light-bg);
+        background-image: 
+          repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px),
+          repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 8px);
+        color: var(--dark-stone);
+        line-height: 1.8;
+        overflow-x: hidden;
       }
 
-      main {
-        width: 100%;
-        margin: 0;
-        background: rgb(var(--gray-light-rgb));
-        min-height: 100vh;
-      }
-
-      .container {
-        max-width: var(--content-width);
-        margin: 2rem auto;
-        background: white;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-radius: var(--border-radius);
-        overflow: hidden;
-      }
-
-      /* ヘッダー広告 */
+      /* Header AdSense */
       .header-ad {
-        padding: 15px;
-        margin: 20px;
-        border: 2px dashed #3498db;
-        border-radius: 8px;
         text-align: center;
-        font-weight: bold;
-        position: relative;
-        background: rgba(52, 152, 219, 0.1);
+        margin: 2rem auto;
+        max-width: 1200px;
+        padding: 0 2rem;
       }
 
-      .header-ad::before {
-        content: "📢";
-        position: absolute;
-        top: -10px;
-        left: 10px;
-        background: white;
-        padding: 0 5px;
-        font-size: 16px;
+      /* Header */
+      header.mod-header {
+        background: linear-gradient(180deg, var(--dirt-brown) 0%, var(--wood-tan) 100%);
+        border-bottom: 6px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
       }
 
-      /* メインコンテンツレイアウト */
-      .main-content {
-        display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 30px;
-        padding: 0 30px 30px;
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
       }
 
-      .article-area {
-        background: white;
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        transition: all 0.2s;
       }
 
-      .sidebar {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 12px;
-        height: fit-content;
-        position: sticky;
-        top: 20px;
+      .back-link:hover {
+        transform: translateX(-4px);
       }
 
-      /* ヒーローセクション - CLS改善 */
+      h1.page-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        color: #FFF;
+        text-shadow: 
+          4px 4px 0 var(--dark-stone),
+          4px 4px 8px rgba(0,0,0,0.5);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+        line-height: 1.5;
+      }
+
+      /* Hero Section */
       .hero-section {
+        max-width: 1200px;
+        margin: -30px auto 3rem;
+        padding: 0 2rem;
         position: relative;
+        z-index: 10;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .hero-card {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 8px 0 var(--shadow);
         overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .hero-image {
         width: 100%;
         height: 400px;
-        overflow: hidden;
-        position: relative;
+        background: linear-gradient(135deg, var(--grass-green) 0%, var(--emerald-green) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+        border-bottom: 4px solid var(--dark-stone);
       }
 
       .hero-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: var(--transition);
-        filter: brightness(0.9);
-        /* CLS防止：寸法を事前に確保 */
-        display: block;
       }
 
-      .hero-image:hover img {
-        transform: scale(1.05);
-        filter: brightness(1);
+      .hero-info {
+        padding: 2rem;
+        background: white;
       }
 
-      .hero-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-        height: 50%;
-        pointer-events: none;
-      }
-
-      /* 記事ヘッダー */
-      .article-header {
-        padding: var(--content-padding);
-        background: var(--header-gradient);
-        color: white;
-      }
-
-      .metadata {
+      .mod-meta-large {
         display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
         flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
       }
 
-      .date-badge {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
+      .mod-tag-large {
+        padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
-        font-weight: 500;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      .updated-badge {
-        background: rgba(255, 255, 255, 0.1);
-        color: rgba(255, 255, 255, 0.8);
-        padding: 0.4rem 0.8rem;
-        border-radius: 50px;
-        font-size: 0.8rem;
-        font-style: italic;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-
-      .article-title {
-        margin: 0;
-        font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 700;
-        line-height: 1.2;
+        border-radius: 6px;
+        border: 3px solid;
+      }
+
+      .mod-tag-large.version {
+        background: #E3F2FD;
+        border-color: #2196F3;
+        color: #1976D2;
+      }
+
+      .mod-tag-large.category {
+        background: #F3E5F5;
+        border-color: #9C27B0;
+        color: #7B1FA2;
+      }
+
+      .mod-tag-large.downloads {
+        background: #E8F5E9;
+        border-color: #4CAF50;
+        color: #388E3C;
+      }
+
+      .mod-tag-large.difficulty {
+        background: #FFF3E0;
+        border-color: #FF9800;
+        color: #F57C00;
+      }
+
+      .mod-tag-large.author {
+        background: #FCE4EC;
+        border-color: #E91E63;
+        color: #C2185B;
+      }
+
+      .mod-description-large {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+      }
+
+      .mod-dates {
+        display: flex;
+        gap: 2rem;
+        font-size: 0.9rem;
+        color: #666;
+        padding-top: 1rem;
+        border-top: 2px solid #eee;
+      }
+
+      .mod-date-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .mod-date-label {
+        font-weight: 700;
+        color: var(--dark-stone);
+      }
+
+      /* Download Buttons */
+      .download-section {
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+        padding: 0 2rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .download-buttons {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        padding: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .download-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border: 3px solid var(--dark-stone);
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        font-family: 'Noto Sans JP', sans-serif;
+      }
+
+      .download-btn.primary {
+        background: var(--grass-green);
         color: white;
-        text-shadow: var(--text-shadow);
+        box-shadow: 0 4px 0 #558B2F;
+      }
+
+      .download-btn.primary:hover {
+        background: #8BC34A;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #558B2F;
+      }
+
+      .download-btn.secondary {
+        background: var(--diamond-cyan);
+        color: white;
+        box-shadow: 0 4px 0 #0097A7;
+      }
+
+      .download-btn.secondary:hover {
+        background: #4DD0E1;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 #0097A7;
+      }
+
+      .download-btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #558B2F;
+      }
+
+      /* Content Area */
+      .content-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 3rem;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 2rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Main Content */
+      .main-content {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 6px 0 var(--shadow);
+        padding: 2rem;
+        min-height: 400px;
+      }
+
+      .main-content h2 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        color: var(--dark-stone);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 4px solid var(--grass-green);
+      }
+
+      .main-content h2:first-child {
+        margin-top: 0;
+      }
+
+      .main-content h3 {
+        font-size: 1.3rem;
+        color: var(--dark-stone);
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+      }
+
+      .main-content p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+
+      .main-content ul, .main-content ol {
+        margin-left: 2rem;
         margin-bottom: 1rem;
       }
 
-      .title-divider {
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.8),
-          rgba(255, 255, 255, 0.3)
-        );
-        border: none;
-        border-radius: 2px;
-        margin: 0;
-        width: 80px;
+      .main-content li {
+        margin-bottom: 0.5rem;
       }
 
-      /* 広告スタイル */
-      .ad-banner {
-        padding: 15px;
-        margin: 20px 0;
-        border: 2px dashed #ff6b6b;
-        border-radius: 8px;
-        text-align: center;
-        font-weight: bold;
-        position: relative;
-        background: rgba(255, 107, 107, 0.1);
-        transition: var(--transition);
+      .main-content img {
+        max-width: 100%;
+        height: auto;
+        border: 3px solid var(--dark-stone);
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 0 var(--shadow);
       }
 
-      .ad-banner:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .ad-banner::before {
-        content: "💰";
-        position: absolute;
-        top: -10px;
-        left: 10px;
-        background: white;
-        padding: 0 5px;
-        font-size: 16px;
-      }
-
-      .content-ad {
-        background: rgba(46, 204, 113, 0.1);
-        border-color: #2ecc71;
-      }
-
-      .content-ad::before {
-        content: "🎯";
-      }
-
-      .effectiveness-label {
-        position: absolute;
-        top: -8px;
-        right: 10px;
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-      }
-
-      .high {
-        background: #e74c3c;
-      }
-      .medium {
-        background: #f39c12;
-      }
-      .low {
-        background: #95a5a6;
-      }
-
-      /* 商品カードスタイル - CLS改善 */
-      .product-card {
-        background: white;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .product-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-      }
-
-      .product-card.sale {
-        border: 2px solid #e74c3c;
-        background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
-      }
-
-      .sale-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: #e74c3c;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        z-index: 2;
-      }
-
-      .product-image {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        transition: var(--transition);
-        /* CLS防止：寸法を事前に確保 */
-        display: block;
-      }
-
-      .product-card:hover .product-image {
-        transform: scale(1.05);
-      }
-
-      .product-card h4 {
-        color: rgb(var(--gray-dark-rgb));
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-        line-height: 1.3;
-      }
-
-      .product-card p {
-        color: #6c757d;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        margin-bottom: 10px;
-      }
-
-      .price {
-        color: #e74c3c !important;
-        font-size: 1.2rem !important;
-        font-weight: bold !important;
-        margin-bottom: 12px !important;
-      }
-
-      .original-price {
-        color: #6c757d;
-        font-size: 0.9rem;
-        text-decoration: line-through;
-        font-weight: normal;
-        margin-left: 8px;
-      }
-
-      .button {
-        display: block;
-        background: rgb(var(--accent-rgb));
-        color: white;
-        text-align: center;
-        padding: 10px 15px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.9rem;
-        transition: var(--transition);
-        border: none;
-        cursor: pointer;
-      }
-
-      .button:hover {
-        background: rgba(var(--accent-rgb), 0.9);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
-      }
-
-      .sale-button {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        animation: pulse 2s infinite;
-      }
-
-      .sale-button:hover {
-        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-      }
-
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
-        }
-      }
-
-      /* プロースコンテンツ */
-      .prose {
-        color: rgb(var(--gray-dark-rgb));
-        line-height: 1.8;
-        font-size: 1.1rem;
-      }
-
-      .prose :global(h1) {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin: 2.5rem 0 1.5rem 0;
-        color: rgb(var(--gray-dark-rgb));
-        border-bottom: 3px solid rgb(var(--accent-rgb));
-        padding-bottom: 0.5rem;
-      }
-
-      .prose :global(h2) {
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin: 2.5rem 0 1rem 0;
-        color: rgb(var(--gray-dark-rgb));
-        border-left: 4px solid rgb(var(--accent-rgb));
-        padding-left: 1rem;
-      }
-
-      .prose :global(h3) {
-        font-size: 1.4rem;
-        font-weight: 500;
-        margin: 2rem 0 0.8rem 0;
-        color: rgb(var(--gray-dark-rgb));
-      }
-
-      .prose :global(h4) {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin: 1.8rem 0 0.6rem 0;
-        color: rgb(var(--gray-dark-rgb));
-      }
-
-      .prose :global(p) {
-        margin-bottom: 1.5rem;
-        text-align: justify;
-        line-height: 1.8;
-      }
-
-      .prose :global(strong) {
-        font-weight: 600;
-        color: rgb(var(--accent-rgb));
-      }
-
-      .prose :global(em) {
-        font-style: italic;
-        color: rgb(var(--gray-dark-rgb));
-      }
-
-      .prose :global(blockquote) {
-        margin: 2rem 0;
-        padding: 1.5rem;
-        background: rgba(var(--accent-rgb), 0.05);
-        border-left: 4px solid rgb(var(--accent-rgb));
-        border-radius: 0 8px 8px 0;
-        font-style: italic;
-        position: relative;
-      }
-
-      .prose :global(blockquote p) {
-        margin: 0;
-      }
-
-      .prose :global(blockquote::before) {
-        content: '"';
-        font-size: 4rem;
-        color: rgba(var(--accent-rgb), 0.3);
-        position: absolute;
-        top: -0.5rem;
-        left: 1rem;
-        font-family: serif;
-      }
-
-      .prose :global(code) {
-        background: rgba(156, 163, 175, 0.1);
-        padding: 0.2rem 0.4rem;
+      .main-content code {
+        background: var(--light-bg);
+        padding: 0.2rem 0.5rem;
         border-radius: 4px;
-        font-size: 0.9rem;
-        color: rgb(var(--accent-rgb));
-        font-family: "Courier New", monospace;
+        font-family: 'Courier New', monospace;
+        border: 2px solid var(--stone-gray);
       }
 
-      .prose :global(pre) {
-        background: rgb(var(--gray-dark-rgb));
-        color: white;
-        padding: 1.5rem;
+      .main-content pre {
+        background: var(--dark-stone);
+        color: #fff;
+        padding: 1rem;
         border-radius: 8px;
         overflow-x: auto;
         margin: 1.5rem 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 3px solid var(--stone-gray);
       }
 
-      .prose :global(pre code) {
+      .main-content pre code {
         background: none;
-        padding: 0;
-        color: inherit;
-      }
-
-      .prose :global(ul),
-      .prose :global(ol) {
-        margin: 1.5rem 0;
-        padding-left: 2rem;
-      }
-
-      .prose :global(li) {
-        margin-bottom: 0.8rem;
-        line-height: 1.7;
-      }
-
-      .prose :global(ul li) {
-        list-style-type: disc;
-      }
-
-      .prose :global(ol li) {
-        list-style-type: decimal;
-      }
-
-      .prose :global(a) {
-        color: rgb(var(--accent-rgb));
-        text-decoration: none;
-        border-bottom: 2px solid transparent;
-        transition: var(--transition);
-      }
-
-      .prose :global(a:hover) {
-        border-bottom-color: rgb(var(--accent-rgb));
-      }
-
-      .prose :global(img) {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin: 2rem 0;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .prose :global(table) {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 2rem 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      .prose :global(th),
-      .prose :global(td) {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid rgba(156, 163, 175, 0.2);
-      }
-
-      .prose :global(th) {
-        background: rgba(var(--accent-rgb), 0.1);
-        font-weight: 600;
-        color: rgb(var(--gray-dark-rgb));
-      }
-
-      .prose :global(tr:hover) {
-        background: rgba(156, 163, 175, 0.05);
-      }
-
-      .prose :global(hr) {
         border: none;
-        height: 2px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(156, 163, 175, 0.3),
-          transparent
-        );
-        margin: 3rem 0;
+        padding: 0;
+        color: #fff;
       }
 
-      /* サイドバースタイル */
-      .sidebar h3 {
-        color: rgb(var(--gray-dark-rgb));
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        border-left: 4px solid rgb(var(--accent-rgb));
-        padding-left: 10px;
+      /* Content Ad */
+      .content-ad {
+        text-align: center;
+        margin: 2rem auto;
+        max-width: 100%;
       }
 
-      .sidebar-section {
-        margin-bottom: 25px;
-      }
-
-      /* ツールチップ */
-      .tips {
-        background: #d5edda;
-        border: 1px solid #c3e6cb;
-        border-radius: 8px;
-        padding: 20px;
-        margin: 25px 0;
-      }
-
-      .tips h4 {
-        color: #155724;
-        margin-bottom: 15px;
-        font-size: 1.1rem;
-      }
-
-      .tips ul {
-        color: #155724;
-        margin-left: 20px;
-      }
-
-      .tips li {
-        margin-bottom: 8px;
-      }
-
-      /* レスポンシブデザイン */
-      @media (max-width: 1024px) {
-        .main-content {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-
-        .sidebar {
-          position: static;
-          margin-top: 20px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        :root {
-          --content-padding: 1.5rem;
-        }
-
-        .container {
-          margin: 1rem;
-          border-radius: 12px;
-        }
-
-        .main-content {
-          padding: 0 20px 20px;
-        }
-
-        .hero-image {
-          height: 200px;
-        }
-
-        .metadata {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.8rem;
-        }
-
-        .article-title {
-          font-size: 2rem;
-        }
-
-        .prose {
-          font-size: 1rem;
-          line-height: 1.7;
-        }
-
-        .prose :global(h1) {
-          font-size: 1.8rem;
-        }
-
-        .prose :global(h2) {
-          font-size: 1.5rem;
-        }
-
-        .prose :global(h3) {
-          font-size: 1.2rem;
-        }
-
-        .ad-banner {
-          padding: 12px;
-          margin: 15px 0;
-        }
-
-        .product-card {
-          padding: 12px;
-          margin-bottom: 15px;
-        }
-
-        .product-image {
-          height: 120px;
-        }
-
-        .product-card h4 {
-          font-size: 1rem;
-        }
-
-        .button {
-          padding: 8px 12px;
-          font-size: 0.85rem;
-        }
-      }
-
-      /* 480px以下のスマホ向け */
-      @media (max-width: 480px) {
-        :root {
-          --content-padding: 0.5rem;
-        }
-
-        .container {
-          margin: 0;
-          border-radius: 0;
-          box-shadow: none;
-          width: 100vw;
-          max-width: 100vw;
-          box-sizing: border-box;
-        }
-
-        .main-content {
-          padding: 0 5px 10px;
-          grid-template-columns: 1fr;
-          gap: 10px;
-        }
-
-        .hero-image {
-          height: 120px;
-        }
-
-        .article-title {
-          font-size: 1.2rem;
-          padding: 0.5rem 0;
-        }
-
-        .sidebar {
-          padding: 10px;
-          border-radius: 8px;
-          margin-top: 10px;
-        }
-
-        .tips {
-          padding: 10px;
-          font-size: 0.95rem;
-        }
-      }
-      /* アニメーション */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .article-header,
-      .prose,
-      .sidebar {
-        animation: fadeInUp 0.6s ease-out;
-      }
-
-      .prose {
-        animation-delay: 0.2s;
-      }
-
-      .sidebar {
-        animation-delay: 0.4s;
-      }
-      /* 関連記事スタイル - CLS改善 */
+      /* おすすめの記事セクション */
       .recommended-posts {
-        margin: 3rem 0;
+        margin-top: 3rem;
         padding: 2rem;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        background: var(--light-bg);
+        border: 4px solid var(--dark-stone);
+        border-radius: 8px;
       }
 
       .recommended-posts h3 {
-        color: rgb(var(--gray-dark-rgb));
-        margin-bottom: 2rem;
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.2rem;
+        color: var(--dark-stone);
+        margin-bottom: 1.5rem;
         text-align: center;
-        border-bottom: 3px solid rgb(var(--accent-rgb));
-        padding-bottom: 1rem;
       }
 
       .post-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 1.5rem;
       }
 
       .related-post-item {
         background: white;
-        border-radius: 12px;
+        border: 3px solid var(--dark-stone);
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        transition: var(--transition);
-        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: block;
       }
 
       .related-post-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 6px 0 var(--shadow);
       }
 
       .post-image {
         width: 100%;
         height: 180px;
         overflow: hidden;
-        position: relative;
+        background: var(--grass-green);
       }
 
       .post-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: var(--transition);
-        /* CLS防止：寸法を事前に確保 */
-        display: block;
-      }
-
-      .related-post-item:hover .post-image img {
-        transform: scale(1.05);
+        border: none;
+        margin: 0;
+        box-shadow: none;
       }
 
       .post-content {
-        padding: 1.5rem;
+        padding: 1rem;
       }
 
       .post-content h4 {
-        font-size: 1rem;
-        font-weight: 600;
-        color: rgb(var(--gray-dark-rgb));
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin-bottom: 0.5rem;
         line-height: 1.4;
-        margin-bottom: 0.8rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
       }
 
       .post-meta {
         font-size: 0.85rem;
-        color: #6c757d;
+        color: #666;
+      }
+
+      /* Tips セクション */
+      .tips {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #FFF9E6;
+        border: 3px solid #FFD700;
+        border-radius: 8px;
+      }
+
+      .tips h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: var(--dark-stone);
+      }
+
+      .tips ul {
+        list-style: none;
+        margin-left: 0;
+      }
+
+      .tips li {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+
+      .tips a {
+        color: #2196F3;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .tips a:hover {
+        text-decoration: underline;
+      }
+
+      /* Sidebar */
+      .sidebar-section {
+        background: white;
+        border: 4px solid var(--dark-stone);
+        box-shadow: 0 4px 0 var(--shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        background: var(--grass-green);
+        color: white;
+        padding: 1rem 1.25rem;
+        font-weight: 700;
+        font-size: 1rem;
+        border-bottom: 3px solid var(--dark-stone);
+      }
+
+      .sidebar-content {
+        padding: 1.25rem;
+      }
+
+      .requirements-list {
+        list-style: none;
         margin: 0;
       }
 
-      /* レスポンシブ対応 */
-      @media (max-width: 768px) {
-        .post-grid {
+      .requirements-list li {
+        padding: 0.5rem 0;
+        border-bottom: 2px dashed #ddd;
+      }
+
+      .requirements-list li:last-child {
+        border-bottom: none;
+      }
+
+      .requirements-list li:before {
+        content: "⚙️ ";
+        margin-right: 0.5rem;
+      }
+
+      .tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .tag-item {
+        background: var(--light-bg);
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        border: 2px solid var(--stone-gray);
+        color: var(--dark-stone);
+      }
+
+      .related-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .related-post-item-sidebar {
+        display: block;
+        text-decoration: none;
+        padding: 1rem;
+        background: var(--light-bg);
+        border: 2px solid var(--dark-stone);
+        border-radius: 6px;
+        transition: all 0.2s;
+      }
+
+      .related-post-item-sidebar:hover {
+        background: white;
+        transform: translateX(4px);
+      }
+
+      .related-post-title {
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      .related-post-desc {
+        font-size: 0.85rem;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      /* Product Cards in Sidebar */
+      .sidebar-section h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--grass-green);
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .product-card.sale {
+        border: 2px solid #FF5722;
+      }
+
+      .sale-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #FF5722;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        z-index: 1;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .product-card h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--dark-stone);
+        margin: 1rem 1rem 0.5rem;
+      }
+
+      .product-card p {
+        font-size: 0.85rem;
+        color: #666;
+        margin: 0 1rem 0.5rem;
+        line-height: 1.5;
+      }
+
+      .product-card .price {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #FF5722;
+        margin: 0.5rem 1rem;
+      }
+
+      .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+      }
+
+      .product-card .button {
+        display: block;
+        background: var(--grass-green);
+        color: white;
+        text-align: center;
+        padding: 0.75rem;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.2s;
+        border-top: 2px solid #eee;
+      }
+
+      .product-card .button:hover {
+        background: #8BC34A;
+      }
+
+      .product-card .sale-button {
+        background: #FF5722;
+      }
+
+      .product-card .sale-button:hover {
+        background: #FF7043;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .content-wrapper {
           grid-template-columns: 1fr;
-          gap: 1rem;
         }
 
-        .recommended-posts {
-          padding: 1.5rem;
-          margin: 2rem 0;
+        .sidebar-section {
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1.page-title {
+          font-size: 1.1rem;
         }
 
-        .recommended-posts h3 {
-          font-size: 1.5rem;
-          margin-bottom: 1.5rem;
+        .back-link {
+          font-size: 0.9rem;
+          margin-bottom: 0.75rem;
         }
 
-        .post-image {
-          height: 150px;
+        .hero-section {
+          margin: -20px auto 2rem;
+          padding: 0 1rem;
         }
 
-        .post-content {
+        .hero-card {
+          border-width: 3px;
+        }
+
+        .hero-image {
+          height: 200px;
+          font-size: 3rem;
+          border-bottom-width: 3px;
+        }
+
+        .hero-info {
+          padding: 1.25rem;
+        }
+
+        .mod-meta-large {
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .mod-tag-large {
+          padding: 0.5rem 0.9rem;
+          font-size: 0.8rem;
+          border-width: 2px;
+        }
+
+        .mod-description-large {
+          font-size: 0.95rem;
+          margin-bottom: 1rem;
+        }
+
+        .mod-dates {
+          flex-direction: column;
+          gap: 0.75rem;
+          font-size: 0.85rem;
+        }
+
+        .download-section {
+          padding: 0 1rem;
+          margin-bottom: 2rem;
+        }
+
+        .download-buttons {
+          padding: 1rem;
+          gap: 0.75rem;
+          border-width: 3px;
+        }
+
+        .download-btn {
+          padding: 0.85rem 1.5rem;
+          font-size: 1rem;
+          border-width: 2px;
+        }
+
+        .main-content {
+          padding: 1.25rem;
+          border-width: 3px;
+        }
+
+        .main-content h2 {
+          font-size: 1.4rem;
+          margin-top: 1.5rem;
+        }
+
+        .main-content h3 {
+          font-size: 1.2rem;
+        }
+
+        .main-content p,
+        .main-content li {
+          font-size: 0.95rem;
+        }
+
+        .sidebar-section {
+          border-width: 3px;
+          margin-bottom: 1rem;
+        }
+
+        .sidebar-header {
+          padding: 0.85rem 1rem;
+          font-size: 0.95rem;
+          border-bottom-width: 2px;
+        }
+
+        .sidebar-content {
           padding: 1rem;
         }
 
-        .post-content h4 {
-          font-size: 0.95rem;
-          -webkit-line-clamp: 2;
+        .content-wrapper {
+          padding: 0 1rem 2rem;
         }
 
-        * {
-          box-sizing: border-box;
+        .related-post-item-sidebar {
+          padding: 0.85rem;
+          margin-bottom: 0.75rem;
         }
 
-        html,
-        body {
-          overflow-x: hidden !important;
-          width: 100% !important;
-          max-width: 100vw !important;
+        .related-post-title {
+          font-size: 0.9rem;
+        }
+
+        .related-post-desc {
+          font-size: 0.85rem;
+        }
+
+        .post-grid {
+          grid-template-columns: 1fr;
         }
       }
 
       @media (max-width: 480px) {
-        .post-grid {
-          grid-template-columns: 1fr;
+        .hero-section {
+          padding: 0 0.75rem;
         }
 
-        .post-image {
-          height: 120px;
+        .download-section {
+          padding: 0 0.75rem;
         }
 
-        .recommended-posts {
+        .content-wrapper {
+          padding: 0 0.75rem 2rem;
+        }
+
+        h1.page-title {
+          font-size: 0.8rem;
+        }
+
+        .hero-image {
+          height: 160px;
+          font-size: 2.5rem;
+        }
+
+        .hero-info {
           padding: 1rem;
-          margin: 1.5rem 0;
         }
-      }
 
-      /* アドセンス広告（モバイル）の高さを指定*/
-      @media screen and (max-width: 768px) {
-        .wpaw-google-adsense {
-          min-height: 320px;
+        .mod-tag-large {
+          padding: 0.4rem 0.75rem;
+          font-size: 0.75rem;
+        }
+
+        .mod-description-large {
+          font-size: 0.9rem;
+        }
+
+        .download-btn {
+          padding: 0.75rem 1.25rem;
+          font-size: 0.95rem;
+        }
+
+        .main-content {
+          padding: 1rem;
+        }
+
+        .main-content h2 {
+          font-size: 1.2rem;
+        }
+
+        .main-content h3 {
+          font-size: 1.05rem;
         }
       }
     </style>
   </head>
 
-  <script
+    <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
     crossorigin="anonymous"></script>
-</html>
 
-<body>
-  <Header />
-  <main>
+  <body>
+    <Header />
 
-  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-      crossorigin="anonymous"></script>
-    <!-- ads2 -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-4929223237591717"
-      data-ad-slot="5954046828"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+    <header class="mod-header">
+      <div class="header-content">
+        <a href="/minecraft_mod_info/1" class="back-link">
+          ← MOD一覧に戻る
+        </a>
+        <h1 class="page-title">{post.data.title}</h1>
+      </div>
+    </header>
 
-    <div class="container">
-      <article>
-        {
-          heroImage && (
-            <div class="hero-section">
-              <div class="hero-image">
-                <img
-                  src={heroImage}
-                  alt={title}
-                  width="1200"
-                  height="400"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-                <div class="hero-overlay" />
-              </div>
-            </div>
-          )
-        }
-
-        <div class="article-header">
-          <div class="metadata">
-            <span class="date-badge"><FormattedDate date={pubDate} /></span>
-            {
-              updatedDate && (
-                <span class="updated-badge">
-                  更新: <FormattedDate date={updatedDate} />
-                </span>
-              )
-            }
+    <div class="hero-section">
+      <div class="hero-card">
+        <div class="hero-image">
+          {post.data.heroImage ? (
+            <img 
+              src={post.data.heroImage} 
+              alt={post.data.title}
+              width="1200"
+              height="400"
+              loading="eager"
+              fetchpriority="high"
+            />
+          ) : (
+            <span>🎮</span>
+          )}
+        </div>
+        <div class="hero-info">
+          <div class="mod-meta-large">
+            {post.data.version && (
+              <span class="mod-tag-large version">📦 {post.data.version}</span>
+            )}
+            {post.data.category && (
+              <span class="mod-tag-large category">📁 {post.data.category}</span>
+            )}
+            {post.data.downloads && (
+              <span class="mod-tag-large downloads">⬇️ {post.data.downloads}</span>
+            )}
+            {post.data.difficulty && (
+              <span class="mod-tag-large difficulty">🎯 {post.data.difficulty}</span>
+            )}
+            {post.data.author && (
+              <span class="mod-tag-large author">👤 {post.data.author}</span>
+            )}
+            {post.data.modLoader && (
+              <span class="mod-tag-large version">🔧 {post.data.modLoader}</span>
+            )}
           </div>
-          <h1 class="article-title">{title}</h1>
-          <hr class="title-divider" />
+          
+          <p class="mod-description-large">{post.data.description}</p>
+          
+          <div class="mod-dates">
+            <div class="mod-date-item">
+              <span class="mod-date-label">公開日</span>
+              <FormattedDate date={post.data.pubDate} />
+            </div>
+            {post.data.updatedDate && (
+              <div class="mod-date-item">
+                <span class="mod-date-label">更新日</span>
+                <FormattedDate date={post.data.updatedDate} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {(post.data.downloadLink || post.data.curseforgeUrl || post.data.modrinthUrl) && (
+      <div class="download-section">
+        <div class="download-buttons">
+          {post.data.downloadLink && (
+            <a href={post.data.downloadLink} class="download-btn primary" target="_blank" rel="noopener noreferrer">
+              ⬇️ ダウンロード
+            </a>
+          )}
+          {post.data.curseforgeUrl && (
+            <a href={post.data.curseforgeUrl} class="download-btn secondary" target="_blank" rel="noopener noreferrer">
+              🔥 CurseForge
+            </a>
+          )}
+          {post.data.modrinthUrl && (
+            <a href={post.data.modrinthUrl} class="download-btn secondary" target="_blank" rel="noopener noreferrer">
+              🟢 Modrinth
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+
+    <div class="content-wrapper">
+      <article class="main-content">
+        <Content />
+
+        <!-- Content AdSense -->
+        <div class="content-ad">
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+            crossorigin="anonymous"></script>
+          <!-- ads2 -->
+          <ins
+            class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-4929223237591717"
+            data-ad-slot="5954046828"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+          <script is:inline>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
         </div>
 
-        <div class="main-content">
-          <div class="article-area">
-            <div class="prose">
-              <Content />
-            </div>
-          <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-            <script
-              async
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-              crossorigin="anonymous"></script>
-            <!-- ads2 -->
-            <ins
-              class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-4929223237591717"
-              data-ad-slot="5954046828"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-            <script is:inline>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-          </div>
-
-            <!-- おすすめの記事 -->
-            <div class="recommended-posts">
-              <h3>📚 おすすめの記事</h3>
-              <div class="post-grid">
-                {
-                  posts.slice(0, 8).map((post) => (
-                    <a
-                      href={`/minecraft_info/${post.id}/`}
-                      class="related-post-item"
-                      style="text-decoration:none;"
-                    >
-                      <div class="post-image">
-                        <img
-                          src={post.data.heroImage ?? "/placeholder-image.jpg"}
-                          alt={post.data.title}
-                          width="300"
-                          height="180"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div class="post-content">
-                        <h4>{post.data.title}</h4>
-                        <p class="post-meta">
-                          {post.data.pubDate
-                            ? new Date(post.data.pubDate).toLocaleDateString(
-                                "ja-JP"
-                              )
-                            : ""}
-                        </p>
-                      </div>
-                    </a>
-                  ))
-                }
-              </div>
-            </div>
-
-            <div class="tips">
-              <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
-              <ul>
-                <li>
-                  <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a
-                    href="https://coff.ee/anygamesjp"
-                    target="_blank"
-                    rel="noopener noreferrer">コーヒーを買って応援</a
-                  >していただけると嬉しいです。
-                </li>
-                <li>
-                  <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br
+        <!-- おすすめの記事 -->
+        <div class="recommended-posts">
+          <h3>📚 おすすめの記事</h3>
+          <div class="post-grid">
+            {recommendedPosts.map((recommendedPost) => (
+              <a
+                href={`/minecraft_mod_info/${recommendedPost.id}`}
+                class="related-post-item"
+                style="text-decoration:none;"
+              >
+                <div class="post-image">
+                  <img
+                    src={recommendedPost.data.heroImage ?? "/placeholder-image.jpg"}
+                    alt={recommendedPost.data.title}
+                    width="300"
+                    height="180"
+                    loading="lazy"
                   />
-                  <a
-                    href="https://forms.gle/your-feedback-form"
-                    target="_blank"
-                    rel="noopener noreferrer">こちらから</a
-                  >ご連絡ください。
-                </li>
-                <li>
-                  <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a
-                    href="/about"
-                    target="_blank"
-                    rel="noopener noreferrer">こちらから</a
-                  >お問い合わせください。
-                </li>
+                </div>
+                <div class="post-content">
+                  <h4>{recommendedPost.data.title}</h4>
+                  <p class="post-meta">
+                    {recommendedPost.data.pubDate
+                      ? new Date(recommendedPost.data.pubDate).toLocaleDateString("ja-JP")
+                      : ""}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Tips セクション -->
+        <div class="tips">
+          <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
+          <ul>
+            <li>
+              <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a
+                href="https://coff.ee/anygamesjp"
+                target="_blank"
+                rel="noopener noreferrer">コーヒーを買って応援</a
+              >していただけると嬉しいです。
+            </li>
+            <li>
+              <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br />
+              <a
+                href="https://forms.gle/your-feedback-form"
+                target="_blank"
+                rel="noopener noreferrer">こちらから</a
+              >ご連絡ください。
+            </li>
+            <li>
+              <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a
+                href="/about"
+                target="_blank"
+                rel="noopener noreferrer">こちらから</a
+              >お問い合わせください。
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <aside>
+        {post.data.requirements && post.data.requirements.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">前提MOD</div>
+            <div class="sidebar-content">
+              <ul class="requirements-list">
+                {post.data.requirements.map((req) => (
+                  <li>{req}</li>
+                ))}
               </ul>
             </div>
           </div>
+        )}
 
-          <div class="sidebar">
-            <div class="sidebar-section">
-              <h3>🍩 ゲームのお供に！</h3>
-              <div class="product-card">
-                <img
-                  src="/affiliate/otoko.png"
-                  alt="ノーベル製菓 男梅ソフトキャンデー"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
-                <p>旨さの神髄ここにあり！</p>
-                <p class="price">¥927</p>
-                <a href="https://amzn.to/40I0D6r" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <h3>📈 人気ランキング</h3>
-              <div class="product-card">
-                <img
-                  src="/affiliate/head.png"
-                  alt="Logitech G PRO X"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Logitech G PRO X</h4>
-                <p>プロゲーマー仕様の高性能ヘッドセット</p>
-                <p class="price">¥12,800</p>
-                <a href="https://amzn.to/46urmHn" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <h3>🔥 今週のセール</h3>
-              <div class="product-card sale">
-                <div class="sale-badge">6% OFF</div>
-                <img
-                  src="/affiliate/chair.png"
-                  alt="GTRACING JP-GT002F-CF"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>GTRACING ゲーミングチェア オットマン付き</h4>
-                <p>快適な座り心地で長時間のゲームプレイも安心</p>
-                <p class="price">
-                  ¥20,500 <span class="original-price">¥21,800</span>
-                </p>
-                <a
-                  href="https://amzn.to/4kLUQUA"
-                  target="_blank"
-                  class="button sale-button">セール価格で見る</a
-                >
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <div class="product-card sale">
-                <div class="sale-badge">6% OFF</div>
-                <img
-                  src="/affiliate/razerv4.png"
-                  alt="Razer BlackWidow V4 Pro"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Razer BlackWidow V4 Pro</h4>
-                <p>最新のメカニカルゲーミングキーボード</p>
-                <p class="price">
-                  ¥34,870 <span class="original-price">¥36,960</span>
-                </p>
-                <a
-                  href="https://amzn.to/4nAYUK0"
-                  target="_blank"
-                  class="button sale-button">セール価格で見る</a
-                >
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <div class="product-card">
-                <img
-                  src="/affiliate/mouse.png"
-                  alt="Logicool G PRO 2 LIGHTSPEED"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Logicool G PRO 2 LIGHTSPEED</h4>
-                <p>次世代ワイヤレスゲーミングマウス</p>
-                <p class="price">¥17,600</p>
-                <a href="https://amzn.to/44OmvQ1" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">タグ</div>
+            <div class="sidebar-content">
+              <div class="tags-list">
+                {post.data.tags.map((tag) => (
+                  <span class="tag-item">#{tag}</span>
+                ))}
               </div>
             </div>
           </div>
+        )}
+
+        {relatedPosts.length > 0 && (
+          <div class="sidebar-section">
+            <div class="sidebar-header">関連記事</div>
+            <div class="sidebar-content">
+              <div class="related-posts">
+                {relatedPosts.map((relatedPost) => (
+                  <a href={`/minecraft_mod_info/${relatedPost.id}`} class="related-post-item-sidebar">
+                    <div class="related-post-title">{relatedPost.data.title}</div>
+                    <div class="related-post-desc">{relatedPost.data.description.slice(0, 60)}...</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <!-- Sidebar Products -->
+        <div class="sidebar-section">
+          <div class="sidebar-content">
+            <h3>🍩 ゲームのお供に！</h3>
+            <div class="product-card">
+              <img
+                src="/affiliate/otoko.png"
+                alt="ノーベル製菓 男梅ソフトキャンデー"
+                class="product-image"
+                width="280"
+                height="150"
+                loading="lazy"
+              />
+              <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
+              <p>旨さの神髄ここにあり!</p>
+              <p class="price">¥927</p>
+              <a href="https://amzn.to/40I0D6r" target="_blank" class="button">Amazonで見る</a>
+            </div>
+          </div>
         </div>
-      </article>
+
+        <div class="sidebar-section">
+          <div class="sidebar-content">
+            <h3>📈 人気ランキング</h3>
+            <div class="product-card">
+              <img
+                src="/affiliate/head.png"
+                alt="Logitech G PRO X"
+                class="product-image"
+                width="280"
+                height="150"
+                loading="lazy"
+              />
+              <h4>Logitech G PRO X</h4>
+              <p>プロゲーマー仕様の高性能ヘッドセット</p>
+              <p class="price">¥12,800</p>
+              <a href="https://amzn.to/46urmHn" target="_blank" class="button">Amazonで見る</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-content">
+            <h3>🔥 今週のセール</h3>
+            <div class="product-card sale">
+              <div class="sale-badge">6% OFF</div>
+              <img
+                src="/affiliate/chair.png"
+                alt="GTRACING JP-GT002F-CF"
+                class="product-image"
+                width="280"
+                height="150"
+                loading="lazy"
+              />
+              <h4>GTRACING ゲーミングチェア オットマン付き</h4>
+              <p>快適な座り心地で長時間のゲームプレイも安心</p>
+              <p class="price">
+                ¥20,500 <span class="original-price">¥21,800</span>
+              </p>
+              <a href="https://amzn.to/4kLUQUA" target="_blank" class="button sale-button">セール価格で見る</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-content">
+            <div class="product-card sale">
+              <div class="sale-badge">6% OFF</div>
+              <img
+                src="/affiliate/razerv4.png"
+                alt="Razer BlackWidow V4 Pro"
+                class="product-image"
+                width="280"
+                height="150"
+                loading="lazy"
+              />
+              <h4>Razer BlackWidow V4 Pro</h4>
+              <p>最新のメカニカルゲーミングキーボード</p>
+              <p class="price">
+                ¥34,870 <span class="original-price">¥36,960</span>
+              </p>
+              <a href="https://amzn.to/4nAYUK0" target="_blank" class="button sale-button">セール価格で見る</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-content">
+            <div class="product-card">
+              <img
+                src="/affiliate/mouse.png"
+                alt="Logicool G PRO 2 LIGHTSPEED"
+                class="product-image"
+                width="280"
+                height="150"
+                loading="lazy"
+              />
+              <h4>Logicool G PRO 2 LIGHTSPEED</h4>
+              <p>次世代ワイヤレスゲーミングマウス</p>
+              <p class="price">¥17,600</p>
+              <a href="https://amzn.to/44OmvQ1" target="_blank" class="button">Amazonで見る</a>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
-  </main>
-  <Footer />
-</body>
+
+    <Footer />
+  </body>
+</html>
