@@ -10,3 +10,11 @@ export function parsePositive(text: string): number | null {
 export function fmt(n: number, maxFrac = 2): string {
   return n.toLocaleString('ja-JP', { maximumFractionDigits: maxFrac, minimumFractionDigits: 0 });
 }
+
+/** 入力文字列を数値に。空・不正・負の数は null(0は許可) */
+export function parseNonNegative(text: string): number | null {
+  const t = text.trim().replace(/,/g, '');
+  if (t === '') return null;
+  const n = Number(t);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}

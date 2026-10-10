@@ -50,6 +50,20 @@ export const TOOLS: ToolMeta[] = [
     summary: 'FPSとフレームタイム(ms)を相互に変換。FPSを上げたときの短縮時間も計算。',
     category: 'game',
   },
+  {
+    slug: 'electricity',
+    href: '/tools/pc/electricity/',
+    name: 'PCの電気代計算',
+    summary: '消費電力と使用時間から、1日・1か月・1年の電気代を計算。',
+    category: 'pc',
+  },
+  {
+    slug: 'psu',
+    href: '/tools/pc/psu/',
+    name: 'PC電源容量計算',
+    summary: 'CPU・グラボなどの消費電力から、必要な電源容量の目安を計算。',
+    category: 'pc',
+  },
 ];
 
 export const TOOL_CATEGORIES = {

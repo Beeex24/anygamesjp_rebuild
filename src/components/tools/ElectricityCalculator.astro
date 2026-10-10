@@ -1,0 +1,117 @@
+---
+import { DEFAULT_UNIT_PRICE, UNIT_PRICE_NOTE } from '../../lib/pc/electricity';
+---
+<div class="calc" id="elec">
+  <div class="fields two">
+    <label class="field">消費電力(W)
+      <input type="text" id="w1" inputmode="decimal" placeholder="例 300" autocomplete="off" />
+      <small>高負荷のとき(ゲーム中など)</small>
+    </label>
+    <label class="field">1日の使用時間(時間)
+      <input type="text" id="h1" inputmode="decimal" placeholder="例 4" autocomplete="off" />
+    </label>
+  </div>
+
+  <details class="adv">
+    <summary>ほかの使い方も合算する(任意)</summary>
+    <div class="fields two" style="padding-bottom:14px">
+      <label class="field">消費電力(W)
+        <input type="text" id="w2" inputmode="decimal" placeholder="例 60" autocomplete="off" />
+        <small>通常時・アイドル時など</small>
+      </label>
+      <label class="field">1日の使用時間(時間)
+        <input type="text" id="h2" inputmode="decimal" placeholder="例 6" autocomplete="off" />
+      </label>
+    </div>
+  </details>
+
+  <div class="fields two">
+    <label class="field">1か月の使用日数(日)
+      <input type="text" id="days" inputmode="decimal" value="30" autocomplete="off" />
+    </label>
+    <label class="field">電力量料金の単価(円/kWh)
+      <input type="text" id="price" inputmode="decimal" value={String(DEFAULT_UNIT_PRICE)} autocomplete="off" />
+      <small>初期値は{UNIT_PRICE_NOTE}です。契約中の単価がわかれば置き換えてください。</small>
+    </label>
+  </div>
+
+  <section class="result-card" aria-live="polite">
+    <h2>電気代の目安</h2>
+    <p class="hint" id="hint">消費電力と使用時間を入力すると、結果が表示されます。</p>
+    <div id="out" hidden>
+      <p class="big"><span id="r-month"></span><small>円 / 月</small></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>期間</th><th class="num">電力量</th><th class="num">電気代</th></tr></thead>
+          <tbody>
+            <tr><td>1日</td><td class="num" id="t-day-kwh"></td><td class="num" id="t-day-yen"></td></tr>
+            <tr><td>1か月</td><td class="num" id="t-month-kwh"></td><td class="num" id="t-month-yen"></td></tr>
+            <tr><td>1年</td><td class="num" id="t-year-kwh"></td><td class="num" id="t-year-yen"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="warn" id="warn" role="alert" hidden></p>
+  </section>
+  <p class="calc-note">電気代 = 消費電力(kW)× 使用時間(h)× 単価(円/kWh)。1年は「1か月 × 12」で計算しています。基本料金は含まれません。単価に燃料費調整額や再エネ賦課金を含めるかで、金額は変わります。実際の消費電力は、ワットチェッカーなどで測ると正確です。</p>
+</div>
+<style>
+  .adv { margin: 16px 0; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
+  .adv summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+</style>
+
+<script>
+  import { calcElectricity, totalHours, type UsageRow } from '../../lib/pc/electricity';
+  import { fmt, parseNonNegative, parsePositive } from '../../lib/format';
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const input = (id: string) => $<HTMLInputElement>(id);
+  const yen = (n: number) => `${Math.round(n).toLocaleString('ja-JP')} 円`;
+  const kwh = (n: number) => `${fmt(n, 1)} kWh`;
+
+  function render() {
+    const out = $('out');
+    const warn = $('warn');
+    const hint = $('hint');
+    out.hidden = true;
+    warn.hidden = true;
+    hint.hidden = false;
+
+    const fail = (msg: string) => { hint.hidden = true; warn.textContent = msg; warn.hidden = false; };
+    const w1Text = input('w1').value.trim();
+    const h1Text = input('h1').value.trim();
+    if (w1Text === '' || h1Text === '') return;
+
+    const w1 = parseNonNegative(w1Text);
+    const h1 = parseNonNegative(h1Text);
+    const days = parsePositive(input('days').value);
+    const price = parsePositive(input('price').value);
+    if (w1 === null || h1 === null) return fail('消費電力と使用時間は、0以上の数字で入力してください。');
+    if (days === null || days > 31) return fail('1か月の使用日数は、1〜31の数字で入力してください。');
+    if (price === null) return fail('単価は、0より大きい数字で入力してください。');
+
+    const usages: UsageRow[] = [{ watts: w1, hours: h1 }];
+    const w2Text = input('w2').value.trim();
+    const h2Text = input('h2').value.trim();
+    if (w2Text !== '' || h2Text !== '') {
+      const w2 = parseNonNegative(w2Text);
+      const h2 = parseNonNegative(h2Text);
+      if (w2 === null || h2 === null) return fail('ほかの使い方は、消費電力と使用時間の両方を0以上の数字で入力してください。');
+      usages.push({ watts: w2, hours: h2 });
+    }
+    if (totalHours(usages) > 24) return fail('1日の使用時間の合計が24時間を超えています。');
+
+    const r = calcElectricity({ usages, daysPerMonth: days, unitPrice: price });
+    hint.hidden = true;
+    $('r-month').textContent = Math.round(r.costPerMonth).toLocaleString('ja-JP');
+    $('t-day-kwh').textContent = kwh(r.kwhPerDay);
+    $('t-day-yen').textContent = yen(r.costPerDay);
+    $('t-month-kwh').textContent = kwh(r.kwhPerMonth);
+    $('t-month-yen').textContent = yen(r.costPerMonth);
+    $('t-year-kwh').textContent = kwh(r.kwhPerYear);
+    $('t-year-yen').textContent = yen(r.costPerYear);
+    out.hidden = false;
+  }
+  ['w1', 'h1', 'w2', 'h2', 'days', 'price'].forEach((id) => input(id).addEventListener('input', render));
+  render();
+</script>

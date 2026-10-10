@@ -35,7 +35,7 @@ import { GAMES } from '../../lib/game/games';
 <script>
   import { GAMES, findGame } from '../../lib/game/games';
   import { cmPer360, edpi, inchesPer360 } from '../../lib/game/edpi';
-  import { fmt, parsePositive } from '../../lib/game/format';
+  import { fmt, parsePositive } from '../../lib/format';
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const dpiEl = $<HTMLInputElement>('dpi');

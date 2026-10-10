@@ -48,7 +48,7 @@ const rows = COMMON_FPS.map((f) => ({ fps: f, ms: fpsToMs(f) }));
 
 <script>
   import { compareFps, fpsToMs, msToFps } from '../../lib/game/fps';
-  import { fmt, parsePositive } from '../../lib/game/format';
+  import { fmt, parsePositive } from '../../lib/format';
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const fpsEl = $<HTMLInputElement>('in-fps');

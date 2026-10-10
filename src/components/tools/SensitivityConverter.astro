@@ -60,7 +60,7 @@ import { GAMES, GAMES_CHECKED_AT } from '../../lib/game/games';
   import { GAMES, findGame } from '../../lib/game/games';
   import { cmPer360 } from '../../lib/game/edpi';
   import { convertSensitivity } from '../../lib/game/sensitivity';
-  import { fmt, parsePositive } from '../../lib/game/format';
+  import { fmt, parsePositive } from '../../lib/format';
 
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const fromEl = $<HTMLSelectElement>('from');
