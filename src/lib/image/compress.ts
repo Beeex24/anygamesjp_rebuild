@@ -3,8 +3,15 @@
  * 画像はサーバーへ送信しない。
  */
 
+import {
+  ACCEPTED, LIMITS, UserFacingError, canEncode, getCtx, makeCanvas, toBlob, toFriendlyMessage,
+  type AnyCanvas,
+} from './canvas';
+
+export { LIMITS, UserFacingError, toFriendlyMessage };
+
 export type OutFormat = 'auto' | 'jpeg' | 'webp';
-type Mime = 'image/jpeg' | 'image/webp';
+type CMime = 'image/jpeg' | 'image/webp';
 
 export interface CompressOptions {
   format: OutFormat;
@@ -31,65 +38,6 @@ export interface CompressResult {
 
 export type ProgressFn = (message: string) => void;
 
-/** ユーザーにそのまま表示してよいエラー */
-export class UserFacingError extends Error {}
-
-export const LIMITS = {
-  maxFileBytes: 40 * 1024 * 1024,
-  /** デコード後のRGBAバッファ(4byte/px)を抑えるための上限。約33MP = 約134MB */
-  maxPixels: 33_000_000,
-  minQuality: 0.35,
-  maxQuality: 0.95,
-} as const;
-
-const ACCEPTED = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
-
-type AnyCanvas = OffscreenCanvas | HTMLCanvasElement;
-type AnyCtx = OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D;
-
-function makeCanvas(w: number, h: number): AnyCanvas {
-  if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
-  if (typeof document !== 'undefined') {
-    const c = document.createElement('canvas');
-    c.width = w;
-    c.height = h;
-    return c;
-  }
-  throw new UserFacingError('お使いのブラウザでは画像を処理できません。');
-}
-
-function getCtx(canvas: AnyCanvas): AnyCtx {
-  const ctx = canvas.getContext('2d') as AnyCtx | null;
-  if (!ctx) throw new UserFacingError('お使いのブラウザでは画像を処理できません。');
-  return ctx;
-}
-
-async function toBlob(canvas: AnyCanvas, mime: Mime, quality: number): Promise<Blob | null> {
-  let blob: Blob | null;
-  if ('convertToBlob' in canvas) {
-    blob = await canvas.convertToBlob({ type: mime, quality });
-  } else {
-    blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, mime, quality));
-  }
-  // 非対応形式は PNG にフォールバックされるため、種類が一致しなければ失敗扱い
-  return blob && blob.type === mime ? blob : null;
-}
-
-const supportCache = new Map<Mime, boolean>();
-async function canEncode(mime: Mime): Promise<boolean> {
-  const cached = supportCache.get(mime);
-  if (cached !== undefined) return cached;
-  let ok = false;
-  try {
-    const c = makeCanvas(2, 2);
-    getCtx(c).fillRect(0, 0, 2, 2);
-    ok = (await toBlob(c, mime, 0.8)) !== null;
-  } catch {
-    ok = false;
-  }
-  supportCache.set(mime, ok);
-  return ok;
-}
 
 interface Analysis {
   hasAlpha: boolean;
@@ -138,19 +86,19 @@ function render(bitmap: ImageBitmap, w: number, h: number, opaque: boolean): Any
 }
 
 interface Candidate {
-  mime: Mime;
+  mime: CMime;
   blob: Blob;
   quality: number;
 }
 
 /** 目標サイズ以下で最も高い品質を二分探索。到達不能なら null */
-async function searchQuality(canvas: AnyCanvas, mime: Mime, target: number): Promise<Candidate | null> {
+async function searchQuality(canvas: AnyCanvas, mime: CMime, target: number): Promise<Candidate | null> {
   const top = await toBlob(canvas, mime, LIMITS.maxQuality);
   if (!top) return null;
   if (top.size <= target) return { mime, blob: top, quality: LIMITS.maxQuality };
   let best: Candidate | null = null;
-  let lo = LIMITS.minQuality;
-  let hi = LIMITS.maxQuality;
+  let lo: number = LIMITS.minQuality;
+  let hi: number = LIMITS.maxQuality;
   const floor = await toBlob(canvas, mime, lo);
   if (!floor || floor.size > target) return null;
   best = { mime, blob: floor, quality: lo };
@@ -166,18 +114,6 @@ async function searchQuality(canvas: AnyCanvas, mime: Mime, target: number): Pro
     }
   }
   return best;
-}
-
-export function toFriendlyMessage(err: unknown): string {
-  if (err instanceof UserFacingError) return err.message;
-  const name = err instanceof Error ? err.name : '';
-  if (name === 'InvalidStateError' || name === 'EncodingError' || name === 'DataError') {
-    return 'この画像は現在のブラウザでは処理できません。別の画像をお試しください。';
-  }
-  if (name === 'RangeError' || name === 'QuotaExceededError') {
-    return '画像が大きすぎて処理できませんでした。長辺を小さくして再度お試しください。';
-  }
-  return '処理中に問題が発生しました。もう一度お試しください。';
 }
 
 export async function compressImage(
@@ -205,7 +141,7 @@ export async function compressImage(
     const { hasAlpha, isGraphic } = analyze(bitmap);
     const [jpegOk, webpOk] = await Promise.all([canEncode('image/jpeg'), canEncode('image/webp')]);
 
-    let mimes: Mime[];
+    let mimes: CMime[];
     if (options.format === 'jpeg') mimes = ['image/jpeg'];
     else if (options.format === 'webp') mimes = ['image/webp'];
     else if (hasAlpha) mimes = ['image/webp'];

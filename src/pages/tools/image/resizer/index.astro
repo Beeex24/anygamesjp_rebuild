@@ -1,0 +1,35 @@
+---
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import ImageResizer from '../../../../components/tools/ImageResizer.astro';
+
+const faqs = [
+  { q: '画像はサーバーに送信されますか?', a: 'いいえ。すべての処理はお使いのブラウザ内で行われ、画像が外部へ送信されることはありません。' },
+  { q: '拡大するとぼやけますか?', a: '拡大した分だけ、画像は少しぼやけます。元の画像にない細かい部分が新しく作られるわけではないため、拡大は2倍程度までをおすすめします。' },
+  { q: '縦横比を変えずに小さくするには?', a: '「長辺で指定」か「倍率で指定」を選ぶと、縦横比はそのまま保たれます。「幅・高さで指定」では「縦横比を保つ」にチェックを入れてください。' },
+  { q: '大きな画像でも使えますか?', a: '40MBまでの画像に対応しています。出力サイズは約3,300万画素まで(例: 長辺6,000px程度)です。超えた場合はお知らせします。' },
+  { q: '保存形式は何を選べばよいですか?', a: '迷ったら「元の形式のまま」で問題ありません。写真を軽くしたいならJPEGまたはWebP、透過やイラストを劣化なく残したいならPNGが向いています。' },
+];
+---
+<ToolLayout
+  current="resizer"
+  title="画像リサイズツール(拡大・縮小)【無料・ブラウザ内で処理】"
+  heading="画像リサイズツール"
+  description="画像の拡大・縮小をブラウザ内だけで行える無料ツール。長辺・倍率・幅と高さの指定に対応。アップロード不要で、Before/Afterで結果を確認できます。"
+  lead="画像を選んで、サイズを指定するだけ。拡大・縮小どちらにも使えます。"
+>
+  <ImageResizer />
+  <section class="section prose" aria-labelledby="faq">
+    <h2 id="faq" class="section-title">よくある質問</h2>
+    {faqs.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+</ToolLayout>
+<style>
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+  .faq p { margin: 0 0 14px; color: var(--text-sub); }
+</style>

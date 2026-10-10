@@ -15,6 +15,13 @@ export const TOOLS: ToolMeta[] = [
     summary: '画質を保ったままファイルサイズを小さく。目標サイズの指定もできます。',
     category: 'image',
   },
+  {
+    slug: 'resizer',
+    href: '/tools/image/resizer/',
+    name: '画像リサイズ',
+    summary: '画像の拡大・縮小。長辺・倍率・幅と高さで指定できます。',
+    category: 'image',
+  },
 ];
 
 export const TOOL_CATEGORIES = {

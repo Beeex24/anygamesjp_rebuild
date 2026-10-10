@@ -1,17 +1,14 @@
 ---
 /** 画像圧縮ツールのUI。ロジックは src/lib/image/ に分離。 */
+import ImageDropzone from './ImageDropzone.astro';
+import ImageCompare from './ImageCompare.astro';
 ---
-<div class="tool" id="compressor" data-state="idle">
+<div class="tool" id="compressor">
   <p class="privacy">🔒 画像はサーバーへアップロードされず、お使いのブラウザ上で処理されます。</p>
 
   <section class="panel" aria-labelledby="step-input" id="input-panel">
     <h2 id="step-input" class="sr-only">画像を選択</h2>
-    <label class="drop" id="drop">
-      <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/avif" />
-      <span class="drop-main">画像を選択、またはここにドラッグ</span>
-      <span class="drop-sub">JPEG / PNG / WebP / AVIF ・ 40MBまで</span>
-    </label>
-    <p class="file-name" id="file-name" hidden></p>
+    <ImageDropzone />
 
     <details class="adv">
       <summary>詳細設定</summary>
@@ -49,31 +46,12 @@
     <p class="error" id="error" role="alert" hidden></p>
   </section>
 
-  <section class="result" id="result" aria-labelledby="step-result" hidden>
-    <h2 id="step-result" class="section-title">結果</h2>
-    <div class="compare">
-      <figure><figcaption>BEFORE</figcaption><img id="img-before" alt="圧縮前の画像" /><p id="meta-before"></p></figure>
-      <figure><figcaption>AFTER</figcaption><img id="img-after" alt="圧縮後の画像" /><p id="meta-after"></p></figure>
-    </div>
-    <p class="saved" id="saved"></p>
-    <ul class="notes" id="notes"></ul>
-    <div class="actions">
-      <a class="btn" id="download" href="#" download>画像を保存</a>
-      <button type="button" class="btn btn-sub" id="reset">別の画像を選ぶ</button>
-    </div>
-  </section>
+  <ImageCompare />
 </div>
 
 <style>
   .tool { max-width: var(--prose); margin: 0 auto; padding: 8px 0 24px; }
   .privacy { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; font-size: .875rem; margin: 0 0 16px; }
-  .drop { display: grid; gap: 4px; place-items: center; text-align: center; min-height: 168px; padding: 20px; border: 2px dashed var(--line); border-radius: var(--radius); background: var(--bg-soft); cursor: pointer; }
-  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
-  .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-  .drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .drop-main { font-weight: 700; }
-  .drop-sub { font-size: .8125rem; color: var(--text-sub); }
-  .file-name { margin: 10px 0 0; font-size: .9rem; word-break: break-all; }
   .adv { margin: 16px 0; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
   .adv summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
   .adv-grid { display: grid; gap: 14px; padding: 0 0 16px; }
@@ -82,90 +60,33 @@
   .go { width: 100%; font-size: 1.05rem; }
   .status { min-height: 1.5em; margin: 10px 0 0; color: var(--text-sub); font-size: .9rem; }
   .error { margin: 10px 0 0; padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--danger); color: var(--danger); }
-  .result { scroll-margin-top: 72px; }
-  .compare { display: grid; gap: 14px; }
-  figure { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-  figcaption { padding: 6px 12px; font-weight: 800; font-size: .75rem; letter-spacing: .08em; background: var(--bg-soft); }
-  figure img { display: block; width: 100%; max-height: 360px; object-fit: contain; background: repeating-conic-gradient(#f0f0f0 0 25%, #fff 0 50%) 0 / 16px 16px; }
-  figure p { margin: 0; padding: 8px 12px; font-size: .85rem; color: var(--text-sub); }
-  .saved { font-size: 1.1rem; font-weight: 800; margin: 16px 0 4px; }
-  .notes { color: var(--text-sub); font-size: .875rem; padding-left: 1.2em; }
-  .actions { display: grid; gap: 10px; margin-top: 16px; }
-  @media (min-width: 640px) { .compare { grid-template-columns: 1fr 1fr; } .actions { grid-template-columns: 1fr 1fr; } }
 </style>
 
 <script>
-  import { runCompress, formatBytes, buildFileName } from '../../lib/image/client';
-  import type { CompressOptions, CompressResult, OutFormat } from '../../lib/image/compress';
+  import { runCompress } from '../../lib/image/client';
+  import type { CompressOptions, OutFormat } from '../../lib/image/compress';
+  import { $, clearError, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
 
-  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-  const fileInput = $<HTMLInputElement>('file');
-  const drop = $<HTMLLabelElement>('drop');
-  const nameEl = $('file-name');
   const runBtn = $<HTMLButtonElement>('run');
   const statusEl = $('status');
-  const errorEl = $('error');
-  const inputPanel = $('input-panel');
-  const resultEl = $('result');
-  const imgBefore = $<HTMLImageElement>('img-before');
-  const imgAfter = $<HTMLImageElement>('img-after');
-  const dl = $<HTMLAnchorElement>('download');
-
   let current: File | null = null;
-  let urls: string[] = [];
-
-  const revokeAll = () => { urls.forEach((u) => URL.revokeObjectURL(u)); urls = []; };
-  const track = (b: Blob) => { const u = URL.createObjectURL(b); urls.push(u); return u; };
-
-  function showError(msg: string) { errorEl.textContent = msg; errorEl.hidden = false; }
-  function clearError() { errorEl.textContent = ''; errorEl.hidden = true; }
-
-  function setFile(f: File | undefined) {
-    clearError();
-    statusEl.textContent = '';
-    if (!f) return;
-    current = f;
-    nameEl.textContent = `${f.name}(${formatBytes(f.size)})`;
-    nameEl.hidden = false;
-    runBtn.disabled = false;
-  }
 
   function readOptions(): CompressOptions {
-    const t = ($<HTMLSelectElement>('opt-target')).value;
-    const e = ($<HTMLSelectElement>('opt-edge')).value;
-    const f = ($<HTMLSelectElement>('opt-format')).value;
+    const t = $<HTMLSelectElement>('opt-target').value;
+    const e = $<HTMLSelectElement>('opt-edge').value;
+    const f = $<HTMLSelectElement>('opt-format').value;
     const format: OutFormat = f === 'jpeg' || f === 'webp' ? f : 'auto';
     return { format, targetBytes: t ? Number(t) : null, maxEdge: e ? Number(e) : null };
   }
 
-  function showResult(file: File, r: CompressResult) {
-    revokeAll();
-    imgBefore.src = track(file);
-    imgAfter.src = track(r.blob);
-    $('meta-before').textContent = `${formatBytes(file.size)} ・ ${r.originalWidth}×${r.originalHeight}px ・ ${file.type.replace('image/', '').toUpperCase()}`;
-    const q = r.quality === null ? '' : ` ・ 品質 ${Math.round(r.quality * 100)}`;
-    $('meta-after').textContent = `${formatBytes(r.blob.size)} ・ ${r.width}×${r.height}px ・ ${r.mime.replace('image/', '').toUpperCase()}${q}`;
-    const ratio = Math.round((1 - r.blob.size / file.size) * 100);
-    $('saved').textContent = r.keptOriginal
-      ? 'これ以上は小さくできませんでした'
-      : ratio >= 1
-        ? `${ratio}% 軽量化しました`
-        : ratio <= -1
-          ? `元の画像より ${-ratio}% 大きくなりました(形式変換のため)`
-          : 'サイズはほぼ変わりませんでした';
-    const notes = $('notes');
-    notes.replaceChildren(...r.notes.map((n) => { const li = document.createElement('li'); li.textContent = n; return li; }));
-    dl.href = track(r.blob);
-    dl.download = buildFileName(file.name, r.mime);
-    inputPanel.hidden = true;
-    resultEl.hidden = false;
-    resultEl.scrollIntoView({ block: 'start' });
-  }
-
-  fileInput.addEventListener('change', () => setFile(fileInput.files?.[0]));
-  ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
-  ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
-  drop.addEventListener('drop', (e) => setFile((e as DragEvent).dataTransfer?.files?.[0]));
+  initDropzone((f) => {
+    clearError();
+    statusEl.textContent = '';
+    if (!f) return;
+    current = f;
+    showFileName(f);
+    runBtn.disabled = false;
+  });
 
   runBtn.addEventListener('click', async () => {
     if (!current) return;
@@ -173,9 +94,22 @@
     clearError();
     runBtn.disabled = true;
     try {
-      const result = await runCompress(file, readOptions(), (m) => { statusEl.textContent = m; });
+      const r = await runCompress(file, readOptions(), (m) => { statusEl.textContent = m; });
       statusEl.textContent = '';
-      showResult(file, result);
+      const ratio = Math.round((1 - r.blob.size / file.size) * 100);
+      const summary = r.keptOriginal
+        ? 'これ以上は小さくできませんでした'
+        : ratio >= 1
+          ? `${ratio}% 軽量化しました`
+          : ratio <= -1
+            ? `元の画像より ${-ratio}% 大きくなりました(形式変換のため)`
+            : 'サイズはほぼ変わりませんでした';
+      showCompare(file, {
+        ...r,
+        afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
+        summary,
+        fileSuffix: 'anygames',
+      });
     } catch (err) {
       statusEl.textContent = '';
       showError(err instanceof Error ? err.message : '処理中に問題が発生しました。もう一度お試しください。');
@@ -184,14 +118,5 @@
     }
   });
 
-  $('reset').addEventListener('click', () => {
-    revokeAll();
-    current = null;
-    fileInput.value = '';
-    nameEl.hidden = true;
-    runBtn.disabled = true;
-    resultEl.hidden = true;
-    inputPanel.hidden = false;
-    statusEl.textContent = '';
-  });
+  initCompareReset(() => { current = null; runBtn.disabled = true; });
 </script>

@@ -1,0 +1,28 @@
+---
+/** 画像ツール共通: BEFORE / AFTER の結果表示。idは src/lib/image/ui.ts と対応。 */
+---
+<section class="result" id="result" aria-labelledby="step-result" hidden>
+  <h2 id="step-result" class="section-title">結果</h2>
+  <div class="compare">
+    <figure><figcaption>BEFORE</figcaption><img id="img-before" alt="変更前の画像" /><p id="meta-before"></p></figure>
+    <figure><figcaption>AFTER</figcaption><img id="img-after" alt="変更後の画像" /><p id="meta-after"></p></figure>
+  </div>
+  <p class="saved" id="saved"></p>
+  <ul class="notes" id="notes"></ul>
+  <div class="actions">
+    <a class="btn" id="download" href="#" download>画像を保存</a>
+    <button type="button" class="btn btn-sub" id="reset">別の画像を選ぶ</button>
+  </div>
+</section>
+<style>
+  .result { scroll-margin-top: 72px; }
+  .compare { display: grid; gap: 14px; }
+  figure { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  figcaption { padding: 6px 12px; font-weight: 800; font-size: .75rem; letter-spacing: .08em; background: var(--bg-soft); }
+  figure img { display: block; width: 100%; max-height: 360px; object-fit: contain; background: repeating-conic-gradient(#f0f0f0 0 25%, #fff 0 50%) 0 / 16px 16px; }
+  figure p { margin: 0; padding: 8px 12px; font-size: .85rem; color: var(--text-sub); }
+  .saved { font-size: 1.1rem; font-weight: 800; margin: 16px 0 4px; }
+  .notes { color: var(--text-sub); font-size: .875rem; padding-left: 1.2em; }
+  .actions { display: grid; gap: 10px; margin-top: 16px; }
+  @media (min-width: 640px) { .compare { grid-template-columns: 1fr 1fr; } .actions { grid-template-columns: 1fr 1fr; } }
+</style>

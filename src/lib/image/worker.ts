@@ -1,15 +1,20 @@
 /// <reference lib="webworker" />
-import { compressImage, toFriendlyMessage, type CompressOptions } from './compress';
+import { compressImage, type CompressOptions } from './compress';
+import { resizeImage, type ResizeOptions } from './resize';
+import { toFriendlyMessage } from './canvas';
 
-interface Request {
-  file: File;
-  options: CompressOptions;
-}
+export type WorkerRequest =
+  | { task: 'compress'; file: File; options: CompressOptions }
+  | { task: 'resize'; file: File; options: ResizeOptions };
 
-self.onmessage = async (e: MessageEvent<Request>) => {
-  const { file, options } = e.data;
+self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
+  const req = e.data;
+  const progress = (message: string) => self.postMessage({ type: 'progress', message });
   try {
-    const result = await compressImage(file, options, (message) => self.postMessage({ type: 'progress', message }));
+    const result =
+      req.task === 'compress'
+        ? await compressImage(req.file, req.options, progress)
+        : await resizeImage(req.file, req.options, progress);
     self.postMessage({ type: 'done', result });
   } catch (err) {
     self.postMessage({ type: 'error', message: toFriendlyMessage(err) });
