@@ -1,0 +1,35 @@
+---
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import ImageCompressor from '../../../../components/tools/ImageCompressor.astro';
+
+const faqs = [
+  { q: '画像はサーバーに送信されますか?', a: 'いいえ。すべての処理はお使いのブラウザ内で行われ、画像が外部へ送信されることはありません。' },
+  { q: 'Smart Optimize では何をしていますか?', a: '画像の種類(写真かイラストか)と透過の有無を判定し、JPEG と WebP のうち小さく仕上がる形式と品質を自動で選びます。' },
+  { q: '目標サイズを指定したのに届かないことがあります', a: '画像の内容によっては、画質を下げても指定サイズに収まらない場合があります。その場合は自動で少し縮小して再試行し、それでも届かない時はお知らせします。' },
+  { q: 'スマートフォンの大きな写真でも使えますか?', a: '使えます。極端に大きい画像は安全に処理できるサイズまで自動で縮小します。長辺の最大サイズを詳細設定で指定すると、さらに軽くなります。' },
+  { q: 'PNG のまま小さくできますか?', a: '現在は JPEG / WebP への最適化に対応しています。透過PNG は WebP に変換して透過を保ったまま軽量化します。' },
+];
+---
+<ToolLayout
+  current="compressor"
+  title="画像圧縮ツール【無料・ブラウザ内で処理】"
+  heading="画像圧縮ツール"
+  description="画像をブラウザ内だけで圧縮できる無料ツール。アップロード不要。100KB・200KB・500KBなど目標サイズの指定にも対応し、Before/Afterで画質を確認できます。"
+  lead="画像を選んで「Smart Optimize」を押すだけ。画質とサイズのバランスを自動で調整します。"
+>
+  <ImageCompressor />
+  <section class="section prose" aria-labelledby="faq">
+    <h2 id="faq" class="section-title">よくある質問</h2>
+    {faqs.map((f) => (
+      <details class="faq">
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+</ToolLayout>
+<style>
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+  .faq p { margin: 0 0 14px; color: var(--text-sub); }
+</style>

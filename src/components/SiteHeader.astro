@@ -1,0 +1,29 @@
+---
+import { NAV } from '../lib/site';
+import { SITE_TITLE } from '../consts';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="/">{SITE_TITLE}</a>
+    <nav aria-label="メインメニュー">
+      <ul>
+        {NAV.map((n) => (
+          <li><a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+<style>
+  .site-header { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+  .bar { display: flex; align-items: center; gap: 20px; min-height: 56px; }
+  .brand { font-weight: 800; color: var(--text); text-decoration: none; white-space: nowrap; }
+  nav { overflow-x: auto; scrollbar-width: none; flex: 1; }
+  nav::-webkit-scrollbar { display: none; }
+  ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  li a { display: block; padding: 10px 12px; color: var(--text-sub); text-decoration: none; white-space: nowrap; border-radius: 8px; font-size: .92rem; }
+  li a:hover { background: var(--bg-soft); }
+  li a[aria-current='page'] { color: var(--accent); font-weight: 700; background: var(--accent-soft); }
+</style>

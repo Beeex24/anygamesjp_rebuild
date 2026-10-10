@@ -1,0 +1,22 @@
+---
+import { AFFILIATE_NOTICE, AMAZON_NOTICE, SITE_TITLE } from '../consts';
+---
+<footer class="site-footer">
+  <div class="container">
+    <p class="notice">{AFFILIATE_NOTICE}<br />{AMAZON_NOTICE}</p>
+    <nav aria-label="フッターメニュー">
+      <a href="/infosite">サイトについて</a>
+      <a href="/about">お問い合わせ</a>
+      <a href="/policy">プライバシーポリシー</a>
+      <a href="/terms">利用規約</a>
+      <a href="/sitemap">サイトマップ</a>
+    </nav>
+    <p class="copy">&copy; {new Date().getFullYear()} {SITE_TITLE}</p>
+  </div>
+</footer>
+<style>
+  .site-footer { margin-top: 48px; padding: 28px 0; border-top: 1px solid var(--line); background: var(--bg-soft); font-size: .875rem; color: var(--text-sub); }
+  nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 12px 0; }
+  nav a { color: var(--text-sub); padding: 6px 0; }
+  .notice, .copy { margin: 0; }
+</style>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { TOOLS, TOOL_CATEGORIES, type ToolMeta } from '../lib/tools';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  lead?: string;
+  current: ToolMeta['slug'];
+}
+const { title, heading, description, lead, current } = Astro.props;
+const tool = TOOLS.find((t) => t.slug === current);
+const others = TOOLS.filter((t) => t.slug !== current);
+const crumbs = [
+  { name: 'ホーム', href: '/' },
+  { name: 'Tools', href: '/tools/' },
+  ...(tool ? [{ name: TOOL_CATEGORIES[tool.category], href: '/tools/' }] : []),
+  { name: heading },
+];
+---
+<BaseLayout title={title} description={description} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
+  <div class="container">
+    <Breadcrumb items={crumbs} />
+    <header class="head">
+      <h1>{heading}</h1>
+      {lead && <p class="lead">{lead}</p>}
+    </header>
+    <slot />
+    <section class="section prose" aria-labelledby="more-tools" hidden={others.length === 0}>
+      <h2 id="more-tools" class="section-title">ほかのツール</h2>
+      <ul>
+        {others.map((t) => <li><a href={t.href}>{t.name}</a> — {t.summary}</li>)}
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .head { padding: 20px 0 8px; max-width: var(--prose); margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin-bottom: 8px; }
+  .lead { margin: 0; color: var(--text-sub); }
+</style>

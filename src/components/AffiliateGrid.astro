@@ -1,0 +1,28 @@
+---
+import { AFFILIATE_ITEMS } from '../lib/affiliate';
+import { AFFILIATE_NOTICE } from '../consts';
+---
+<ul class="grid">
+  {AFFILIATE_ITEMS.map((i) => (
+    <li class="item">
+      <img src={i.image} alt="" width="240" height="240" loading="lazy" decoding="async" />
+      <h3>{i.name}</h3>
+      <p class="sum">{i.summary}</p>
+      <p class="price">{i.price}<span>(目安)</span></p>
+      <a class="btn btn-sub" href={i.href} target="_blank" rel="sponsored noopener noreferrer">Amazonで見る</a>
+    </li>
+  ))}
+</ul>
+<p class="note">{AFFILIATE_NOTICE}。価格は変動します。購入前にAmazonでご確認ください。</p>
+<style>
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  .item { display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); }
+  img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+  h3 { font-size: .9rem; margin: 0; }
+  .sum { margin: 0; font-size: .8rem; color: var(--text-sub); flex: 1; }
+  .price { margin: 0; font-weight: 800; }
+  .price span { font-weight: 400; font-size: .75rem; color: var(--text-sub); margin-left: 4px; }
+  .btn { min-height: 44px; padding: 0 10px; font-size: .875rem; }
+  .note { font-size: .75rem; color: var(--text-sub); margin: 10px 0 0; }
+</style>

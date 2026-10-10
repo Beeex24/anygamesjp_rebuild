@@ -1,5 +1,5 @@
 {
-  "name": "smoggy-series",
+  "name": "anygamesjp",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,7 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
@@ -17,6 +16,7 @@
     "@fontsource/zen-kaku-gothic-new": "^5.2.6",
     "astro": "^5.17.1",
     "prettier": "^3.6.2",
+    "remark-gfm": "^4.0.1",
     "swiper": "^11.2.8"
   },
   "devDependencies": {

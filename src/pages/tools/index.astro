@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { TOOLS, TOOL_CATEGORIES } from '../../lib/tools';
+
+const groups = (Object.keys(TOOL_CATEGORIES) as (keyof typeof TOOL_CATEGORIES)[])
+  .map((key) => ({ key, label: TOOL_CATEGORIES[key], items: TOOLS.filter((t) => t.category === key) }))
+  .filter((g) => g.items.length > 0);
+const crumbs = [{ name: 'ホーム', href: '/' }, { name: 'Tools' }];
+---
+<BaseLayout
+  title="Tools(無料Webツール一覧)"
+  description="ANYGAMESの無料Webツール一覧。画像圧縮など、ブラウザだけで使える便利ツールを順次追加しています。"
+  breadcrumbs={[{ name: 'ホーム', href: '/' }, { name: 'Tools', href: '/tools/' }]}
+>
+  <div class="container">
+    <Breadcrumb items={crumbs} />
+    <h1>Tools</h1>
+    <p class="lead">ブラウザだけで使える無料ツール。データは外部に送信されません。</p>
+    {groups.map((g) => (
+      <section class="section">
+        <h2 class="section-title">{g.label}</h2>
+        <ul class="list">
+          {g.items.map((t) => (
+            <li><a href={t.href}><strong>{t.name}</strong><span>{t.summary}</span></a></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+<style>
+  h1 { font-size: 1.6rem; margin: 16px 0 8px; }
+  .lead { margin: 0; color: var(--text-sub); }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  @media (min-width: 640px) { .list { grid-template-columns: repeat(2, 1fr); } }
+  .list a { display: grid; gap: 4px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); color: inherit; text-decoration: none; min-height: 48px; }
+  .list a:hover { border-color: var(--accent); }
+  .list span { font-size: .875rem; color: var(--text-sub); }
+</style>
