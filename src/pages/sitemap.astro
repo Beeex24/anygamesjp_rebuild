@@ -4,25 +4,29 @@ const siteStructure = {
   'ホーム': {
     '/': 'ホーム',
   },
+  '記事一覧': {
+    '/blog': 'ゲーム関連記事',
+    '/minecraft_blog': 'マインクラフト記事',
+    '/minecraft_mod_blog': 'マインクラフトMOD記事',
+    '/mobileblog': 'モバイル・ゲーム機記事',
+    '/device': 'ガジェットレビュー記事',
+  },
+    'ページネーション':{
+    '/all/2': 'すべての記事',
+    '/blog/page/2': 'ゲーム関連記事',
+    '/minecraft_blog/2': 'マインクラフト記事',
+    '/minecraft_mod_blog/2': 'マインクラフトMOD記事',
+    '/mobileblog/page/2': 'スマホ・ゲーム機記事',
+    '/device/page/2': 'ガジェットレビュー記事',
+  },
   'About':  {
     '/infosite': 'サイトについて',
     '/Link': 'リンク',
     '/about': 'お問い合わせ',
   },
-  '記事一覧': {
-    '/blog': 'PCゲーム記事',
-    '/mobileblog': 'モバイル・ゲーム機記事',
-    '/device': 'デバイス記事',
-  },
   '規約・ポリシー': {
     '/terms': '利用規約',
     '/policy': 'プライバシーポリシー',
-  },
-  'ページネーション':{
-    '/all/2': 'すべての記事',
-    '/blog/page/2': 'PCゲーム記事',
-    '/mobileblog/page/2': 'スマホ・ゲーム機記事',
-    '/device/page/2': 'デバイス記事',
   },
 };
 
@@ -36,6 +40,7 @@ const pageDescription = 'サイト内の全ページへのリンクを整理し�
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDescription}>
   

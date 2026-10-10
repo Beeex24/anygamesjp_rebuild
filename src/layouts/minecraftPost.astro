@@ -13,7 +13,7 @@ const post = Astro.props as Props;
 const { title, description, pubDate, updatedDate, heroImage } = post.data;
 
 const posts = (await getCollection("minecraft_blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const siteUrl =
@@ -965,252 +965,410 @@ const siteName = "ANYGAMES放送局";
     </style>
   </head>
 
-<script
+  <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
     crossorigin="anonymous"></script>
 
-<body>
-  <Header />
-  <main>
-
-    <div class="container">
-      <article>
-        {
-          heroImage && (
-            <div class="hero-section">
-              <div class="hero-image">
-                <img
-                  src={heroImage}
-                  alt={title}
-                  width="1200"
-                  height="400"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-                <div class="hero-overlay" />
-              </div>
-            </div>
-          )
-        }
-
-        <div class="article-header">
-          <div class="metadata">
-            <span class="date-badge"><FormattedDate date={pubDate} /></span>
-            {
-              updatedDate && (
-                <span class="updated-badge">
-                  更新: <FormattedDate date={updatedDate} />
-                </span>
-              )
-            }
-          </div>
-          <h1 class="article-title">{title}</h1>
-          <hr class="title-divider" />
-        </div>
-
-        <div class="main-content">
-          <div class="article-area">
-            <div class="prose">
-              <Content />
-            </div>
-          <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-            <script
-              async
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-              crossorigin="anonymous"></script>
-            <!-- ads2 -->
-            <ins
-              class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-4929223237591717"
-              data-ad-slot="5954046828"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-            <script is:inline>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-          </div>
-
-            <!-- おすすめの記事 -->
-            <div class="recommended-posts">
-              <h3>📚 おすすめの記事</h3>
-              <div class="post-grid">
-                {
-                  posts.slice(0, 8).map((post) => (
-                    <a
-                      href={`/minecraft_info/${post.id}/`}
-                      class="related-post-item"
-                      style="text-decoration:none;"
-                    >
-                      <div class="post-image">
-                        <img
-                          src={post.data.heroImage ?? "/placeholder-image.jpg"}
-                          alt={post.data.title}
-                          width="300"
-                          height="180"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div class="post-content">
-                        <h4>{post.data.title}</h4>
-                        <p class="post-meta">
-                          {post.data.pubDate
-                            ? new Date(post.data.pubDate).toLocaleDateString(
-                                "ja-JP"
-                              )
-                            : ""}
-                        </p>
-                      </div>
-                    </a>
-                  ))
-                }
-              </div>
-            </div>
-
-            <div class="tips">
-              <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
-              <ul>
-                <li>
-                  <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a
-                    href="https://coff.ee/anygamesjp"
-                    target="_blank"
-                    rel="noopener noreferrer">コーヒーを買って応援</a
-                  >していただけると嬉しいです。
-                </li>
-                <li>
-                  <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br
+  <body>
+    <Header />
+    <main>
+      <div class="container">
+        <article>
+          {
+            heroImage && (
+              <div class="hero-section">
+                <div class="hero-image">
+                  <img
+                    src={heroImage}
+                    alt={title}
+                    width="1200"
+                    height="400"
+                    loading="eager"
+                    fetchpriority="high"
                   />
+                  <div class="hero-overlay" />
+                </div>
+              </div>
+            )
+          }
+
+          <div class="article-header">
+            <div class="metadata">
+              <span class="date-badge"><FormattedDate date={pubDate} /></span>
+              {
+                updatedDate && (
+                  <span class="updated-badge">
+                    更新: <FormattedDate date={updatedDate} />
+                  </span>
+                )
+              }
+            </div>
+            <h1 class="article-title">{title}</h1>
+            <hr class="title-divider" />
+          </div>
+
+          <div class="main-content">
+            <div class="article-area">
+              <div class="prose">
+                <Content />
+              </div>
+              <div
+                style="text-align: center; margin: 2rem auto; max-width: 100%;"
+              >
+                <script
+                  async
+                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
+                  crossorigin="anonymous"></script>
+                <!-- ads2 -->
+                <ins
+                  class="adsbygoogle"
+                  style="display:block"
+                  data-ad-client="ca-pub-4929223237591717"
+                  data-ad-slot="5954046828"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+                <script is:inline>
+                  (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+              </div>
+
+              <div class="simple-related">
+                <h3>🔗 こちらの記事もオススメ！</h3>
+                <ul>
+                  <li>
+                    <a href="/blog/minecraft-update-25w35a"
+                      >Minecraft】25w35a スナップショット -
+                      サーバー管理プロトコル追加とカッパーゴーレム改善</a>
+                  </li>
+                  <li>
+                    <a href="/blog/minecraft-update-25w32a"
+                      >【Minecraft】最新のスナップショット25w32aがリリース！新しい銅の装飾ブロックが登場！</a>
+                  </li>
+                  <li>
+                    <a href="/blog/minecraft-update-25w34b"
+                      >【Minecraft】スナップショット25w34b：新パノラマ画面とサーバー行動規範機能が追加される模様</a>
+                  </li>
+                </ul>
+              </div>
+
+              <style>
+                .simple-related {
+                  background: #f8f9fa;
+                  border-left: 4px solid #667eea;
+                  border-radius: 0 8px 8px 0;
+                  padding: 1.5rem;
+                  margin: 2rem 0;
+                }
+
+                .simple-related h3 {
+                  color: #333;
+                  margin-bottom: 1rem;
+                  font-size: 1.2rem;
+                }
+
+                .simple-related ul {
+                  list-style: none;
+                  margin: 0;
+                  padding: 0;
+                }
+
+                .simple-related li {
+                  margin-bottom: 0.75rem;
+                }
+
+                .simple-related a {
+                  color: #667eea;
+                  text-decoration: none;
+                  font-weight: 500;
+                  transition: color 0.3s ease;
+                }
+
+                .simple-related a:hover {
+                  color: #5a6fd8;
+                  text-decoration: underline;
+                }
+
+                /* スマホ版サイトの横はみ出し防止 */
+                @media (max-width: 768px) {
+                  * {
+                    max-width: 100% !important;
+                    box-sizing: border-box !important;
+                    word-wrap: break-word !important;
+                    overflow-wrap: break-word !important;
+                  }
+
+                  html,
+                  body {
+                    overflow-x: hidden !important;
+                    width: 100% !important;
+                    max-width: 100vw !important;
+                  }
+
+                  .container {
+                    max-width: 100vw !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    width: 100% !important;
+                  }
+
+                  .main-content {
+                    padding: 0 10px !important;
+                    max-width: 100% !important;
+                    overflow-x: hidden !important;
+                  }
+
+                  .article-area {
+                    max-width: 100% !important;
+                    overflow-x: hidden !important;
+                  }
+
+                  .prose {
+                    max-width: 100% !important;
+                    overflow-x: hidden !important;
+                  }
+
+                  /* テーブルの横スクロール対応 */
+                  table {
+                    display: block !important;
+                    overflow-x: auto !important;
+                    white-space: nowrap !important;
+                    max-width: 100% !important;
+                  }
+
+                  /* 画像の横はみ出し防止 */
+                  img {
+                    max-width: 100% !important;
+                    height: auto !important;
+                    width: auto !important;
+                  }
+
+                  /* 長いURL・テキストの改行 */
+                  a,
+                  p,
+                  span,
+                  div,
+                  h1,
+                  h2,
+                  h3,
+                  h4,
+                  h5,
+                  h6 {
+                    word-break: break-all !important;
+                    overflow-wrap: break-word !important;
+                    hyphens: auto !important;
+                  }
+
+                  /* コードブロックの横スクロール */
+                  pre,
+                  code {
+                    overflow-x: auto !important;
+                    max-width: 100% !important;
+                  }
+                }
+
+                @media (max-width: 480px) {
+                  .container {
+                    margin: 0 !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    width: 100vw !important;
+                    max-width: 100vw !important;
+                  }
+
+                  .main-content {
+                    padding: 0 5px !important;
+                  }
+                }
+              </style>
+
+              <!-- おすすめの記事 -->
+              <div class="recommended-posts">
+                <h3>📚 おすすめの記事</h3>
+                <div class="post-grid">
+                  {
+                    posts.slice(0, 8).map((post) => (
+                      <a
+                        href={`/minecraft_blog/${post.id}/`}
+                        class="related-post-item"
+                        style="text-decoration:none;"
+                      >
+                        <div class="post-image">
+                          <img
+                            src={
+                              post.data.heroImage ?? "/placeholder-image.jpg"
+                            }
+                            alt={post.data.title}
+                            width="300"
+                            height="180"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div class="post-content">
+                          <h4>{post.data.title}</h4>
+                          <p class="post-meta">
+                            {post.data.pubDate
+                              ? new Date(post.data.pubDate).toLocaleDateString(
+                                  "ja-JP",
+                                )
+                              : ""}
+                          </p>
+                        </div>
+                      </a>
+                    ))
+                  }
+                </div>
+              </div>
+
+              <div class="tips">
+                <h4>💡 ゲームやデバイスについての最新情報をお届けします</h4>
+                <ul>
+                  <li>
+                    <strong>ドネーション:</strong> 現在は個人でサイトを運用していますが、高いサーバー代や運営費用がかかっています。もしこのサイトがいいなって思ってくださった方がいましたら是非、<a
+                      href="https://coff.ee/anygamesjp"
+                      target="_blank"
+                      rel="noopener noreferrer">コーヒーを買って応援</a
+                    >していただけると嬉しいです。
+                  </li>
+                  <li>
+                    <strong>フィードバック:</strong> 記事の内容や広告についてのご意見をお待ちしています。<br
+                    />
+                    <a
+                      href="https://forms.gle/your-feedback-form"
+                      target="_blank"
+                      rel="noopener noreferrer">こちらから</a
+                    >ご連絡ください。
+                  </li>
+                  <li>
+                    <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a
+                      href="/about"
+                      target="_blank"
+                      rel="noopener noreferrer">こちらから</a
+                    >お問い合わせください。
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="sidebar">
+              <div class="sidebar-section">
+                <h3>🍩 ゲームのお供に！</h3>
+                <div class="product-card">
+                  <img
+                    src="/affiliate/otoko.png"
+                    alt="ノーベル製菓 男梅ソフトキャンデー"
+                    class="product-image"
+                    width="280"
+                    height="150"
+                    loading="lazy"
+                  />
+                  <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
+                  <p>旨さの神髄ここにあり！</p>
+                  <p class="price">¥927</p>
                   <a
-                    href="https://forms.gle/your-feedback-form"
+                    href="https://amzn.to/40I0D6r"
                     target="_blank"
-                    rel="noopener noreferrer">こちらから</a
-                  >ご連絡ください。
-                </li>
-                <li>
-                  <strong>広告掲載:</strong> 当サイトでは、ゲームやデバイスに関連する広告を掲載しています。興味のある方は<a
-                    href="/about"
+                    class="button">Amazonで見る</a
+                  >
+                </div>
+              </div>
+
+              <div class="sidebar-section">
+                <h3>📈 人気ランキング</h3>
+                <div class="product-card">
+                  <img
+                    src="/affiliate/head.png"
+                    alt="Logitech G PRO X"
+                    class="product-image"
+                    width="280"
+                    height="150"
+                    loading="lazy"
+                  />
+                  <h4>Logitech G PRO X</h4>
+                  <p>プロゲーマー仕様の高性能ヘッドセット</p>
+                  <p class="price">¥12,800</p>
+                  <a
+                    href="https://amzn.to/46urmHn"
                     target="_blank"
-                    rel="noopener noreferrer">こちらから</a
-                  >お問い合わせください。
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="sidebar">
-            <div class="sidebar-section">
-              <h3>🍩 ゲームのお供に！</h3>
-              <div class="product-card">
-                <img
-                  src="/affiliate/otoko.png"
-                  alt="ノーベル製菓 男梅ソフトキャンデー"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>ノーベル製菓 男梅ソフトキャンデー</h4>
-                <p>旨さの神髄ここにあり！</p>
-                <p class="price">¥927</p>
-                <a href="https://amzn.to/40I0D6r" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
+                    class="button">Amazonで見る</a
+                  >
+                </div>
               </div>
-            </div>
 
-            <div class="sidebar-section">
-              <h3>📈 人気ランキング</h3>
-              <div class="product-card">
-                <img
-                  src="/affiliate/head.png"
-                  alt="Logitech G PRO X"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Logitech G PRO X</h4>
-                <p>プロゲーマー仕様の高性能ヘッドセット</p>
-                <p class="price">¥12,800</p>
-                <a href="https://amzn.to/46urmHn" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
+              <div class="sidebar-section">
+                <h3>🔥 今週のセール</h3>
+                <div class="product-card sale">
+                  <div class="sale-badge">6% OFF</div>
+                  <img
+                    src="/affiliate/chair.png"
+                    alt="GTRACING JP-GT002F-CF"
+                    class="product-image"
+                    width="280"
+                    height="150"
+                    loading="lazy"
+                  />
+                  <h4>GTRACING ゲーミングチェア オットマン付き</h4>
+                  <p>快適な座り心地で長時間のゲームプレイも安心</p>
+                  <p class="price">
+                    ¥20,500 <span class="original-price">¥21,800</span>
+                  </p>
+                  <a
+                    href="https://amzn.to/4kLUQUA"
+                    target="_blank"
+                    class="button sale-button">セール価格で見る</a
+                  >
+                </div>
               </div>
-            </div>
 
-            <div class="sidebar-section">
-              <h3>🔥 今週のセール</h3>
-              <div class="product-card sale">
-                <div class="sale-badge">6% OFF</div>
-                <img
-                  src="/affiliate/chair.png"
-                  alt="GTRACING JP-GT002F-CF"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>GTRACING ゲーミングチェア オットマン付き</h4>
-                <p>快適な座り心地で長時間のゲームプレイも安心</p>
-                <p class="price">
-                  ¥20,500 <span class="original-price">¥21,800</span>
-                </p>
-                <a
-                  href="https://amzn.to/4kLUQUA"
-                  target="_blank"
-                  class="button sale-button">セール価格で見る</a
-                >
+              <div class="sidebar-section">
+                <div class="product-card sale">
+                  <div class="sale-badge">6% OFF</div>
+                  <img
+                    src="/affiliate/razerv4.png"
+                    alt="Razer BlackWidow V4 Pro"
+                    class="product-image"
+                    width="280"
+                    height="150"
+                    loading="lazy"
+                  />
+                  <h4>Razer BlackWidow V4 Pro</h4>
+                  <p>最新のメカニカルゲーミングキーボード</p>
+                  <p class="price">
+                    ¥34,870 <span class="original-price">¥36,960</span>
+                  </p>
+                  <a
+                    href="https://amzn.to/4nAYUK0"
+                    target="_blank"
+                    class="button sale-button">セール価格で見る</a
+                  >
+                </div>
               </div>
-            </div>
 
-            <div class="sidebar-section">
-              <div class="product-card sale">
-                <div class="sale-badge">6% OFF</div>
-                <img
-                  src="/affiliate/razerv4.png"
-                  alt="Razer BlackWidow V4 Pro"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Razer BlackWidow V4 Pro</h4>
-                <p>最新のメカニカルゲーミングキーボード</p>
-                <p class="price">
-                  ¥34,870 <span class="original-price">¥36,960</span>
-                </p>
-                <a
-                  href="https://amzn.to/4nAYUK0"
-                  target="_blank"
-                  class="button sale-button">セール価格で見る</a
-                >
-              </div>
-            </div>
-
-            <div class="sidebar-section">
-              <div class="product-card">
-                <img
-                  src="/affiliate/mouse.png"
-                  alt="Logicool G PRO 2 LIGHTSPEED"
-                  class="product-image"
-                  width="280"
-                  height="150"
-                  loading="lazy"
-                />
-                <h4>Logicool G PRO 2 LIGHTSPEED</h4>
-                <p>次世代ワイヤレスゲーミングマウス</p>
-                <p class="price">¥17,600</p>
-                <a href="https://amzn.to/44OmvQ1" target="_blank" class="button"
-                  >Amazonで見る</a
-                >
+              <div class="sidebar-section">
+                <div class="product-card">
+                  <img
+                    src="/affiliate/mouse.png"
+                    alt="Logicool G PRO 2 LIGHTSPEED"
+                    class="product-image"
+                    width="280"
+                    height="150"
+                    loading="lazy"
+                  />
+                  <h4>Logicool G PRO 2 LIGHTSPEED</h4>
+                  <p>次世代ワイヤレスゲーミングマウス</p>
+                  <p class="price">¥17,600</p>
+                  <a
+                    href="https://amzn.to/44OmvQ1"
+                    target="_blank"
+                    class="button">Amazonで見る</a
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </article>
-    </div>
-  </main>
-  <Footer />
-</body>
+        </article>
+      </div>
+    </main>
+    <Footer />
+  </body>
 </html>

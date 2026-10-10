@@ -1,0 +1,168 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+// 全コレクションから記事を取得
+const allPosts = [
+  ...(await getCollection("blog")).map(p => ({ ...p, type: "blog", path: `/blog/${p.id}` })),
+  ...(await getCollection("minecraft_blog")).map(p => ({ ...p, type: "minecraft", path: `/minecraft_blog/${p.id}` })),
+  ...(await getCollection("minecraft_mod_blog")).map(p => ({ ...p, type: "mod", path: `/minecraft_mod_blog/${p.id}` })),
+  ...(await getCollection("device")).map(p => ({ ...p, type: "device", path: `/device/${p.id}` })),
+  ...(await getCollection("mobileblog")).map(p => ({ ...p, type: "mobile", path: `/mobileblog/${p.id}` })),
+];
+
+// JSON としてクライアントに渡す
+const postsJson = JSON.stringify(allPosts.map(p => ({
+  title: p.data.title,
+  description: p.data.description,
+  heroImage: p.data.heroImage || "",
+  tags: (p.data as any).tags || [],
+  path: p.path,
+})));
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead title="検索結果" description="サイト内検索結果" />
+  </head>
+  <body>
+    <Header />
+
+    <style is:global>
+      /* ページ全体の横はみ出しを防止 */
+      html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+
+      /* グリッド本体 */
+      #resultGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* カードのボーダーがはみ出さないよう box-sizing を強制 */
+      #resultGrid a {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      /* スマホ版：横2列レイアウト */
+      @media (max-width: 640px) {
+        #resultGrid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.5rem;
+        }
+
+        #resultGrid a {
+          border-width: 2px !important;
+        }
+
+        #resultGrid img,
+        #resultGrid .no-image {
+          height: 90px !important;
+          font-size: 2rem !important;
+        }
+
+        #resultGrid h3 {
+          font-size: 0.72rem !important;
+          margin: 0 0 0.2rem !important;
+          line-height: 1.3 !important;
+        }
+
+        #resultGrid p {
+          font-size: 0.68rem !important;
+        }
+
+        #resultGrid .card-body {
+          padding: 0.4rem !important;
+        }
+      }
+    </style>
+
+    <main style="max-width:1200px; margin:3rem auto; padding:0 1rem; box-sizing:border-box; width:100%;">
+      <h2 id="searchTitle">検索中...</h2>
+      <div id="resultGrid"></div>
+    </main>
+
+    <Footer />
+
+    <script define:vars={{ postsJson }}>
+      const posts = JSON.parse(postsJson);
+
+      // タイトルからカテゴリを判定する関数
+      function getCategoryFromTitle(titleStr) {
+        const t = titleStr.toLowerCase();
+        if (t.includes("valorant") || t.includes("ヴァロラント") || t.includes("バロラント") || t.includes("vct")|| t.includes("バロ") || t.includes("ヴァロ") || t.includes("valo")) {
+          return "valorant";
+        } else if (t.includes("overwatch2") || t.includes("オーバーウォッチ2") || t.includes("overwatch")|| t.includes("ow2") || t.includes("ow") || t.includes("オバウォ") || t.includes("オーバウォ") || t.includes("オバウォ2") || t.includes("オーバウォ2")) {
+          return "overwatch2";
+        } else if (t.includes("apexlegends") || t.includes("エーペックスレジェンズ") || t.includes("apex") || t.includes("エペ")|| t.includes("えぺ") || t.includes("えーぺっくす") || t.includes("えーぺっくすれじぇんず") || t.includes("あぺっくす") || t.includes("あーぺっくす") || t.includes("あーぺっくすれじぇんず")) {
+          return "apexlegends";
+        } else if (t.includes("battlefield6") || t.includes("バトルフィールド6") || t.includes("battlefield")|| t.includes("bf6") || t.includes("bf") || t.includes("ばとるふぃーるど") || t.includes("ばとるふぃーるど6") || t.includes("ばとふぃーるど") || t.includes("ばとふぃーるど6")) {
+          return "battlefield6";
+        } else if (t.includes("minecraft") || t.includes("マインクラフト") || t.includes("マイクラ") || t.includes("まいくら") || t.includes("maikura")) {
+          return "minecraft";
+        } else if (t.includes("minecraftmod") || t.includes("マインクラフト入れ方") || t.includes("マイクラモッド") || t.includes("まいくらもっど") || t.includes("マイクラmod") || t.includes("まいくらmod") || t.includes("マインクラフトmod") || t.includes("まいんくらふとmod")|| t.includes("maikuramod")) {
+          return "マイクラMOD";
+        } else if (t.includes("grandtheftautovi") || t.includes("グランド・セフト・オートvi") || t.includes("gta")) {
+          return "grandtheftautovi";
+        } else if (t.includes("REPO") || t.includes("レポ") || t.includes("R.E.P.O") || t.includes("r.e.p.o")|| t.includes("れぽ")|| t.includes("repo")) {
+          return "r.e.p.o.";
+        } else if (t.includes("影mod") || t.includes("影MOD") || t.includes("かげmod") || t.includes("かげもっど") || t.includes("shadowmod") || t.includes("しゃどーもっど") || t.includes("しゃどもっど")) {
+          return "影MOD";
+        } else if (t.includes("sale") || t.includes("セール")) {
+          return "sale";
+        }
+        return "others";
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const query = (params.get('q') || '').toLowerCase().trim();
+
+      const title = document.getElementById('searchTitle');
+      const grid = document.getElementById('resultGrid');
+
+      if (!query) {
+        title.textContent = 'キーワードを入力してください';
+      } else {
+        const queryCategory = getCategoryFromTitle(query);
+
+        const results = posts.filter(p => {
+          const postCategory = getCategoryFromTitle(p.title);
+          // カテゴリが一致するか、タイトル・説明・タグに直接含まれるかで検索
+          return postCategory === queryCategory ||
+            p.title.toLowerCase().includes(query) ||
+            p.description.toLowerCase().includes(query) ||
+            p.tags.some(t => t.toLowerCase().includes(query));
+        });
+
+        title.textContent = `「${query}」の検索結果：${results.length}件`;
+
+        if (results.length === 0) {
+          grid.innerHTML = '<p>該当する記事が見つかりませんでした。</p>';
+        } else {
+          grid.innerHTML = results.map(p => `
+            <a href="${p.path}" style="display:block; background:white; border:3px solid #3a3a3a; box-shadow:0 4px 0 rgba(0,0,0,0.2); text-decoration:none; color:inherit; overflow:hidden;">
+              ${p.heroImage
+                ? `<img src="${p.heroImage}" alt="${p.title}" style="width:100%; height:160px; object-fit:cover;">`
+                : `<div class="no-image" style="height:160px; background:#7cb342; display:flex; align-items:center; justify-content:center; font-size:3rem;">🎮</div>`
+              }
+              <div class="card-body" style="padding:1rem;">
+                <h3 style="font-size:1rem; margin-bottom:0.5rem; line-height:1.4;">${p.title}</h3>
+                <p style="font-size:0.85rem; color:#666; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${p.description}</p>
+              </div>
+            </a>
+          `).join('');
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -18,7 +18,15 @@ const devicePosts = (await getCollection("device")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-const allPosts = [...posts, ...devicePosts].sort(
+const minecraftblog = (await getCollection("minecraft_blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const minecraftmods = (await getCollection("minecraft_mod_blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const allPosts = [...posts, ...mobilePosts, ...devicePosts, ...minecraftblog, ...minecraftmods].sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
@@ -33,7 +41,9 @@ export async function getStaticPaths() {
     { params: { page: undefined } },  // ルートページ
     { params: { page: 'blog' } },     // /blog
     { params: { page: 'device' } },   // /device
-    { params: { page: 'mobileblog' } }      // /mobileblog
+    { params: { page: 'mobileblog' } },    // /mobileblog
+    { params: { page: 'minecraft_blog' } }, // /minecraft_blog
+    { params: { page: 'minecraft_mod_blog' } } // /minecraft_mod_blog
   ];
 }
 
