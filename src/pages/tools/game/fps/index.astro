@@ -1,0 +1,22 @@
+---
+import ToolFaq from '../../../../components/tools/ToolFaq.astro';
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import FpsCalculator from '../../../../components/tools/FpsCalculator.astro';
+
+const faqs = [
+  { q: 'フレームタイムとは何ですか?', a: '1フレームを描画するのにかかる時間で、ミリ秒(ms)で表します。1000 ÷ FPS で求められ、たとえば60FPSなら約16.67ms、144FPSなら約6.94msです。' },
+  { q: 'FPSを上げると、どのくらい快適になりますか?', a: 'FPSが高いほど、画面の更新間隔が短くなり、映像が滑らかになって操作への反応も速くなります。ただし、同じ数値の増加でも、低いFPSからの方が短縮される時間は大きくなります。' },
+  { q: 'モニターのリフレッシュレートより高いFPSは意味がありますか?', a: '画面に表示される回数の上限は、モニターのリフレッシュレートです。それを超えるFPSは、表示される映像の滑らかさとしては頭打ちになります。' },
+  { q: 'フレームタイムのグラフがカクつくのはなぜですか?', a: '平均FPSが高くても、フレームタイムが不安定だとカクつきを感じます。PC性能や設定、バックグラウンドの処理などが原因になります。' },
+];
+---
+<ToolLayout
+  current="fps"
+  title="FPS・フレームタイム変換ツール【無料】"
+  heading="FPS・フレームタイム変換ツール"
+  description="FPSとフレームタイム(ms)を相互に変換でき、FPSを上げたときに1フレームが何ms短くなるかも計算できる無料ツール。60・144・240FPSの一覧表付き。"
+  lead="FPSとフレームタイム(ms)を、いつでも変換できます。"
+>
+  <FpsCalculator />
+  <ToolFaq faqs={faqs} />
+</ToolLayout>

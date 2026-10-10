@@ -1,4 +1,5 @@
 ---
+import ToolFaq from '../../../../components/tools/ToolFaq.astro';
 import ToolLayout from '../../../../layouts/ToolLayout.astro';
 import ImageConverter from '../../../../components/tools/ImageConverter.astro';
 
@@ -19,18 +20,5 @@ const faqs = [
   lead="画像を選んで、変換したい形式を選ぶだけ。サイズや見た目はそのままで形式だけ変わります。"
 >
   <ImageConverter />
-  <section class="section prose" aria-labelledby="faq">
-    <h2 id="faq" class="section-title">よくある質問</h2>
-    {faqs.map((f) => (
-      <details class="faq">
-        <summary>{f.q}</summary>
-        <p>{f.a}</p>
-      </details>
-    ))}
-  </section>
+  <ToolFaq faqs={faqs} />
 </ToolLayout>
-<style>
-  .faq { border-bottom: 1px solid var(--line); }
-  .faq summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
-  .faq p { margin: 0 0 14px; color: var(--text-sub); }
-</style>

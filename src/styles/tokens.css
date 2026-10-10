@@ -38,3 +38,29 @@ h1, h2, h3 { line-height: 1.35; margin: 0 0 .6em; }
 .section { padding: 32px 0; }
 .section-title { font-size: 1.25rem; margin-bottom: 16px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+/* 計算ツール共通(ゲーム・PCツール) */
+.calc { max-width: var(--prose); margin: 0 auto; padding: 8px 0 24px; }
+.calc .fields { display: grid; gap: 14px; }
+.calc .two { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .calc .two { grid-template-columns: 1fr 1fr; } }
+.calc label.field { display: grid; gap: 6px; font-size: .9rem; font-weight: 700; }
+.calc label.field small { font-weight: 400; color: var(--text-sub); }
+.calc input[type='text'], .calc input[type='number'], .calc select {
+  width: 100%; min-height: 48px; padding: 0 12px; font: inherit; font-weight: 400; color: var(--text);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+}
+.calc .result-card { margin-top: 20px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-soft); }
+.calc .result-card h2 { font-size: 1rem; margin: 0 0 10px; }
+.calc .big { font-size: 1.9rem; font-weight: 800; line-height: 1.2; margin: 0; word-break: break-all; }
+.calc .big small { font-size: .9rem; font-weight: 400; color: var(--text-sub); margin-left: 4px; }
+.calc .sub { margin: 6px 0 0; color: var(--text-sub); font-size: .9rem; }
+.calc .hint { margin: 0; color: var(--text-sub); font-size: .9rem; }
+.calc .warn { margin: 10px 0 0; color: var(--danger); font-size: .875rem; }
+.calc .table-wrap { overflow-x: auto; margin-top: 12px; }
+.calc table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.calc th, .calc td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.calc td.num, .calc th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.calc tr.me td { background: var(--accent-soft); font-weight: 700; }
+.calc .swap { justify-self: start; }
+.calc-note { max-width: var(--prose); margin: 0 auto; font-size: .8125rem; color: var(--text-sub); }

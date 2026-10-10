@@ -1,0 +1,100 @@
+---
+import { COMMON_FPS, fpsToMs } from '../../lib/game/fps';
+const rows = COMMON_FPS.map((f) => ({ fps: f, ms: fpsToMs(f) }));
+---
+<div class="calc" id="fps">
+  <h2 class="section-title">FPSとフレームタイムの変換</h2>
+  <div class="fields two">
+    <label class="field">FPS
+      <input type="text" id="in-fps" inputmode="decimal" placeholder="例 144" autocomplete="off" />
+    </label>
+    <label class="field">フレームタイム(ms)
+      <input type="text" id="in-ms" inputmode="decimal" placeholder="例 6.94" autocomplete="off" />
+    </label>
+  </div>
+  <p class="hint" id="conv-hint">どちらかを入力すると、もう一方が自動で計算されます。</p>
+  <p class="warn" id="conv-warn" role="alert" hidden></p>
+
+  <h2 class="section-title" style="margin-top:32px">FPSを上げると、何ms縮まる?</h2>
+  <div class="fields two">
+    <label class="field">いまのFPS
+      <input type="text" id="cmp-from" inputmode="decimal" placeholder="例 60" autocomplete="off" />
+    </label>
+    <label class="field">変更後のFPS
+      <input type="text" id="cmp-to" inputmode="decimal" placeholder="例 144" autocomplete="off" />
+    </label>
+  </div>
+  <section class="result-card" aria-live="polite">
+    <h2>比較結果</h2>
+    <p class="hint" id="cmp-hint">2つのFPSを入力すると、結果が表示されます。</p>
+    <div id="cmp-out" hidden>
+      <p class="big"><span id="cmp-saved"></span><small>ms</small></p>
+      <p class="sub" id="cmp-detail"></p>
+    </div>
+    <p class="warn" id="cmp-warn" role="alert" hidden></p>
+  </section>
+
+  <h2 class="section-title" style="margin-top:32px">FPS別の1フレームの長さ</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>FPS</th><th class="num">1フレーム(ms)</th></tr></thead>
+      <tbody>
+        {rows.map((r) => <tr><td>{r.fps} FPS</td><td class="num">{r.ms.toFixed(2)} ms</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+  <p class="calc-note" style="margin-top:12px">フレームタイムは「1フレームを描画するのにかかる時間」で、1000 ÷ FPS で求めます。値が小さいほど滑らかで、操作に対する画面の反応も速くなります。</p>
+</div>
+
+<script>
+  import { compareFps, fpsToMs, msToFps } from '../../lib/game/fps';
+  import { fmt, parsePositive } from '../../lib/game/format';
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const fpsEl = $<HTMLInputElement>('in-fps');
+  const msEl = $<HTMLInputElement>('in-ms');
+  const convWarn = $('conv-warn');
+
+  // 入力した側を元に、もう片方を更新する(自分自身は書き換えない)
+  function convert(source: 'fps' | 'ms') {
+    const src = source === 'fps' ? fpsEl : msEl;
+    const dst = source === 'fps' ? msEl : fpsEl;
+    convWarn.hidden = true;
+    if (src.value.trim() === '') { dst.value = ''; return; }
+    const n = parsePositive(src.value);
+    if (n === null) {
+      dst.value = '';
+      convWarn.textContent = '0より大きい数字で入力してください。';
+      convWarn.hidden = false;
+      return;
+    }
+    dst.value = source === 'fps' ? fmt(fpsToMs(n), 3).replace(/,/g, '') : fmt(msToFps(n), 2).replace(/,/g, '');
+  }
+  fpsEl.addEventListener('input', () => convert('fps'));
+  msEl.addEventListener('input', () => convert('ms'));
+
+  const fromEl = $<HTMLInputElement>('cmp-from');
+  const toEl = $<HTMLInputElement>('cmp-to');
+  function compare() {
+    const a = parsePositive(fromEl.value);
+    const b = parsePositive(toEl.value);
+    $('cmp-out').hidden = true;
+    $('cmp-warn').hidden = true;
+    $('cmp-hint').hidden = false;
+    if (fromEl.value.trim() === '' || toEl.value.trim() === '') return;
+    $('cmp-hint').hidden = true;
+    if (a === null || b === null) {
+      $('cmp-warn').textContent = 'FPSは、0より大きい数字で入力してください。';
+      $('cmp-warn').hidden = false;
+      return;
+    }
+    const c = compareFps(a, b);
+    $('cmp-saved').textContent = `${c.savedMs >= 0 ? '' : '+'}${fmt(Math.abs(c.savedMs), 2)}`;
+    const faster = c.savedMs >= 0;
+    $('cmp-detail').textContent =
+      `${fmt(a, 1)} FPS(${fmt(c.fromMs, 2)} ms)→ ${fmt(b, 1)} FPS(${fmt(c.toMs, 2)} ms)。` +
+      (c.savedMs === 0 ? '変化はありません。' : `1フレームあたり ${fmt(Math.abs(c.savedMs), 2)} ms ${faster ? '短く' : '長く'}なります(FPS ${c.fpsChangePercent >= 0 ? '+' : ''}${fmt(c.fpsChangePercent, 0)}%)。`);
+    $('cmp-out').hidden = false;
+  }
+  [fromEl, toEl].forEach((e) => e.addEventListener('input', compare));
+</script>

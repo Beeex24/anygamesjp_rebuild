@@ -1,0 +1,25 @@
+---
+/** ツールページ共通の「よくある質問」。FAQPage の構造化データも出力する。 */
+interface Props { faqs: { q: string; a: string }[] }
+const { faqs } = Astro.props;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<section class="section prose" aria-labelledby="faq">
+  <h2 id="faq" class="section-title">よくある質問</h2>
+  {faqs.map((f) => (
+    <details class="faq">
+      <summary>{f.q}</summary>
+      <p>{f.a}</p>
+    </details>
+  ))}
+  <script type="application/ld+json" set:html={JSON.stringify(ld).replace(/</g, '\\u003c')} />
+</section>
+<style>
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+  .faq p { margin: 0 0 14px; color: var(--text-sub); }
+</style>

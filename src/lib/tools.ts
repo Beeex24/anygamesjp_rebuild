@@ -29,6 +29,27 @@ export const TOOLS: ToolMeta[] = [
     summary: 'JPEG・PNG・WebPを相互に変換。透過画像の背景色も選べます。',
     category: 'image',
   },
+  {
+    slug: 'edpi',
+    href: '/tools/game/edpi/',
+    name: 'eDPI計算',
+    summary: 'DPIと感度からeDPIと、360°振り向くマウス移動距離(cm/360)を計算。',
+    category: 'game',
+  },
+  {
+    slug: 'sensitivity',
+    href: '/tools/game/sensitivity/',
+    name: 'ゲーム感度変換',
+    summary: 'VALORANT・CS2・Apexなど、ゲーム間で同じ振り向き距離になる感度に変換。',
+    category: 'game',
+  },
+  {
+    slug: 'fps',
+    href: '/tools/game/fps/',
+    name: 'FPS・フレームタイム変換',
+    summary: 'FPSとフレームタイム(ms)を相互に変換。FPSを上げたときの短縮時間も計算。',
+    category: 'game',
+  },
 ];
 
 export const TOOL_CATEGORIES = {
