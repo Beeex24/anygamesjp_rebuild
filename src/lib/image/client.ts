@@ -1,5 +1,6 @@
 import { compressImage, type CompressOptions, type CompressResult } from './compress';
 import { resizeImage, type ResizeOptions, type ResizeResult } from './resize';
+import { convertImage, type ConvertOptions, type ConvertResult } from './convert';
 import { toFriendlyMessage } from './canvas';
 import type { WorkerRequest } from './worker';
 
@@ -51,6 +52,9 @@ export const runCompress = (file: File, options: CompressOptions, onProgress: Pr
 
 export const runResize = (file: File, options: ResizeOptions, onProgress: Progress): Promise<ResizeResult> =>
   runTask({ task: 'resize', file, options }, onProgress, () => resizeImage(file, options, onProgress));
+
+export const runConvert = (file: File, options: ConvertOptions, onProgress: Progress): Promise<ConvertResult> =>
+  runTask({ task: 'convert', file, options }, onProgress, () => convertImage(file, options, onProgress));
 
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;

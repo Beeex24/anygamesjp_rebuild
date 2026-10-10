@@ -89,3 +89,11 @@ export function initCompareReset(onReset: () => void): void {
     onReset();
   });
 }
+
+/** 変更前後のサイズから、結果の見出し文を作る */
+export function describeSizeChange(beforeBytes: number, afterBytes: number, reason = '形式変換のため'): string {
+  const ratio = Math.round((1 - afterBytes / beforeBytes) * 100);
+  if (ratio >= 1) return `${ratio}% 軽量化しました`;
+  if (ratio <= -1) return `元の画像より ${-ratio}% 大きくなりました(${reason})`;
+  return 'サイズはほぼ変わりませんでした';
+}

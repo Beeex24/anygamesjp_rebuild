@@ -65,7 +65,7 @@ import ImageCompare from './ImageCompare.astro';
 <script>
   import { runCompress } from '../../lib/image/client';
   import type { CompressOptions, OutFormat } from '../../lib/image/compress';
-  import { $, clearError, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
+  import { $, clearError, describeSizeChange, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
 
   const runBtn = $<HTMLButtonElement>('run');
   const statusEl = $('status');
@@ -96,14 +96,7 @@ import ImageCompare from './ImageCompare.astro';
     try {
       const r = await runCompress(file, readOptions(), (m) => { statusEl.textContent = m; });
       statusEl.textContent = '';
-      const ratio = Math.round((1 - r.blob.size / file.size) * 100);
-      const summary = r.keptOriginal
-        ? 'これ以上は小さくできませんでした'
-        : ratio >= 1
-          ? `${ratio}% 軽量化しました`
-          : ratio <= -1
-            ? `元の画像より ${-ratio}% 大きくなりました(形式変換のため)`
-            : 'サイズはほぼ変わりませんでした';
+      const summary = r.keptOriginal ? 'これ以上は小さくできませんでした' : describeSizeChange(file.size, r.blob.size);
       showCompare(file, {
         ...r,
         afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,

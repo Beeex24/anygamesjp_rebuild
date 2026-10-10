@@ -22,6 +22,13 @@ export const TOOLS: ToolMeta[] = [
     summary: '画像の拡大・縮小。長辺・倍率・幅と高さで指定できます。',
     category: 'image',
   },
+  {
+    slug: 'converter',
+    href: '/tools/image/converter/',
+    name: '画像変換',
+    summary: 'JPEG・PNG・WebPを相互に変換。透過画像の背景色も選べます。',
+    category: 'image',
+  },
 ];
 
 export const TOOL_CATEGORIES = {
