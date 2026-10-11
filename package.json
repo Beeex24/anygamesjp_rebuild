@@ -13,7 +13,6 @@
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
     "@emailjs/browser": "^4.4.1",
-    "@fontsource/zen-kaku-gothic-new": "^5.2.6",
     "astro": "^5.17.1",
     "prettier": "^3.6.2",
     "remark-gfm": "^4.0.1",
