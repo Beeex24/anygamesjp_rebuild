@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Riyoukiyaku.astro';
+import Layout from '../layouts/PageLayout.astro';
 ---
 
 <Layout
@@ -266,11 +266,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
     const TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
     const PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    // デバッグ用ログ（本番環境では削除してください）
-    console.log('EmailJS設定確認:');
-    console.log('SERVICE_ID:', SERVICE_ID);
-    console.log('TEMPLATE_ID:', TEMPLATE_ID);
-    console.log('PUBLIC_KEY:', PUBLIC_KEY ? '設定済み' : '未設定');
 
     // 設定値の検証
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
@@ -293,7 +288,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
     if (CONFIG.publicKey) {
       try {
         emailjs.init(CONFIG.publicKey);
-        console.log('EmailJS初期化完了');
       } catch (error) {
         console.error('EmailJS初期化エラー:', error);
       }
@@ -386,12 +380,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
         hiddenInput.value = new Date().toLocaleString('ja-JP');
         form.appendChild(hiddenInput);
 
-        console.log('メール送信開始...');
-        console.log('使用する設定:', {
-          serviceId: CONFIG.serviceId,
-          templateId: CONFIG.templateId,
-          publicKey: CONFIG.publicKey ? '設定済み' : '未設定'
-        });
 
         const result = await emailjs.sendForm(
           CONFIG.serviceId,

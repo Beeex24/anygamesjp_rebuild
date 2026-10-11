@@ -1,5 +1,5 @@
 ---
-layout: ../layouts/aboutsite.astro
+layout: ../layouts/PageLayout.astro
 title: "ANYGAMES放送局、ついにリリース！"
 description: "ゲーム情報の新たな発信地が誕生しました"
 pubDate: 2025-07-01
