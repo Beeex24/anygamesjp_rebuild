@@ -8,7 +8,8 @@ import AdSenseScript from '../components/AdSenseScript.astro';
 import { getCollection } from 'astro:content';
 import { getAllPosts, SECTIONS, type Post, type SectionKey } from '../lib/site';
 import { TOOLS } from '../lib/tools';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL } from '../consts';
+import { postUrl, sectionLabel } from '../lib/site';
 
 const byDate = (xs: Post[]) => [...xs].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const get = async (key: SectionKey) => byDate((await getCollection(key)) as Post[]);
@@ -28,11 +29,17 @@ const tabs = [
 // ランキング風の新着ボックス(ガジェットはデバイス+モバイルの新着)
 const gadget = byDate([...device, ...mobile]).slice(0, 6);
 
-// 3つのバナー(各ジャンルの最新記事の画像を背景に使う)
-const banners = [
-  { href: '/blog/', label: 'ゲーム最新情報', sub: '一覧はコチラ', img: game[0]?.data.heroImage },
-  { href: '/minecraft_blog/', label: 'マインクラフト最新情報', sub: '一覧はコチラ', img: mc[0]?.data.heroImage },
-  { href: '/minecraft_mod_blog/', label: 'マインクラフト MOD解説', sub: '一覧はコチラ', img: mod[0]?.data.heroImage },
+// 目玉枠: frontmatter の pickup(1〜3)で手動指定。足りない分は画像つきの新着で補う
+const withImage = all.filter((p) => p.data.heroImage);
+const picked = all.filter((p) => p.data.pickup && p.data.heroImage).sort((a, b) => (a.data.pickup ?? 0) - (b.data.pickup ?? 0));
+const pickup = [...picked, ...withImage.filter((p) => !picked.includes(p))].slice(0, 3);
+
+// 4つのバナー(ジャンルの最新記事の画像を背景に使う)
+const tiles = [
+  { href: '/minecraft_blog/', label: 'マイクラ関連', img: mc[0]?.data.heroImage },
+  { href: '/blog/', label: 'ゲーム評価特集', img: game[0]?.data.heroImage },
+  { href: '/device/', label: '実機レビュー', img: device[0]?.data.heroImage },
+  { href: SOCIAL.youtube, label: '公式チャンネル', img: undefined, external: true },
 ];
 
 const websiteLd = {
@@ -49,6 +56,27 @@ const websiteLd = {
   <h1 class="sr-only">ANYGAMES放送局 - ゲーム・ガジェットの情報と無料ツール</h1>
 
   <div class="container bare stack">
+    <section class="feature" aria-label="注目の記事">
+      {pickup.map((p, i) => (
+        <a class={`pick pick-${i}`} href={postUrl(p)}>
+          <img src={p.data.heroImage} alt="" width={i === 0 ? 960 : 480} height={i === 0 ? 540 : 270} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} decoding="async" />
+          {i === 0 && <span class="badge"><span aria-hidden="true">♛</span> Pick Up</span>}
+          <span class="cap"><small>{sectionLabel(p.collection)}</small>{p.data.title}</span>
+        </a>
+      ))}
+    </section>
+
+    <ul class="tiles">
+      {tiles.map((t) => (
+        <li>
+          <a class={t.external ? 'yt' : undefined} href={t.href} style={t.img ? `background-image:url('${t.img}')` : undefined}
+            {...(t.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+            <span>{t.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
     <section class="card" aria-labelledby="latest-h">
       <h2 id="latest-h" class="heading-c">最新記事</h2>
       <ArticleList posts={latest} />
@@ -60,16 +88,6 @@ const websiteLd = {
       <RankingBox title="ガジェット・お役立ち情報(最新記事)" color="var(--rank-gadget)" posts={gadget} href="/device/" moreLabel="ガジェット記事をすべて見る" />
       <RankingBox title="マインクラフトMOD解説(最新記事)" color="var(--rank-mod)" posts={mod.slice(0, 6)} href="/minecraft_mod_blog/" moreLabel="マインクラフトMOD記事をすべて見る" />
     </div>
-
-    <ul class="banners">
-      {banners.map((b) => (
-        <li>
-          <a href={b.href} style={b.img ? `background-image:url('${b.img}')` : undefined}>
-            <span><strong>{b.label}</strong>{b.sub}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
 
     <section class="card" aria-labelledby="tools-h">
       <h2 id="tools-h" class="heading-c">無料ツール</h2>
@@ -133,13 +151,39 @@ const websiteLd = {
   .pill:hover { background: var(--accent); color: #fff; }
   .ranks { display: grid; gap: 20px; grid-template-columns: 1fr; }
   @media (min-width: 900px) { .ranks { grid-template-columns: repeat(3, 1fr); } }
-  .banners { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
-  @media (min-width: 720px) { .banners { grid-template-columns: repeat(3, 1fr); } }
-  .banners a { display: grid; align-items: end; min-height: 120px; padding: 14px 16px; border-radius: var(--card-radius); box-shadow: var(--shadow); background: #29415e center / cover; color: #fff; text-decoration: none; position: relative; overflow: hidden; transition: transform .2s; }
-  .banners a::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 10, 25, .8), rgba(0, 10, 25, .15)); }
-  .banners a:hover { transform: translateY(-3px); }
-  .banners span { position: relative; display: grid; gap: 2px; font-size: .85rem; }
-  .banners strong { font-size: 1.1rem; }
+  .feature { display: grid; gap: 4px; grid-template-columns: 1fr; border-radius: var(--card-radius); overflow: hidden; box-shadow: var(--shadow); background: var(--navy); }
+  .pick { position: relative; display: block; overflow: hidden; color: #fff; text-decoration: none; aspect-ratio: 16 / 9; background: var(--navy); }
+  .pick img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .pick:hover img { transform: scale(1.04); }
+  .pick::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .12) 55%, transparent 100%); }
+  .cap { position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 1; font-weight: 800; line-height: 1.4; font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+  .cap small { display: block; font-size: .72rem; font-weight: 700; opacity: .85; margin-bottom: 2px; }
+  .pick-0 { aspect-ratio: 16 / 10; }
+  .pick-0 .cap { font-size: 1.05rem; }
+  .pick:not(.pick-0) .cap { -webkit-line-clamp: 2; }
+  .pick:not(.pick-0) .cap small { display: none; }
+  .badge { position: absolute; top: 12px; left: 12px; z-index: 1; background: rgba(0, 0, 0, .75); color: #fff; padding: 6px 14px; font-size: .85rem; font-weight: 800; border: 1px solid rgba(255, 255, 255, .15); }
+  .badge span { color: #ffc107; }
+  @media (min-width: 480px) and (max-width: 859px) {
+    .feature { grid-template-columns: 1fr 1fr; }
+    .pick-0 { grid-column: 1 / -1; }
+  }
+  @media (min-width: 860px) {
+    .feature { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; height: clamp(360px, 38vw, 460px); }
+    .pick, .pick-0 { aspect-ratio: auto; }
+    .pick-0 { grid-row: 1 / 3; }
+    .pick-0 .cap { font-size: 1.5rem; left: 26px; right: 26px; bottom: 22px; }
+    .pick:not(.pick-0) .cap { font-size: .95rem; bottom: 12px; }
+  }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  @media (min-width: 860px) { .tiles { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+  .tiles a { display: grid; place-items: center; min-height: 88px; padding: 10px; background: #1c2a3d center / cover; color: #fff; font-weight: 800; font-size: 1.05rem; text-decoration: none; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow); transition: transform .2s; }
+  .tiles a::before { content: ''; position: absolute; inset: 0; background: rgba(0, 10, 25, .58); transition: background .2s; }
+  .tiles a:hover { transform: translateY(-3px); }
+  .tiles a:hover::before { background: rgba(0, 10, 25, .4); }
+  .tiles a span { position: relative; text-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+  .tiles a.yt { background: #b3141a; }
+  .tiles a.yt::before { background: rgba(0, 0, 0, .12); }
   .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   @media (min-width: 640px) { .tools { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 960px) { .tools { grid-template-columns: repeat(4, 1fr); } }

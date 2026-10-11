@@ -12,6 +12,8 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
+    pickup: z.number().int().min(1).max(3).optional(),
   }),
 });
 
@@ -26,6 +28,8 @@ const mobileblog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
+    pickup: z.number().int().min(1).max(3).optional(),
   }),
 });
 
@@ -37,6 +41,8 @@ const device = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
+    pickup: z.number().int().min(1).max(3).optional(),
   }),
 });
 
@@ -51,6 +57,8 @@ const minecraft_blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
+    pickup: z.number().int().min(1).max(3).optional(),
   }),
 });
 
@@ -66,6 +74,8 @@ const minecraft_mod_blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
+    pickup: z.number().int().min(1).max(3).optional(),
     // MOD固有のフィールド
     version: z.array(z.string()).optional(), // マイクラバージョン (例: "1.21.1")
     category: z.string().optional(), // カテゴリー (例: "技術系", "農業", "冒険")

@@ -22,31 +22,6 @@ const related = sortByDate((await getCollection(post.collection)) as Post[])
   .filter((p) => p.id !== post.id)
   .slice(0, 6);
 
-// MOD記事のみ: 仕様欄・ダウンロードリンク
-const isMod = post.collection === 'minecraft_mod_blog';
-const mod = isMod ? (post as Extract<Post, { collection: 'minecraft_mod_blog' }>).data : undefined;
-const arr = <T,>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
-const specs = mod
-  ? ([
-      ['対応バージョン', arr(mod.version).join(' / ')],
-      ['ローダー', arr(mod.modLoader).join(' / ')],
-      ['カテゴリー', mod.category],
-      ['難易度', mod.difficulty],
-      ['作者', mod.author],
-      ['ダウンロード数', mod.downloads],
-    ] as const).filter(([, v]) => v)
-  : [];
-const links = mod
-  ? ([
-      ['CurseForge', mod.curseforgeUrl],
-      ['Modrinth', mod.modrinthUrl],
-      ['Fabric', mod.fabricUrl],
-      ['NeoForge', mod.neoforgeUrl],
-      ['Quilt', mod.quiltUrl],
-      ['ダウンロード', mod.downloadLink],
-    ] as const).filter(([, v]) => v)
-  : [];
-
 const crumbs = [
   { name: 'ホーム', href: '/' },
   { name: section.label, href: section.path },
@@ -69,18 +44,6 @@ const crumbs = [
         <h1>{title}</h1>
       </header>
 
-      {specs.length > 0 && (
-        <section class="spec" aria-label="MODの基本情報">
-          <dl>{specs.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
-          {links.length > 0 && (
-            <p class="links">
-              {links.map(([k, v]) => <a class="btn btn-sub" href={v} target="_blank" rel="noopener noreferrer">{k}</a>)}
-            </p>
-          )}
-          {mod && mod.requirements && mod.requirements.length > 0 && <p class="req"><strong>前提MOD:</strong> {mod.requirements.join('、')}</p>}
-        </section>
-      )}
-
       <AdSlot slot="postBottom" />
 
       {toc.length >= 3 && (
@@ -94,9 +57,6 @@ const crumbs = [
 
       <div class="body prose-body"><Content /></div>
 
-      {mod && mod.tags && mod.tags.length > 0 && (
-        <p class="tags">{mod.tags.map((t) => <span>#{t}</span>)}</p>
-      )}
     </article>
 
     <AdSlot slot="postBottom" />
@@ -127,21 +87,12 @@ const crumbs = [
   .meta time { background: rgba(255, 255, 255, .22); padding: 3px 12px; border-radius: 999px; }
   .tag { background: #fff; color: #5a4bb5; padding: 3px 12px; border-radius: 999px; font-weight: 700; text-decoration: none; }
   h1 { font-size: clamp(1.35rem, 4.5vw, 1.9rem); line-height: 1.45; margin: 0; text-wrap: balance; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
-  .spec { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; background: var(--bg-soft); }
-  .spec dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 16px; margin: 0; }
-  .spec dt { font-size: .75rem; color: var(--text-sub); }
-  .spec dd { margin: 0; font-weight: 700; font-size: .9rem; }
-  .links { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
-  .links .btn { min-height: 40px; font-size: .85rem; padding: 0 14px; }
-  .req { margin: 12px 0 0; font-size: .85rem; }
   .toc { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; margin: 16px 0 24px; background: var(--bg-soft); }
   .toc summary { font-weight: 700; cursor: pointer; }
   .toc ol { margin: 10px 0 0; padding-left: 1.2em; font-size: .9rem; display: grid; gap: 4px; }
   .toc .d3 { margin-left: 1em; list-style: circle; font-size: .85rem; }
   .toc a { color: var(--text); text-decoration: none; }
   .toc a:hover { color: var(--accent); text-decoration: underline; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 24px 0 0; font-size: .8rem; color: var(--text-sub); }
-  .tags span { background: var(--bg-soft); padding: 2px 10px; border-radius: 999px; }
   .block { margin: 40px 0 0; }
   .block h2 { font-size: 1.25rem; margin: 0 0 16px; }
   .support { max-width: var(--prose); margin: 40px auto 24px; padding: 14px 16px; border-radius: var(--radius); background: var(--bg-soft); font-size: .85rem; color: var(--text-sub); }
