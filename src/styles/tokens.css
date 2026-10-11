@@ -40,6 +40,10 @@ main > .container:not(.bare) {
   max-width: calc(var(--content) + 40px); margin: 20px auto; padding: 8px 20px 28px;
 }
 @media (max-width: 640px) { main > .container:not(.bare) { margin: 10px 8px; width: auto; padding: 4px 14px 22px; } }
+/* 広告(自動広告を含む)が画面幅を超えて、ページ全体を横に広げないようにする */
+main { overflow-x: clip; }
+.google-auto-placed, ins.adsbygoogle { max-width: 100% !important; }
+.google-auto-placed { overflow: hidden; }
 .prose { max-width: var(--prose); margin: 0 auto; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .btn {
