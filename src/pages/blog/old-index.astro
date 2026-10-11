@@ -1,24 +1,11 @@
 ---
-// src/pages/blog/index.astro
-// /blog にアクセスした際に /blog/1 にリダイレクト
-import { getCollection } from "astro:content";
-
-const posts = await getCollection("blog");
-
-if (posts.length > 0) {
-  return Astro.redirect("/blog/1");
-}
+import SeoHead from '../../components/SeoHead.astro';
 ---
-
 <!doctype html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ゲーム記事一覧</title>
-    <meta http-equiv="refresh" content="0; url=/blog/1" />
+    <SeoHead title="ページを移動しました" description="このページは一覧ページに移動しました。" noindex />
+    <meta http-equiv="refresh" content="0; url=/blog/" />
   </head>
-  <body>
-    <p>リダイレクト中...</p>
-  </body>
+  <body><p>このページは移動しました。<a href="/blog/">一覧ページへ</a></p></body>
 </html>

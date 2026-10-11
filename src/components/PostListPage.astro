@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import ArticleList from './ArticleList.astro';
+import Pagination from './Pagination.astro';
+import AdSlot from './AdSlot.astro';
+import AdSenseScript from './AdSenseScript.astro';
+import { GAME_FILTERS, gameKey, type ListPageProps } from '../lib/list';
+
+interface Props extends ListPageProps {
+  heading: string;
+  lead: string;
+  /** ページ1のURL（例: /blog/） */
+  basePath: string;
+  /** N ページ目のURL */
+  pageHref: (page: number) => string;
+  breadcrumb: { name: string; href?: string }[];
+  /** 現在ページ内の記事をゲーム名で絞り込むチップを表示 */
+  gameFilter?: boolean;
+}
+const { posts, currentPage, totalPages, totalPosts, heading, lead, pageHref, breadcrumb, gameFilter = false } = Astro.props;
+const title = currentPage > 1 ? `${heading}（${currentPage}ページ目）` : heading;
+const present = new Set(posts.map((p) => gameKey(p.data.title)));
+const chips = GAME_FILTERS.filter((f) => present.has(f.key));
+const showChips = gameFilter && chips.length > 1;
+const first = posts.slice(0, 6);
+const rest = posts.slice(6);
+---
+<BaseLayout
+  title={title}
+  description={lead}
+  breadcrumbs={breadcrumb.map((b) => ({ name: b.name, href: b.href ?? pageHref(currentPage) }))}
+>
+  <AdSenseScript slot="head" />
+  <div class="container">
+    <Breadcrumb items={breadcrumb} />
+    <header class="head">
+      <h1>{heading}</h1>
+      <p>{lead}<span class="count">（全{totalPosts}件）</span></p>
+    </header>
+    {showChips && (
+      <div class="chips" role="group" aria-label="ゲームで絞り込む">
+        <button type="button" class="chip on" data-filter="all" aria-pressed="true">すべて</button>
+        {chips.map((c) => <button type="button" class="chip" data-filter={c.key} aria-pressed="false">{c.label}</button>)}
+      </div>
+    )}
+    <div id="list" data-filterable={showChips ? '' : undefined}>
+      <ArticleList posts={first} />
+      {rest.length > 0 && <div class="ad"><AdSlot slot="listFeed" /></div>}
+      {rest.length > 0 && <ArticleList posts={rest} />}
+    </div>
+    <p id="empty" class="empty" hidden>該当する記事がありません。</p>
+    <Pagination current={currentPage} total={totalPages} href={pageHref} />
+  </div>
+  {showChips && (
+    <script is:inline define:vars={{ keys: posts.map((p) => gameKey(p.data.title)) }}>
+      (function () {
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#list li'));
+        var chips = document.querySelectorAll('.chip');
+        var empty = document.getElementById('empty');
+        chips.forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var f = chip.getAttribute('data-filter');
+            chips.forEach(function (c) {
+              var on = c === chip;
+              c.classList.toggle('on', on);
+              c.setAttribute('aria-pressed', String(on));
+            });
+            var shown = 0;
+            cards.forEach(function (li, i) {
+              var ok = f === 'all' || keys[i] === f;
+              li.hidden = !ok;
+              if (ok) shown++;
+            });
+            empty.hidden = shown > 0;
+          });
+        });
+      })();
+    </script>
+  )}
+</BaseLayout>
+<style>
+  .head { padding: 8px 0 20px; }
+  h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 8px; }
+  .head p { margin: 0; color: var(--text-sub); }
+  .count { margin-left: 4px; font-size: .85rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .chip { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .ad { margin: 20px 0; }
+  .empty { text-align: center; color: var(--text-sub); padding: 32px 0; }
+  #list :global(li[hidden]) { display: none; }
+</style>
