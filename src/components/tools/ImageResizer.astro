@@ -2,13 +2,14 @@
 /** 画像リサイズ(拡大・縮小)ツールのUI。ロジックは src/lib/image/resize.ts。 */
 import ImageDropzone from './ImageDropzone.astro';
 import ImageCompare from './ImageCompare.astro';
+import ImageBatch from './ImageBatch.astro';
 ---
 <div class="tool" id="resizer">
   <p class="privacy">🔒 画像はサーバーへアップロードされず、お使いのブラウザ上で処理されます。</p>
 
   <section class="panel" aria-labelledby="step-input" id="input-panel">
     <h2 id="step-input" class="sr-only">画像を選択</h2>
-    <ImageDropzone />
+    <ImageDropzone multiple />
 
     <fieldset class="method">
       <legend>サイズの決め方</legend>
@@ -66,6 +67,7 @@ import ImageCompare from './ImageCompare.astro';
   </section>
 
   <ImageCompare />
+  <ImageBatch />
 </div>
 
 <style>
@@ -99,12 +101,13 @@ import ImageCompare from './ImageCompare.astro';
 
 <script>
   import { runResize } from '../../lib/image/client';
+  import { runBatch, initBatchReset, limitFiles } from '../../lib/image/batch';
   import type { ResizeFormat, ResizeMethod, ResizeOptions } from '../../lib/image/resize';
-  import { $, clearError, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
+  import { $, clearError, initCompareReset, initDropzoneMulti, showCompare, showError, showFileName } from '../../lib/image/ui';
 
   const runBtn = $<HTMLButtonElement>('run');
   const statusEl = $('status');
-  let current: File | null = null;
+  let files: File[] = [];
 
   const num = (id: string): number | null => {
     const v = $<HTMLInputElement>(id).value.trim();
@@ -141,35 +144,47 @@ import ImageCompare from './ImageCompare.astro';
     };
   }
 
-  initDropzone((f) => {
+  initDropzoneMulti((picked) => {
     clearError();
     statusEl.textContent = '';
-    if (!f) return;
-    current = f;
-    showFileName(f);
+    if (picked.length === 0) return;
+    files = limitFiles(picked);
+    showFileName(files);
     runBtn.disabled = false;
   });
 
+  async function runSingle(file: File) {
+    const r = await runResize(file, readOptions(), (m) => { statusEl.textContent = m; });
+    statusEl.textContent = '';
+    showCompare(file, {
+      ...r,
+      summary: `${r.originalWidth}×${r.originalHeight}px → ${r.width}×${r.height}px に変更しました`,
+      fileSuffix: `${r.width}x${r.height}`,
+    });
+  }
+
   runBtn.addEventListener('click', async () => {
-    if (!current) return;
-    const file = current;
+    if (files.length === 0) return;
+    const list = files;
     clearError();
     runBtn.disabled = true;
     try {
-      const r = await runResize(file, readOptions(), (m) => { statusEl.textContent = m; });
-      statusEl.textContent = '';
-      showCompare(file, {
-        ...r,
-        summary: `${r.originalWidth}×${r.originalHeight}px → ${r.width}×${r.height}px に変更しました`,
-        fileSuffix: `${r.width}x${r.height}`,
-      });
+      if (list.length === 1) await runSingle(list[0]);
+      else {
+        const options = readOptions();
+        await runBatch(list, async (file, onProgress) => {
+          const r = await runResize(file, options, onProgress);
+          return { blob: r.blob, mime: r.mime, suffix: `${r.width}x${r.height}`, extra: `${r.originalWidth}×${r.originalHeight} → ${r.width}×${r.height}px` };
+        }, statusEl, 'サイズ変更のため');
+      }
     } catch (err) {
       statusEl.textContent = '';
       showError(err instanceof Error ? err.message : '処理中に問題が発生しました。もう一度お試しください。');
     } finally {
-      runBtn.disabled = false;
+      runBtn.disabled = files.length === 0;
     }
   });
 
-  initCompareReset(() => { current = null; runBtn.disabled = true; });
+  initCompareReset(() => { files = []; runBtn.disabled = true; });
+  initBatchReset(statusEl, () => { files = []; runBtn.disabled = true; });
 </script>

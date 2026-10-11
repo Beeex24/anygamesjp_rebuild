@@ -4,6 +4,7 @@ description: "UShaderは、RRe36氏がかつて私的に改造していたSEUS v
 pubDate: 2026-03-01
 updatedDate: 2026-02-21
 heroImage: "/minecraft/shader/ushader/image.png"
+pickup: 1
 version: 
   - "1.20.1【Latest】"
 category: "Shader【影MOD】"

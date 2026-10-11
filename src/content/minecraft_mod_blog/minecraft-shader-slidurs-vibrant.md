@@ -4,6 +4,7 @@ description: "Sildur's Vibrant Shadersは、2012年から続くマイクラ最�
 pubDate: 2026-02-26
 updatedDate: 2026-02-26
 heroImage: "/minecraft/shader/sildurs/image.png"
+pickup: 2
 version: 
   - "1.21.x【Latest】"
 category: "Shader【影MOD】"

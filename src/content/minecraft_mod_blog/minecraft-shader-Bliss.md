@@ -4,6 +4,7 @@ description: "Bliss Shaderは、Chocapic13's Shadersをベースに開発され�
 pubDate: 2026-02-25
 updatedDate: 2026-02-25
 heroImage: "/minecraft/shader/bliss/image.png"
+pickup: 3
 version: 
   - "1.21.x【Latest】"
 category: "Shader【影MOD】"

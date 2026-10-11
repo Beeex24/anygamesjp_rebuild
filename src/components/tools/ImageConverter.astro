@@ -2,13 +2,14 @@
 /** 画像形式の変換ツールUI。ロジックは src/lib/image/convert.ts。 */
 import ImageDropzone from './ImageDropzone.astro';
 import ImageCompare from './ImageCompare.astro';
+import ImageBatch from './ImageBatch.astro';
 ---
 <div class="tool" id="converter">
   <p class="privacy">🔒 画像はサーバーへアップロードされず、お使いのブラウザ上で処理されます。</p>
 
   <section class="panel" aria-labelledby="step-input" id="input-panel">
     <h2 id="step-input" class="sr-only">画像を選択</h2>
-    <ImageDropzone />
+    <ImageDropzone multiple />
 
     <fieldset class="formats">
       <legend>変換後の形式</legend>
@@ -45,6 +46,7 @@ import ImageCompare from './ImageCompare.astro';
   </section>
 
   <ImageCompare />
+  <ImageBatch />
 </div>
 
 <style>
@@ -75,12 +77,13 @@ import ImageCompare from './ImageCompare.astro';
 
 <script>
   import { runConvert } from '../../lib/image/client';
+  import { runBatch, initBatchReset, limitFiles } from '../../lib/image/batch';
   import type { Background, ConvertFormat, ConvertOptions, ConvertQuality } from '../../lib/image/convert';
-  import { $, clearError, describeSizeChange, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
+  import { $, clearError, describeSizeChange, initCompareReset, initDropzoneMulti, showCompare, showError, showFileName } from '../../lib/image/ui';
 
   const runBtn = $<HTMLButtonElement>('run');
   const statusEl = $('status');
-  let current: File | null = null;
+  let files: File[] = [];
 
   const format = (): ConvertFormat => {
     const v = document.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value;
@@ -103,36 +106,48 @@ import ImageCompare from './ImageCompare.astro';
     return { format: format(), quality, background };
   }
 
-  initDropzone((f) => {
+  initDropzoneMulti((picked) => {
     clearError();
     statusEl.textContent = '';
-    if (!f) return;
-    current = f;
-    showFileName(f);
+    if (picked.length === 0) return;
+    files = limitFiles(picked);
+    showFileName(files);
     runBtn.disabled = false;
   });
 
+  async function runSingle(file: File) {
+    const r = await runConvert(file, readOptions(), (m) => { statusEl.textContent = m; });
+    statusEl.textContent = '';
+    showCompare(file, {
+      ...r,
+      afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
+      summary: describeSizeChange(file.size, r.blob.size),
+      fileSuffix: 'converted',
+    });
+  }
+
   runBtn.addEventListener('click', async () => {
-    if (!current) return;
-    const file = current;
+    if (files.length === 0) return;
+    const list = files;
     clearError();
     runBtn.disabled = true;
     try {
-      const r = await runConvert(file, readOptions(), (m) => { statusEl.textContent = m; });
-      statusEl.textContent = '';
-      showCompare(file, {
-        ...r,
-        afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
-        summary: describeSizeChange(file.size, r.blob.size),
-        fileSuffix: 'converted',
-      });
+      if (list.length === 1) await runSingle(list[0]);
+      else {
+        const options = readOptions();
+        await runBatch(list, async (file, onProgress) => {
+          const r = await runConvert(file, options, onProgress);
+          return { blob: r.blob, mime: r.mime, suffix: 'converted' };
+        }, statusEl);
+      }
     } catch (err) {
       statusEl.textContent = '';
       showError(err instanceof Error ? err.message : '処理中に問題が発生しました。もう一度お試しください。');
     } finally {
-      runBtn.disabled = false;
+      runBtn.disabled = files.length === 0;
     }
   });
 
-  initCompareReset(() => { current = null; runBtn.disabled = true; });
+  initCompareReset(() => { files = []; runBtn.disabled = true; });
+  initBatchReset(statusEl, () => { files = []; runBtn.disabled = true; });
 </script>

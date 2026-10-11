@@ -5,8 +5,8 @@ import { render, getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
-import { formatDate } from '../lib/site';
-import { sortByDate } from '../lib/list';
+import { formatDate, getAllPosts } from '../lib/site';
+import { relatedPosts } from '../lib/related';
 
 interface Props { post: CollectionEntry<'minecraft_mod_blog'> }
 const { post } = Astro.props;
@@ -18,10 +18,8 @@ const arr = <T,>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.i
 const versions = arr(d.version);
 const loaders = arr(d.modLoader);
 
-// 関連記事: 同カテゴリー優先、足りなければ新着で補完
-const others = sortByDate(await getCollection('minecraft_mod_blog')).filter((p) => p.id !== post.id);
-const same = others.filter((p) => d.category && p.data.category === d.category);
-const related = [...same, ...others.filter((p) => !same.includes(p))].slice(0, 4);
+// 関連記事: タイトルの共通ワードが多い順
+const related = relatedPosts(post, await getAllPosts(), 4);
 
 const dl = [
   { href: d.downloadLink, label: '⬇️ ダウンロード', cls: '' },
@@ -110,7 +108,7 @@ const crumbs = [
             <h2>関連記事</h2>
             <ul class="rel">
               {related.map((p) => (
-                <li><a href={`/minecraft_mod_blog/${p.id}/`}>
+                <li><a href={`/${p.collection}/${p.id}/`}>
                   {p.data.heroImage && <img src={p.data.heroImage} alt="" width="96" height="64" loading="lazy" decoding="async" />}
                   <span>{p.data.title}</span>
                 </a></li>

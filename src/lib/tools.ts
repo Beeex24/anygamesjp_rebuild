@@ -19,14 +19,14 @@ export const TOOLS: ToolMeta[] = [
     slug: 'resizer',
     href: '/tools/image/resizer/',
     name: '画像リサイズ',
-    summary: '画像の拡大・縮小。長辺・倍率・幅と高さで指定できます。',
+    summary: '画像の拡大・縮小。長辺・倍率・幅と高さで指定でき、複数枚もまとめて処理。',
     category: 'image',
   },
   {
     slug: 'converter',
     href: '/tools/image/converter/',
     name: '画像変換',
-    summary: 'JPEG・PNG・WebP・AVIFを相互に変換。透過画像の背景色も選べます。',
+    summary: 'JPEG・PNG・WebP・AVIFを相互に変換。複数枚の一括変換にも対応。',
     category: 'image',
   },
   {

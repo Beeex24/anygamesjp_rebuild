@@ -6,8 +6,8 @@ import ArticleList from '../components/ArticleList.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
 import AffiliateGrid from '../components/AffiliateGrid.astro';
-import { SECTIONS, SECTION_COLORS, sectionLabel, formatDate, type Post } from '../lib/site';
-import { sortByDate } from '../lib/list';
+import { SECTIONS, SECTION_COLORS, sectionLabel, formatDate, getAllPosts, type Post } from '../lib/site';
+import { relatedPosts } from '../lib/related';
 
 interface Props { post: Post }
 const { post } = Astro.props;
@@ -17,10 +17,8 @@ const section = SECTIONS.find((s) => s.key === post.collection)!;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
-// 関連記事: 同じセクションの新着（自分以外）
-const related = sortByDate((await getCollection(post.collection)) as Post[])
-  .filter((p) => p.id !== post.id)
-  .slice(0, 6);
+// 関連記事: タイトルの共通ワードが多い順(足りなければ同ジャンルの新着)
+const related = relatedPosts(post, await getAllPosts(), 6);
 
 const crumbs = [
   { name: 'ホーム', href: '/' },
@@ -68,7 +66,7 @@ const crumbs = [
 
     {related.length > 0 && (
       <section class="block">
-        <h2>{section.label}の新着記事</h2>
+        <h2>関連記事</h2>
         <ArticleList posts={related} />
       </section>
     )}
