@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import AdSenseScript from './AdSenseScript.astro';
+import { getCollection } from 'astro:content';
+import { sortByDate } from '../lib/list';
+import { formatDate } from '../lib/site';
+
+const mods = sortByDate(await getCollection('minecraft_mod_blog'));
+const arr = <T,>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+const dlNum = (s?: string) => {
+  const m = /^([\d.]+)\s*([KkMm]?)/.exec(s ?? '');
+  if (!m) return 0;
+  return parseFloat(m[1]) * ({ k: 1e3, m: 1e6 }[m[2].toLowerCase() as 'k' | 'm'] ?? 1);
+};
+const items = mods.map((p) => ({
+  id: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  heroImage: p.data.heroImage,
+  versions: arr(p.data.version),
+  category: p.data.category ?? '',
+  difficulty: p.data.difficulty ?? '',
+  loaders: arr(p.data.modLoader),
+  downloads: p.data.downloads ?? '',
+  dl: dlNum(p.data.downloads),
+  tags: p.data.tags ?? [],
+  pub: p.data.pubDate.valueOf(),
+  upd: (p.data.updatedDate ?? p.data.pubDate).valueOf(),
+  pubDate: p.data.pubDate,
+}));
+const uniq = (xs: string[]) => [...new Set(xs.filter(Boolean))];
+const count = (key: (i: (typeof items)[number]) => string[]) => {
+  const m = new Map<string, number>();
+  items.forEach((i) => uniq(key(i)).forEach((k) => m.set(k, (m.get(k) ?? 0) + 1)));
+  return [...m.entries()].sort((a, b) => b[1] - a[1]);
+};
+const groups = [
+  { key: 'version', label: 'マイクラバージョン', entries: count((i) => i.versions) },
+  { key: 'category', label: 'カテゴリー', entries: count((i) => [i.category]) },
+  { key: 'difficulty', label: '難易度', entries: count((i) => [i.difficulty]) },
+].filter((g) => g.entries.length > 0);
+const lead = 'マインクラフトMODの導入方法・特徴・おすすめを、画像つきで分かりやすく解説します。';
+---
+<BaseLayout title="マインクラフト MOD解説" description={lead}
+  breadcrumbs={[{ name: 'ホーム', href: '/' }, { name: 'MOD解説', href: '/minecraft_mod_blog/' }]}>
+  <AdSenseScript slot="head" />
+  <div class="container">
+    <Breadcrumb items={[{ name: 'ホーム', href: '/' }, { name: 'MOD解説' }]} />
+    <header class="head">
+      <h1>マインクラフト MOD解説</h1>
+      <p>{lead}</p>
+    </header>
+
+    <form class="filters" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">MODを検索</label>
+      <input id="q" type="search" placeholder="MOD名・キーワードで検索" autocomplete="off" />
+      {groups.map((g) => (
+        <fieldset data-group={g.key}>
+          <legend>{g.label}</legend>
+          {g.entries.map(([k, n]) => (
+            <button type="button" class="chip" data-value={k} aria-pressed="false">{k}<span>{n}</span></button>
+          ))}
+        </fieldset>
+      ))}
+      <div class="bar">
+        <label for="sort">並び順</label>
+        <select id="sort">
+          <option value="latest">新着順</option>
+          <option value="updated">更新順</option>
+          <option value="downloads">ダウンロード数順</option>
+          <option value="name">名前順</option>
+        </select>
+        <button type="button" id="reset" class="reset">条件をクリア</button>
+        <span id="result" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <ul id="grid" class="grid">
+      {items.map((m, i) => (
+        <li data-index={i}>
+          <a class="card" href={`/minecraft_mod_blog/${m.id}/`}>
+            <div class="thumb">
+              {m.heroImage
+                ? <img src={m.heroImage} alt="" width="640" height="360" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+                : <span aria-hidden="true">MOD</span>}
+            </div>
+            <div class="body">
+              <p class="badges">
+                {m.versions.slice(0, 2).map((v) => <span class="b ver">{v}</span>)}
+                {m.category && <span class="b">{m.category}</span>}
+                {m.difficulty && <span class="b">{m.difficulty}</span>}
+              </p>
+              <h2>{m.title}</h2>
+              <p class="desc">{m.description}</p>
+              <p class="meta">
+                <time datetime={m.pubDate.toISOString()}>{formatDate(m.pubDate)}</time>
+                {m.loaders.length > 0 && <span>{m.loaders.join(' / ')}</span>}
+                {m.downloads && <span>DL {m.downloads}</span>}
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p id="empty" class="empty" hidden>条件に合うMODが見つかりません。条件をクリアしてください。</p>
+  </div>
+  <script is:inline define:vars={{ data: items.map((m) => ({ t: (m.title + ' ' + m.description + ' ' + m.tags.join(' ')).toLowerCase(), name: m.title, version: m.versions, category: [m.category], difficulty: [m.difficulty], pub: m.pub, upd: m.upd, dl: m.dl })) }}>
+    (function () {
+      var grid = document.getElementById('grid');
+      var cards = Array.prototype.slice.call(grid.children);
+      var q = document.getElementById('q');
+      var sort = document.getElementById('sort');
+      var result = document.getElementById('result');
+      var empty = document.getElementById('empty');
+      var active = { version: [], category: [], difficulty: [] };
+      function apply() {
+        var s = q.value.toLowerCase().trim();
+        var shown = 0;
+        var order = data.map(function (d, i) { return i; }).sort(function (a, b) {
+          var x = data[a], y = data[b], k = sort.value;
+          if (k === 'name') return x.name.localeCompare(y.name, 'ja');
+          if (k === 'updated') return y.upd - x.upd;
+          if (k === 'downloads') return y.dl - x.dl;
+          return y.pub - x.pub;
+        });
+        order.forEach(function (i) {
+          var d = data[i], ok = d.t.indexOf(s) !== -1;
+          ['version', 'category', 'difficulty'].forEach(function (g) {
+            if (ok && active[g].length) ok = active[g].some(function (v) { return d[g].indexOf(v) !== -1; });
+          });
+          cards[i].hidden = !ok;
+          grid.appendChild(cards[i]);
+          if (ok) shown++;
+        });
+        result.textContent = shown + '件を表示中';
+        empty.hidden = shown > 0;
+      }
+      document.querySelectorAll('fieldset[data-group]').forEach(function (fs) {
+        var g = fs.getAttribute('data-group');
+        fs.querySelectorAll('.chip').forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var v = chip.getAttribute('data-value'), i = active[g].indexOf(v);
+            if (i === -1) active[g].push(v); else active[g].splice(i, 1);
+            chip.setAttribute('aria-pressed', String(i === -1));
+            apply();
+          });
+        });
+      });
+      q.addEventListener('input', apply);
+      sort.addEventListener('change', apply);
+      document.getElementById('reset').addEventListener('click', function () {
+        q.value = ''; sort.value = 'latest';
+        active = { version: [], category: [], difficulty: [] };
+        document.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+        apply();
+      });
+      apply();
+    })();
+  </script>
+</BaseLayout>
+<style>
+  .head { padding: 8px 0 16px; }
+  h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 8px; }
+  .head p { margin: 0; color: var(--text-sub); }
+  .filters { display: grid; gap: 12px; margin-bottom: 20px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-soft); }
+  input[type='search'] { width: 100%; height: 44px; padding: 0 14px; font: inherit; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+  fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  legend { float: left; margin-right: 8px; padding: 0; font-size: .8rem; font-weight: 700; color: var(--text-sub); }
+  .chip { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: .8rem; cursor: pointer; }
+  .chip span { margin-left: 6px; color: var(--text-sub); }
+  .chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip[aria-pressed='true'] span { color: #fff; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: .85rem; }
+  select { height: 36px; padding: 0 8px; font: inherit; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+  .reset { border: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; }
+  #result { margin-left: auto; color: var(--text-sub); }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .grid li[hidden] { display: none; }
+  .card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg); color: inherit; text-decoration: none; }
+  .card:hover { border-color: var(--accent); }
+  .thumb { aspect-ratio: 16 / 9; background: var(--bg-soft); display: grid; place-items: center; font-weight: 800; color: var(--line); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .body { padding: 14px 16px 16px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .b { font-size: .72rem; padding: 2px 8px; border-radius: 999px; background: var(--bg-soft); color: var(--text-sub); font-weight: 700; }
+  .b.ver { background: var(--accent-soft); color: var(--accent); }
+  h2 { font-size: 1rem; margin: 0 0 6px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .desc { margin: 0 0 8px; font-size: .85rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; font-size: .75rem; color: var(--text-sub); }
+  .empty { text-align: center; color: var(--text-sub); padding: 32px 0; }
+</style>

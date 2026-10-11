@@ -1,14 +1,9 @@
 ---
-import PostListPage from '../../components/PostListPage.astro';
-import { getCollection } from 'astro:content';
-import { pageRoutes, type ListPageProps } from '../../lib/list';
+import ModListPage from '../../components/ModListPage.astro';
 
-// 既存URL: /minecraft_mod_blog/1/ …（12件/ページ）。/minecraft_mod_blog/ は index.astro
-export async function getStaticPaths() {
-  return pageRoutes(await getCollection('minecraft_mod_blog'), 12);
+// 既存URL /minecraft_mod_blog/1/ を維持（全件を1ページで表示）
+export function getStaticPaths() {
+  return [{ params: { page: '1' } }];
 }
-const p = Astro.props as ListPageProps;
-const href = (n: number) => (n === 1 ? '/minecraft_mod_blog/' : `/minecraft_mod_blog/${n}/`);
 ---
-<PostListPage {...p} heading="マインクラフト MOD解説" lead="マインクラフトのMODの導入方法・特徴・おすすめを解説した記事の一覧です。" basePath="/minecraft_mod_blog/" pageHref={href}
-  breadcrumb={[{ name: 'ホーム', href: '/' }, { name: 'マインクラフト MOD解説', href: '/minecraft_mod_blog/' }, { name: 'ページ一覧' }]} />
+<ModListPage />
