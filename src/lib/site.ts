@@ -14,8 +14,14 @@ export type SectionKey = (typeof SECTIONS)[number]['key'];
 /** グローバルナビ。実在するページだけを載せる。 */
 export const NAV = [
   { label: 'ホーム', href: '/' },
+  { label: 'ゲーム関連', href: '/blog/' },
+  { label: 'マインクラフト', href: '/minecraft_blog/' },
+  { label: 'マインクラフト MOD解説', href: '/minecraft_mod_blog/' },
+  { label: 'ガジェットレビュー', href: '/device/' },
+  { label: 'モバイル＆ゲーム機記事', href: '/mobileblog/' },
   { label: 'Tools', href: '/tools/' },
-  ...SECTIONS.map((s) => ({ label: s.label, href: s.path })),
+  { label: 'お問い合わせ', href: '/about/' },
+  { label: '当サイトについて', href: '/infosite/' },
 ] as const;
 
 export type Post = CollectionEntry<SectionKey>;
@@ -23,6 +29,15 @@ export type Post = CollectionEntry<SectionKey>;
 export function postUrl(post: Post): string {
   return `/${post.collection}/${post.id}/`;
 }
+
+/** セクションごとのラベル色(旧サイトのカテゴリ色に準拠) */
+export const SECTION_COLORS: Record<string, string> = {
+  blog: '#2f7de1',
+  mobileblog: '#8e5bd6',
+  device: '#2ea44f',
+  minecraft_blog: '#e0702b',
+  minecraft_mod_blog: '#d13f6a',
+};
 
 export function sectionLabel(key: string): string {
   return SECTIONS.find((s) => s.key === key)?.label ?? '';

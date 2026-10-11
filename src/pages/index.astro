@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleList from '../components/ArticleList.astro';
-import SectionHeading from '../components/SectionHeading.astro';
+import RankingBox from '../components/RankingBox.astro';
 import AffiliateGrid from '../components/AffiliateGrid.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
@@ -10,19 +10,30 @@ import { getAllPosts, SECTIONS, type Post, type SectionKey } from '../lib/site';
 import { TOOLS } from '../lib/tools';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
+const byDate = (xs: Post[]) => [...xs].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const get = async (key: SectionKey) => byDate((await getCollection(key)) as Post[]);
+const [game, mobile, device, mc, mod] = await Promise.all((['blog', 'mobileblog', 'device', 'minecraft_blog', 'minecraft_mod_blog'] as SectionKey[]).map(get));
 const all = await getAllPosts();
 const latest = all.slice(0, 6);
 
-// カテゴリ別セクション(各3件)。表示順はここで決める。
-const categoryOrder: SectionKey[] = ['blog', 'mobileblog', 'device', 'minecraft_blog', 'minecraft_mod_blog'];
-const categories = await Promise.all(
-  categoryOrder.map(async (key) => {
-    const section = SECTIONS.find((s) => s.key === key)!;
-    const posts = (await getCollection(key)) as Post[];
-    posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-    return { ...section, posts: posts.slice(0, 3) };
-  }),
-);
+// 記事一覧タブ(各9件)
+const tabs = [
+  { key: 'all', label: 'すべての記事', posts: all.slice(0, 9) },
+  { key: 'blog', label: 'ゲーム', posts: game.slice(0, 9) },
+  { key: 'mobileblog', label: 'モバイル・ゲーム機', posts: mobile.slice(0, 9) },
+  { key: 'device', label: 'ガジェット', posts: device.slice(0, 9) },
+  { key: 'minecraft_blog', label: 'マインクラフト', posts: mc.slice(0, 9) },
+];
+
+// ランキング風の新着ボックス(ガジェットはデバイス+モバイルの新着)
+const gadget = byDate([...device, ...mobile]).slice(0, 6);
+
+// 3つのバナー(各ジャンルの最新記事の画像を背景に使う)
+const banners = [
+  { href: '/blog/', label: 'ゲーム最新情報', sub: '一覧はコチラ', img: game[0]?.data.heroImage },
+  { href: '/minecraft_blog/', label: 'マインクラフト最新情報', sub: '一覧はコチラ', img: mc[0]?.data.heroImage },
+  { href: '/minecraft_mod_blog/', label: 'マインクラフト MOD解説', sub: '一覧はコチラ', img: mod[0]?.data.heroImage },
+];
 
 const websiteLd = {
   '@context': 'https://schema.org',
@@ -35,61 +46,110 @@ const websiteLd = {
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <AdSenseScript slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+  <h1 class="sr-only">ANYGAMES放送局 - ゲーム・ガジェットの情報と無料ツール</h1>
 
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">ANYGAMES</p>
-      <h1>ゲーム・PC・ガジェットを、<br />もっと便利に。</h1>
-      <p class="lead">ゲームやガジェットの最新情報と、ブラウザだけで使える無料ツールをお届けします。</p>
-      <p class="cta">
-        <a class="btn" href="/tools/">無料ツールを使う</a>
-        <a class="btn btn-sub" href="#latest">最新記事を見る</a>
-      </p>
+  <div class="container bare stack">
+    <section class="card" aria-labelledby="latest-h">
+      <h2 id="latest-h" class="heading-c">最新記事</h2>
+      <ArticleList posts={latest} />
+      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
+    </section>
+
+    <div class="ranks">
+      <RankingBox title="ゲーム情報(最新記事)" color="var(--rank-game)" posts={game.slice(0, 6)} href="/blog/" moreLabel="最新ゲーム記事をすべて見る" />
+      <RankingBox title="ガジェット・お役立ち情報(最新記事)" color="var(--rank-gadget)" posts={gadget} href="/device/" moreLabel="ガジェット記事をすべて見る" />
+      <RankingBox title="マインクラフトMOD解説(最新記事)" color="var(--rank-mod)" posts={mod.slice(0, 6)} href="/minecraft_mod_blog/" moreLabel="マインクラフトMOD記事をすべて見る" />
     </div>
-  </section>
 
-  <div class="container">
-    <section class="section" aria-labelledby="tools">
-      <SectionHeading title="注目のツール" href="/tools/" linkLabel="ツール一覧" />
+    <ul class="banners">
+      {banners.map((b) => (
+        <li>
+          <a href={b.href} style={b.img ? `background-image:url('${b.img}')` : undefined}>
+            <span><strong>{b.label}</strong>{b.sub}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <section class="card" aria-labelledby="tools-h">
+      <h2 id="tools-h" class="heading-c">無料ツール</h2>
       <ul class="tools">
         {TOOLS.map((t) => (
           <li><a href={t.href}><strong>{t.name}</strong><span>{t.summary}</span></a></li>
         ))}
       </ul>
-    </section>
-
-    <section class="section" id="latest" aria-labelledby="latest-h">
-      <SectionHeading title="最新記事" href="/all/" linkLabel="すべての記事" />
-      <ArticleList posts={latest} />
+      <p class="center"><a class="pill" href="/tools/">ツール一覧を見る ›</a></p>
     </section>
 
     <AdSlot slot="listFeed" />
 
-    {categories.map((c) => (
-      <section class="section" aria-label={c.label}>
-        <SectionHeading title={c.label} href={c.path} />
-        <ArticleList posts={c.posts} />
-      </section>
-    ))}
+    <section class="card tabsec" aria-labelledby="list-h">
+      <h2 id="list-h" class="heading-c">記事一覧</h2>
+      <div class="tabs" role="tablist" aria-label="記事のジャンル">
+        {tabs.map((t, i) => (
+          <button type="button" role="tab" id={`tab-${t.key}`} aria-controls={`panel-${t.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.key}>{t.label}</button>
+        ))}
+      </div>
+      {tabs.map((t, i) => (
+        <div role="tabpanel" id={`panel-${t.key}`} aria-labelledby={`tab-${t.key}`} hidden={i !== 0}>
+          <ArticleList posts={t.posts} />
+        </div>
+      ))}
+      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
+    </section>
 
-    <section class="section" aria-labelledby="devices">
-      <SectionHeading title="おすすめのデバイス" />
+    <section class="card" aria-labelledby="dev-h">
+      <h2 id="dev-h" class="heading-c">おすすめのデバイス</h2>
       <AffiliateGrid />
     </section>
   </div>
+  <script>
+    const tabButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tabs [role=tab]'));
+    const select = (btn: HTMLButtonElement) => {
+      tabButtons.forEach((b) => {
+        const on = b === btn;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(b.getAttribute('aria-controls') ?? '');
+        if (panel) panel.hidden = !on;
+      });
+    };
+    tabButtons.forEach((b, i) => {
+      b.addEventListener('click', () => select(b));
+      b.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const next = tabButtons[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabButtons.length) % tabButtons.length];
+        next.focus();
+        select(next);
+      });
+    });
+  </script>
 </BaseLayout>
 <style>
-  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 40px 0 36px; }
-  .eyebrow { margin: 0 0 8px; font-weight: 800; letter-spacing: .12em; color: var(--accent); font-size: .8125rem; }
-  h1 { font-size: 1.5rem; margin: 0 0 12px; word-break: keep-all; text-wrap: balance; }
-  .lead { margin: 0 0 20px; color: var(--text-sub); max-width: 36em; }
-  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
-  .cta .btn { flex: 1 1 200px; }
-  @media (min-width: 640px) { h1 { font-size: 2.25rem; } .cta .btn { flex: 0 0 auto; } }
+  .stack { display: grid; gap: 20px; margin-top: 20px; }
+  .card { background: var(--bg); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 8px 20px 24px; }
+  .center { text-align: center; margin: 22px 0 0; }
+  .pill { display: inline-block; padding: 10px 28px; border: 1.5px solid var(--accent); border-radius: 999px; color: var(--accent); font-weight: 700; text-decoration: none; font-size: .9rem; }
+  .pill:hover { background: var(--accent); color: #fff; }
+  .ranks { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .ranks { grid-template-columns: repeat(3, 1fr); } }
+  .banners { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .banners { grid-template-columns: repeat(3, 1fr); } }
+  .banners a { display: grid; align-items: end; min-height: 120px; padding: 14px 16px; border-radius: var(--card-radius); box-shadow: var(--shadow); background: #29415e center / cover; color: #fff; text-decoration: none; position: relative; overflow: hidden; transition: transform .2s; }
+  .banners a::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 10, 25, .8), rgba(0, 10, 25, .15)); }
+  .banners a:hover { transform: translateY(-3px); }
+  .banners span { position: relative; display: grid; gap: 2px; font-size: .85rem; }
+  .banners strong { font-size: 1.1rem; }
   .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   @media (min-width: 640px) { .tools { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 960px) { .tools { grid-template-columns: repeat(3, 1fr); } }
-  .tools a { display: grid; gap: 4px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); color: inherit; text-decoration: none; min-height: 48px; }
-  .tools a:hover { border-color: var(--accent); }
-  .tools span { font-size: .875rem; color: var(--text-sub); }
+  @media (min-width: 960px) { .tools { grid-template-columns: repeat(4, 1fr); } }
+  .tools a { display: grid; gap: 4px; padding: 14px 16px; height: 100%; border: 1px solid var(--line); border-radius: var(--radius); color: inherit; text-decoration: none; background: var(--bg-soft); }
+  .tools a:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .tools strong { color: var(--accent); }
+  .tools span { font-size: .82rem; color: var(--text-sub); }
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: 0 0 auto; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
+  .tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (max-width: 640px) { .card { padding: 4px 14px 20px; } }
 </style>

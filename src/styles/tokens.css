@@ -1,22 +1,31 @@
 /* ANYGAMES デザイントークン + ベース。新レイアウト(BaseLayout)専用。 */
 :root {
+  --page: #eceef1; /* ページ全体の背景(灰色)。コンテンツは白いカードで載せる */
   --bg: #ffffff;
-  --bg-soft: #f6f7f9;
+  --bg-soft: #f4f6f8;
   --text: #1b1f24;
   --text-sub: #5b6470;
-  --line: #e4e7eb;
-  --accent: #2f5bea;
-  --accent-soft: #eef2ff;
+  --line: #e1e5ea;
+  --accent: #0a86c9;
+  --accent-soft: #e5f4fc;
+  --cyan: #00a8ff; /* ナビ・強調(暗い背景の上で使う) */
+  --navy: #0a1d33; /* ナビの背景 */
+  --grad: linear-gradient(135deg, #667eea, #764ba2); /* 記事タイトル帯 */
+  --rank-game: #29b6e8;
+  --rank-gadget: #4caf50;
+  --rank-mod: #3f8cf0;
   --danger: #c0392b;
   --radius: 10px;
-  --content: 1080px;
+  --card-radius: 14px;
+  --shadow: 0 2px 10px rgba(10, 29, 51, .08);
+  --content: 1120px;
   --prose: 720px;
   --font: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
-  margin: 0; background: var(--bg); color: var(--text);
+  margin: 0; background: var(--page); color: var(--text);
   font-family: var(--font); font-size: 16px; line-height: 1.75;
   overflow-wrap: anywhere;
 }
@@ -25,6 +34,12 @@ a { color: var(--accent); text-underline-offset: 2px; }
 h1, h2, h3 { line-height: 1.35; margin: 0 0 .6em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .container { width: 100%; max-width: var(--content); margin: 0 auto; padding: 0 16px; }
+/* 本文エリアは白いカード。トップページなど自前でカードを組むページは .container.bare にする */
+main > .container:not(.bare) {
+  background: var(--bg); border-radius: var(--card-radius); box-shadow: var(--shadow);
+  max-width: calc(var(--content) + 40px); margin: 20px auto; padding: 8px 20px 28px;
+}
+@media (max-width: 640px) { main > .container:not(.bare) { margin: 10px 8px; width: auto; padding: 4px 14px 22px; } }
 .prose { max-width: var(--prose); margin: 0 auto; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .btn {
@@ -37,6 +52,8 @@ h1, h2, h3 { line-height: 1.35; margin: 0 0 .6em; }
 .btn-sub { background: var(--bg); color: var(--accent); }
 .section { padding: 32px 0; }
 .section-title { font-size: 1.25rem; margin-bottom: 16px; }
+/* 旧サイトの見出し(中央・字間広め) */
+.heading-c { text-align: center; font-size: clamp(1.4rem, 3.5vw, 1.9rem); letter-spacing: .25em; font-weight: 800; margin: 12px 0 20px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
 
 /* 計算ツール共通(ゲーム・PCツール) */

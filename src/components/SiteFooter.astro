@@ -1,22 +1,27 @@
 ---
+import SocialIcons from './SocialIcons.astro';
 import { AFFILIATE_NOTICE, AMAZON_NOTICE, SITE_TITLE } from '../consts';
 ---
 <footer class="site-footer">
-  <div class="container">
-    <p class="notice">{AFFILIATE_NOTICE}<br />{AMAZON_NOTICE}</p>
+  <div class="container inner">
     <nav aria-label="フッターメニュー">
-      <a href="/infosite">サイトについて</a>
-      <a href="/about">お問い合わせ</a>
-      <a href="/policy">プライバシーポリシー</a>
-      <a href="/terms">利用規約</a>
-      <a href="/sitemap">サイトマップ</a>
+      <a href="/policy/">プライバシーポリシー</a>
+      <a href="/terms/">利用規約</a>
+      <a href="/infosite/">サイトについて</a>
+      <a href="/about/">お問い合わせ</a>
+      <a href="/sitemap/">サイトマップ</a>
     </nav>
-    <p class="copy">&copy; {new Date().getFullYear()} {SITE_TITLE}</p>
+    <SocialIcons variant="footer" />
+    <p class="notice">{AFFILIATE_NOTICE}<br />{AMAZON_NOTICE}</p>
+    <p class="copy">&copy; {new Date().getFullYear()} {SITE_TITLE} All rights reserved.</p>
   </div>
 </footer>
 <style>
-  .site-footer { margin-top: 48px; padding: 28px 0; border-top: 1px solid var(--line); background: var(--bg-soft); font-size: .875rem; color: var(--text-sub); }
-  nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 12px 0; }
-  nav a { color: var(--text-sub); padding: 6px 0; }
-  .notice, .copy { margin: 0; }
+  .site-footer { margin-top: 40px; padding: 36px 0 32px; background: linear-gradient(to bottom, var(--page), #fff); font-size: .875rem; color: var(--text-sub); }
+  .inner { display: grid; justify-items: center; gap: 16px; text-align: center; }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; }
+  nav a { color: #50648c; padding: 6px 0; text-decoration: none; }
+  nav a:hover { color: var(--accent); text-decoration: underline; }
+  .notice, .copy { margin: 0; font-size: .8rem; }
+  .copy { color: #50648c; }
 </style>
