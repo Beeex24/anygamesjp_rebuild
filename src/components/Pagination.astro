@@ -23,7 +23,7 @@ const pages = Array.from({ length: total }, (_, i) => i + 1).filter(
 <style>
   .pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 28px 0; }
   .num, .step { min-width: 40px; height: 40px; padding: 0 12px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: var(--radius); color: var(--text); text-decoration: none; font-size: .9rem; }
-  a:hover { border-color: var(--accent); color: var(--accent); }
-  .on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  a:hover { border-color: var(--c, var(--accent)); color: var(--c, var(--accent)); }
+  .on { background: var(--c, var(--accent)); border-color: var(--c, var(--accent)); color: #fff; font-weight: 700; }
   .gap { color: var(--text-sub); }
 </style>

@@ -3,6 +3,8 @@ import { postUrl, sectionLabel, formatDate, SECTION_COLORS, type Post } from '..
 interface Props { post: Post; eager?: boolean }
 const { post, eager = false } = Astro.props;
 const { title, description, pubDate, heroImage } = post.data;
+// 公開から14日以内はNEW(ビルド時点で判定)
+const isNew = Date.now() - pubDate.valueOf() < 14 * 24 * 3600 * 1000;
 ---
 <article class="card">
   <a class="link" href={postUrl(post)}>
@@ -10,6 +12,7 @@ const { title, description, pubDate, heroImage } = post.data;
       {heroImage
         ? <img src={heroImage} alt="" width="640" height="360" loading={eager ? 'eager' : 'lazy'} decoding="async" />
         : <span class="noimg" aria-hidden="true">ANYGAMES</span>}
+      {isNew && <span class="new">NEW</span>}
       <span class="tag" style={`background:${SECTION_COLORS[post.collection] ?? 'var(--accent)'}`}>{sectionLabel(post.collection)}</span>
     </div>
     <div class="body">
@@ -24,16 +27,18 @@ const { title, description, pubDate, heroImage } = post.data;
 </article>
 <style>
   .card { border-radius: var(--card-radius); overflow: hidden; background: var(--bg); height: 100%; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
-  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10, 29, 51, .16); }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10, 29, 51, .16); outline: 2px solid var(--c, transparent); outline-offset: -2px; }
+  .card:hover h3 { color: var(--c, var(--accent)); }
   .link { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
   .thumb { position: relative; aspect-ratio: 16 / 9; background: var(--bg-soft); overflow: hidden; }
   .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
   .card:hover .thumb img { transform: scale(1.04); }
   .noimg { display: grid; place-items: center; height: 100%; font-weight: 800; color: var(--line); }
+  .new { position: absolute; right: 10px; top: 10px; padding: 2px 10px; border-radius: 999px; background: #ff3d57; color: #fff; font-size: .7rem; font-weight: 800; letter-spacing: .05em; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
   .tag { position: absolute; left: 10px; bottom: 10px; padding: 3px 10px; border-radius: 6px; color: #fff; font-size: .72rem; font-weight: 700; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
   .body { display: flex; flex-direction: column; flex: 1; padding: 14px 16px 16px; }
   h3 { font-size: 1rem; line-height: 1.5; margin: 0 0 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .desc { margin: 0 0 12px; font-size: .85rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: .78rem; color: var(--text-sub); }
-  .more { padding: 6px 16px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 700; font-size: .78rem; }
+  .more { padding: 6px 16px; border-radius: 999px; background: var(--c, var(--accent)); color: #fff; font-weight: 700; font-size: .78rem; }
 </style>

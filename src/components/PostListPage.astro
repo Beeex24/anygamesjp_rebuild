@@ -6,6 +6,7 @@ import Pagination from './Pagination.astro';
 import AdSlot from './AdSlot.astro';
 import AdSenseScript from './AdSenseScript.astro';
 import { GAME_FILTERS, gameKey, type ListPageProps } from '../lib/list';
+import { SECTION_COLORS, postUrl, formatDate } from '../lib/site';
 
 interface Props extends ListPageProps {
   heading: string;
@@ -23,8 +24,12 @@ const title = currentPage > 1 ? `${heading}（${currentPage}ページ目）` : h
 const present = new Set(posts.map((p) => gameKey(p.data.title)));
 const chips = GAME_FILTERS.filter((f) => present.has(f.key));
 const showChips = gameFilter && chips.length > 1;
-const first = posts.slice(0, 6);
-const rest = posts.slice(6);
+const color = SECTION_COLORS[posts[0]?.collection ?? ''] ?? 'var(--accent)';
+// 1ページ目だけ、最新の1件を大きく見せる
+const featured = currentPage === 1 ? posts[0] : undefined;
+const listed = featured ? posts.slice(1) : posts;
+const first = listed.slice(0, 6);
+const rest = listed.slice(6);
 ---
 <BaseLayout
   title={title}
@@ -32,12 +37,27 @@ const rest = posts.slice(6);
   breadcrumbs={breadcrumb.map((b) => ({ name: b.name, href: b.href ?? pageHref(currentPage) }))}
 >
   <AdSenseScript slot="head" />
-  <div class="container">
+  <div class="container" style={`--c:${color}`}>
     <Breadcrumb items={breadcrumb} />
     <header class="head">
       <h1>{heading}</h1>
-      <p>{lead}<span class="count">（全{totalPosts}件）</span></p>
+      <p>{lead}</p>
+      <span class="count">全{totalPosts}記事</span>
     </header>
+    {featured && (
+      <a class="feature" href={postUrl(featured)} data-key={gameKey(featured.data.title)}>
+        <span class="fimg">
+          {featured.data.heroImage && <img src={featured.data.heroImage} alt="" width="800" height="450" loading="eager" fetchpriority="high" decoding="async" />}
+          <span class="flabel">最新記事</span>
+        </span>
+        <span class="ftext">
+          <time datetime={featured.data.pubDate.toISOString()}>{formatDate(featured.data.pubDate)}</time>
+          <strong>{featured.data.title}</strong>
+          <span class="fdesc">{featured.data.description}</span>
+          <span class="fmore">この記事を読む ›</span>
+        </span>
+      </a>
+    )}
     {showChips && (
       <div class="chips" role="group" aria-label="ゲームで絞り込む">
         <button type="button" class="chip on" data-filter="all" aria-pressed="true">すべて</button>
@@ -53,11 +73,12 @@ const rest = posts.slice(6);
     <Pagination current={currentPage} total={totalPages} href={pageHref} />
   </div>
   {showChips && (
-    <script is:inline define:vars={{ keys: posts.map((p) => gameKey(p.data.title)) }}>
+    <script is:inline define:vars={{ keys: listed.map((p) => gameKey(p.data.title)) }}>
       (function () {
         var cards = Array.prototype.slice.call(document.querySelectorAll('#list li'));
         var chips = document.querySelectorAll('.chip');
         var empty = document.getElementById('empty');
+        var feat = document.querySelector('.feature');
         chips.forEach(function (chip) {
           chip.addEventListener('click', function () {
             var f = chip.getAttribute('data-filter');
@@ -67,6 +88,11 @@ const rest = posts.slice(6);
               c.setAttribute('aria-pressed', String(on));
             });
             var shown = 0;
+            if (feat) {
+              var fok = f === 'all' || feat.getAttribute('data-key') === f;
+              feat.hidden = !fok;
+              if (fok) shown++;
+            }
             cards.forEach(function (li, i) {
               var ok = f === 'all' || keys[i] === f;
               li.hidden = !ok;
@@ -80,13 +106,33 @@ const rest = posts.slice(6);
   )}
 </BaseLayout>
 <style>
-  .head { padding: 8px 0 20px; text-align: center; }
-  h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 8px; letter-spacing: .2em; font-weight: 800; }
-  .head p { margin: 0; color: var(--text-sub); }
-  .count { margin-left: 4px; font-size: .85rem; }
+  .head { margin: 8px 0 18px; padding: 26px 20px 22px; text-align: center; color: #fff; border-radius: var(--card-radius); background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 55%, #0a1d33)); position: relative; overflow: hidden; }
+  .head::after { content: ''; position: absolute; right: -40px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255, 255, 255, .1); }
+  h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 8px; letter-spacing: .2em; font-weight: 800; position: relative; text-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
+  .head p { margin: 0 0 12px; opacity: .95; position: relative; }
+  .count { position: relative; display: inline-block; padding: 2px 14px; border-radius: 999px; background: rgba(255, 255, 255, .22); font-size: .8rem; font-weight: 700; }
+  .feature { display: grid; grid-template-columns: 1fr; margin-bottom: 20px; border-radius: var(--card-radius); overflow: hidden; background: var(--bg); box-shadow: var(--shadow); border: 2px solid var(--c); color: inherit; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .feature[hidden] { display: none; }
+  .feature:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10, 29, 51, .16); }
+  .fimg { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--bg-soft); overflow: hidden; }
+  .fimg img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
+  .feature:hover .fimg img { transform: scale(1.04); }
+  .flabel { position: absolute; left: 12px; top: 12px; background: #ff3d57; color: #fff; font-size: .78rem; font-weight: 800; padding: 3px 12px; border-radius: 999px; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+  .ftext { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+  .ftext time { font-size: .8rem; color: var(--text-sub); }
+  .ftext strong { font-size: 1.2rem; line-height: 1.5; }
+  .feature:hover strong { color: var(--c); }
+  .fdesc { font-size: .9rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .fmore { align-self: flex-start; margin-top: auto; padding: 8px 22px; border-radius: 999px; background: var(--c); color: #fff; font-weight: 700; font-size: .85rem; }
+  @media (min-width: 760px) {
+    .feature { grid-template-columns: 1.15fr 1fr; }
+    .fimg { aspect-ratio: auto; min-height: 280px; }
+    .ftext { padding: 24px 28px; justify-content: center; }
+    .ftext strong { font-size: 1.4rem; }
+  }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-  .chip { border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .85rem; cursor: pointer; }
-  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip { border: 1.5px solid var(--c); background: var(--bg); color: var(--c); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+  .chip.on { background: var(--c); color: #fff; }
   .ad { margin: 20px 0; }
   .empty { text-align: center; color: var(--text-sub); padding: 32px 0; }
   #list :global(li[hidden]) { display: none; }
