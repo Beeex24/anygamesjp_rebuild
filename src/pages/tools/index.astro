@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AdSenseScript from '../../components/AdSenseScript.astro';
 import { TOOLS, TOOL_CATEGORIES, TOOL_COLORS, TOOL_GOALS } from '../../lib/tools';
 
 const groups = (Object.keys(TOOL_CATEGORIES) as (keyof typeof TOOL_CATEGORIES)[])
@@ -15,6 +17,7 @@ const crumbs = [{ name: 'ホーム', href: '/' }, { name: 'Tools' }];
   description="ANYGAMESの無料Webツール一覧。画像圧縮など、ブラウザだけで使える便利ツールを順次追加しています。"
   breadcrumbs={[{ name: 'ホーム', href: '/' }, { name: 'Tools', href: '/tools/' }]}
 >
+  <AdSenseScript slot="head" />
   <div class="container">
     <Breadcrumb items={crumbs} />
     <h1 class="heading-c">Tools</h1>
@@ -48,6 +51,7 @@ const crumbs = [{ name: 'ホーム', href: '/' }, { name: 'Tools' }];
         </ul>
       </section>
     ))}
+    <AdSlot slot="listFeed" />
   </div>
 </BaseLayout>
 <style>

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
 import { TOOLS, TOOL_CATEGORIES, TOOL_COLORS, type ToolMeta } from '../lib/tools';
 
 interface Props {
@@ -22,6 +24,7 @@ const crumbs = [
 ];
 ---
 <BaseLayout title={title} description={description} image={`/og/tool-${current}.png`} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
+    <AdSenseScript slot="head" />
   <div class="container">
     <Breadcrumb items={crumbs} />
     <header class="head" style={`--c:${color}`}>
@@ -30,12 +33,15 @@ const crumbs = [
       {lead && <p class="lead">{lead}</p>}
     </header>
     <slot />
+    <!-- 広告はツール本体(選択ボタン・結果表示)から離し、FAQの下と末尾の2か所だけ -->
+    <AdSlot slot="postBottom" />
     <section class="section prose" aria-labelledby="more-tools" hidden={others.length === 0}>
       <h2 id="more-tools" class="section-title">ほかのツール</h2>
       <ul>
         {others.map((t) => <li><a href={t.href}>{t.name}</a> — {t.summary}</li>)}
       </ul>
     </section>
+    <AdSlot slot="postBottom" />
   </div>
 </BaseLayout>
 <style>
