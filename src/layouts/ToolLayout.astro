@@ -1,7 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import { TOOLS, TOOL_CATEGORIES, type ToolMeta } from '../lib/tools';
+import { TOOLS, TOOL_CATEGORIES, TOOL_COLORS, type ToolMeta } from '../lib/tools';
 
 interface Props {
   title: string;
@@ -12,6 +12,7 @@ interface Props {
 }
 const { title, heading, description, lead, current } = Astro.props;
 const tool = TOOLS.find((t) => t.slug === current);
+const color = tool ? TOOL_COLORS[tool.category] : 'var(--accent)';
 const others = TOOLS.filter((t) => t.slug !== current);
 const crumbs = [
   { name: 'ホーム', href: '/' },
@@ -23,7 +24,8 @@ const crumbs = [
 <BaseLayout title={title} description={description} image={`/og/tool-${current}.png`} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
   <div class="container">
     <Breadcrumb items={crumbs} />
-    <header class="head">
+    <header class="head" style={`--c:${color}`}>
+      {tool && <a class="chip" href="/tools/">{TOOL_CATEGORIES[tool.category]}</a>}
       <h1>{heading}</h1>
       {lead && <p class="lead">{lead}</p>}
     </header>
@@ -38,6 +40,7 @@ const crumbs = [
 </BaseLayout>
 <style>
   .head { padding: 20px 0 8px; max-width: var(--prose); margin: 0 auto; }
-  h1 { font-size: 1.6rem; margin-bottom: 8px; }
+  .chip { display: inline-block; margin-bottom: 8px; padding: 2px 12px; border-radius: 999px; background: var(--c); color: #fff; font-size: .78rem; font-weight: 700; text-decoration: none; }
+  h1 { font-size: 1.6rem; margin-bottom: 8px; padding-bottom: 10px; border-bottom: 3px solid var(--c); }
   .lead { margin: 0; color: var(--text-sub); }
 </style>

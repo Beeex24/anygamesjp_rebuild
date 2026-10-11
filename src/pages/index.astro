@@ -7,7 +7,7 @@ import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
 import { getCollection } from 'astro:content';
 import { getAllPosts, SECTIONS, type Post, type SectionKey } from '../lib/site';
-import { TOOLS } from '../lib/tools';
+import { TOOLS, TOOL_COLORS } from '../lib/tools';
 import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL } from '../consts';
 import { postUrl, sectionLabel } from '../lib/site';
 
@@ -93,7 +93,7 @@ const websiteLd = {
       <h2 id="tools-h" class="heading-c">無料ツール</h2>
       <ul class="tools">
         {TOOLS.map((t) => (
-          <li><a href={t.href}><strong>{t.name}</strong><span>{t.summary}</span></a></li>
+          <li><a href={t.href} style={`--c:${TOOL_COLORS[t.category]}`}><strong>{t.name}</strong><span>{t.summary}</span></a></li>
         ))}
       </ul>
       <p class="center"><a class="pill" href="/tools/">ツール一覧を見る ›</a></p>
@@ -187,9 +187,9 @@ const websiteLd = {
   .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   @media (min-width: 640px) { .tools { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 960px) { .tools { grid-template-columns: repeat(4, 1fr); } }
-  .tools a { display: grid; gap: 4px; padding: 14px 16px; height: 100%; border: 1px solid var(--line); border-radius: var(--radius); color: inherit; text-decoration: none; background: var(--bg-soft); }
-  .tools a:hover { border-color: var(--accent); background: var(--accent-soft); }
-  .tools strong { color: var(--accent); }
+  .tools a { display: grid; gap: 4px; padding: 14px 16px; height: 100%; border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: var(--radius); color: inherit; text-decoration: none; background: var(--bg-soft); }
+  .tools a:hover { border-color: var(--c); background: #fff; }
+  .tools strong { color: var(--c); }
   .tools span { font-size: .82rem; color: var(--text-sub); }
   .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }

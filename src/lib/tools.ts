@@ -71,3 +71,22 @@ export const TOOL_CATEGORIES = {
   game: 'ゲームツール',
   pc: 'PCツール',
 } as const;
+
+/** カテゴリ色。一覧・トップ・各ツールページで共通に使う */
+export const TOOL_COLORS: Record<ToolMeta['category'], string> = {
+  image: '#1e88e5',
+  game: '#7e57c2',
+  pc: '#2e9e5b',
+};
+
+/** 「やりたいこと」から探す導線(slug は TOOLS のもの) */
+export const TOOL_GOALS: { label: string; hint: string; slug: ToolMeta['slug'] }[] = [
+  { label: '画像を軽くしたい', hint: '画像圧縮', slug: 'compressor' },
+  { label: '画像の大きさを変えたい', hint: '画像リサイズ', slug: 'resizer' },
+  { label: '画像の形式を変えたい', hint: '画像変換', slug: 'converter' },
+  { label: 'ゲームの感度を合わせたい', hint: 'ゲーム感度変換', slug: 'sensitivity' },
+  { label: 'マウス感度を数値で比べたい', hint: 'eDPI計算', slug: 'edpi' },
+  { label: 'FPSとフレームタイムを知りたい', hint: 'FPS・フレームタイム変換', slug: 'fps' },
+  { label: 'PCの電気代を知りたい', hint: 'PCの電気代計算', slug: 'electricity' },
+  { label: '必要な電源容量を知りたい', hint: 'PC電源容量計算', slug: 'psu' },
+];
