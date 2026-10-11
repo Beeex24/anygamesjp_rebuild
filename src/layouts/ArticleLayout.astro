@@ -1,0 +1,169 @@
+---
+import { render, getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ArticleList from '../components/ArticleList.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import AffiliateGrid from '../components/AffiliateGrid.astro';
+import { SECTIONS, sectionLabel, formatDate, type Post } from '../lib/site';
+import { sortByDate } from '../lib/list';
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage } = post.data;
+const section = SECTIONS.find((s) => s.key === post.collection)!;
+
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+// 関連記事: 同じセクションの新着（自分以外）
+const related = sortByDate((await getCollection(post.collection)) as Post[])
+  .filter((p) => p.id !== post.id)
+  .slice(0, 6);
+
+// MOD記事のみ: 仕様欄・ダウンロードリンク
+const isMod = post.collection === 'minecraft_mod_blog';
+const mod = isMod ? (post as Extract<Post, { collection: 'minecraft_mod_blog' }>).data : undefined;
+const arr = <T,>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+const specs = mod
+  ? ([
+      ['対応バージョン', arr(mod.version).join(' / ')],
+      ['ローダー', arr(mod.modLoader).join(' / ')],
+      ['カテゴリー', mod.category],
+      ['難易度', mod.difficulty],
+      ['作者', mod.author],
+      ['ダウンロード数', mod.downloads],
+    ] as const).filter(([, v]) => v)
+  : [];
+const links = mod
+  ? ([
+      ['CurseForge', mod.curseforgeUrl],
+      ['Modrinth', mod.modrinthUrl],
+      ['Fabric', mod.fabricUrl],
+      ['NeoForge', mod.neoforgeUrl],
+      ['Quilt', mod.quiltUrl],
+      ['ダウンロード', mod.downloadLink],
+    ] as const).filter(([, v]) => v)
+  : [];
+
+const crumbs = [
+  { name: 'ホーム', href: '/' },
+  { name: section.label, href: section.path },
+  { name: title, href: `/${post.collection}/${post.id}/` },
+];
+---
+<BaseLayout title={title} description={description} image={heroImage} ogType="article"
+  pubDate={pubDate} updatedDate={updatedDate} breadcrumbs={crumbs}>
+  <AdSenseScript slot="head" />
+  <div class="container">
+    <Breadcrumb items={crumbs.map((c, i) => (i === crumbs.length - 1 ? { name: c.name } : c))} />
+    <article class="article">
+      <header class="head">
+        <p class="meta">
+          <a class="tag" href={section.path}>{sectionLabel(post.collection)}</a>
+          <time datetime={pubDate.toISOString()}>公開 {formatDate(pubDate)}</time>
+          {updatedDate && <time datetime={updatedDate.toISOString()}>更新 {formatDate(updatedDate)}</time>}
+        </p>
+        <h1>{title}</h1>
+      </header>
+
+      {heroImage && <img class="hero" src={heroImage} alt="" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async" />}
+
+      {specs.length > 0 && (
+        <section class="spec" aria-label="MODの基本情報">
+          <dl>{specs.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+          {links.length > 0 && (
+            <p class="links">
+              {links.map(([k, v]) => <a class="btn btn-sub" href={v} target="_blank" rel="noopener noreferrer">{k}</a>)}
+            </p>
+          )}
+          {mod && mod.requirements && mod.requirements.length > 0 && <p class="req"><strong>前提MOD:</strong> {mod.requirements.join('、')}</p>}
+        </section>
+      )}
+
+      <AdSlot slot="postBottom" />
+
+      {toc.length >= 3 && (
+        <details class="toc" open>
+          <summary>目次</summary>
+          <ol>
+            {toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          </ol>
+        </details>
+      )}
+
+      <div class="body prose-body"><Content /></div>
+
+      {mod && mod.tags && mod.tags.length > 0 && (
+        <p class="tags">{mod.tags.map((t) => <span>#{t}</span>)}</p>
+      )}
+    </article>
+
+    <AdSlot slot="postBottom" />
+
+    <section class="block">
+      <h2>おすすめのデバイス</h2>
+      <AffiliateGrid />
+    </section>
+
+    {related.length > 0 && (
+      <section class="block">
+        <h2>{section.label}の新着記事</h2>
+        <ArticleList posts={related} />
+      </section>
+    )}
+
+    <aside class="support">
+      <p>当サイトは個人で運営しています。記事が役に立ったら <a href="https://coff.ee/anygamesjp" target="_blank" rel="noopener noreferrer">コーヒーで応援</a> していただけると励みになります。広告掲載などのご相談は <a href="/about/">お問い合わせ</a> からどうぞ。</p>
+    </aside>
+  </div>
+</BaseLayout>
+<style>
+  .article { max-width: var(--prose); margin: 0 auto; padding-bottom: 8px; }
+  .head { padding: 8px 0 16px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin: 0 0 10px; font-size: .8rem; color: var(--text-sub); }
+  .tag { background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 999px; font-weight: 700; text-decoration: none; }
+  h1 { font-size: clamp(1.4rem, 4.5vw, 2rem); line-height: 1.4; margin: 0; text-wrap: balance; }
+  .hero { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--radius); background: var(--bg-soft); margin: 4px 0 8px; }
+  .spec { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; background: var(--bg-soft); }
+  .spec dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 16px; margin: 0; }
+  .spec dt { font-size: .75rem; color: var(--text-sub); }
+  .spec dd { margin: 0; font-weight: 700; font-size: .9rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .links .btn { min-height: 40px; font-size: .85rem; padding: 0 14px; }
+  .req { margin: 12px 0 0; font-size: .85rem; }
+  .toc { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; margin: 16px 0 24px; background: var(--bg-soft); }
+  .toc summary { font-weight: 700; cursor: pointer; }
+  .toc ol { margin: 10px 0 0; padding-left: 1.2em; font-size: .9rem; display: grid; gap: 4px; }
+  .toc .d3 { margin-left: 1em; list-style: circle; font-size: .85rem; }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 24px 0 0; font-size: .8rem; color: var(--text-sub); }
+  .tags span { background: var(--bg-soft); padding: 2px 10px; border-radius: 999px; }
+  .block { margin: 40px 0 0; }
+  .block h2 { font-size: 1.25rem; margin: 0 0 16px; }
+  .support { max-width: var(--prose); margin: 40px auto 24px; padding: 14px 16px; border-radius: var(--radius); background: var(--bg-soft); font-size: .85rem; color: var(--text-sub); }
+  .support p { margin: 0; }
+
+  /* 記事本文（Markdown由来）。本文HTMLにはこのコンポーネントのscopeが付かないので :global を使う */
+  .body { font-size: 1.0625rem; line-height: 1.95; overflow-wrap: anywhere; }
+  .body :global(h2) { font-size: 1.4rem; line-height: 1.5; margin: 2.6em 0 .9em; padding: 0 0 .4em; border-bottom: 2px solid var(--accent); scroll-margin-top: 72px; }
+  .body :global(h3) { font-size: 1.15rem; line-height: 1.5; margin: 2em 0 .7em; padding-left: .7em; border-left: 4px solid var(--accent); scroll-margin-top: 72px; }
+  .body :global(h4) { font-size: 1.05rem; margin: 1.6em 0 .5em; }
+  .body :global(p) { margin: 0 0 1.4em; }
+  .body :global(ul), .body :global(ol) { margin: 0 0 1.4em; padding-left: 1.5em; }
+  .body :global(li) { margin-bottom: .4em; }
+  .body :global(a) { color: var(--accent); text-underline-offset: 3px; }
+  .body :global(img), .body :global(video) { max-width: 100%; height: auto; border-radius: 6px; }
+  .body :global(iframe) { max-width: 100%; }
+  .body :global(blockquote) { margin: 0 0 1.4em; padding: .8em 1.1em; border-left: 4px solid var(--line); background: var(--bg-soft); color: var(--text-sub); }
+  .body :global(blockquote p:last-child) { margin-bottom: 0; }
+  .body :global(code) { background: var(--bg-soft); padding: .1em .4em; border-radius: 4px; font-size: .9em; }
+  .body :global(pre) { overflow-x: auto; padding: 14px 16px; border-radius: var(--radius); background: #14161c; color: #e8eaf0; line-height: 1.6; margin: 0 0 1.4em; }
+  .body :global(pre code) { background: none; padding: 0; color: inherit; }
+  .body :global(table) { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.4em; font-size: .95rem; }
+  .body :global(th), .body :global(td) { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+  .body :global(th) { background: var(--bg-soft); white-space: nowrap; }
+  .body :global(hr) { border: 0; border-top: 1px solid var(--line); margin: 2.4em 0; }
+</style>

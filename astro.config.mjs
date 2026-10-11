@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
+import rehypeDemoteH1 from './src/plugins/rehype-demote-h1.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,7 +30,7 @@ export default defineConfig({
     // remarkプラグインはimportしたものを配列で指定
     remarkPlugins: [remarkGfm],
     // rehypeプラグインも必要ならここに追加
-    rehypePlugins: [],
+    rehypePlugins: [rehypeDemoteH1],
     // シンタックスハイライトの設定（shiki or prism）
     syntaxHighlight: 'shiki',
     shikiConfig: {
