@@ -54,6 +54,7 @@ if (ogType === 'article' && pubDate) {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={title} />
 <meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:locale" content="ja_JP" />
 {ogType === 'article' && pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}

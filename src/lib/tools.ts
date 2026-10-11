@@ -26,7 +26,7 @@ export const TOOLS: ToolMeta[] = [
     slug: 'converter',
     href: '/tools/image/converter/',
     name: '画像変換',
-    summary: 'JPEG・PNG・WebPを相互に変換。透過画像の背景色も選べます。',
+    summary: 'JPEG・PNG・WebP・AVIFを相互に変換。透過画像の背景色も選べます。',
     category: 'image',
   },
   {

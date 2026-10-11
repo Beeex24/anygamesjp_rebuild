@@ -20,7 +20,7 @@ const crumbs = [
   { name: heading },
 ];
 ---
-<BaseLayout title={title} description={description} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
+<BaseLayout title={title} description={description} image={`/og/tool-${current}.png`} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
   <div class="container">
     <Breadcrumb items={crumbs} />
     <header class="head">
