@@ -16,6 +16,7 @@ import ImageCompare from './ImageCompare.astro';
         <label><input type="radio" name="format" value="jpeg" checked /><span><b>JPEG</b><small>写真向け・軽い</small></span></label>
         <label><input type="radio" name="format" value="png" /><span><b>PNG</b><small>透過OK・劣化なし</small></span></label>
         <label><input type="radio" name="format" value="webp" /><span><b>WebP</b><small>軽くて透過OK</small></span></label>
+        <label><input type="radio" name="format" value="avif" /><span><b>AVIF</b><small>最小・処理が遅め</small></span></label>
       </div>
     </fieldset>
 
@@ -51,7 +52,8 @@ import ImageCompare from './ImageCompare.astro';
   .privacy { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; font-size: .875rem; margin: 0 0 16px; }
   .formats { border: 0; padding: 0; margin: 20px 0 0; }
   legend { font-weight: 700; padding: 0; margin-bottom: 8px; }
-  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  @media (min-width: 640px) { .tabs { grid-template-columns: repeat(4, 1fr); } }
   .tabs label { position: relative; display: block; }
   .tabs input { position: absolute; opacity: 0; inset: 0; }
   .tabs span { display: grid; place-items: center; gap: 2px; min-height: 64px; padding: 8px 4px; text-align: center; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); cursor: pointer; }
@@ -82,7 +84,7 @@ import ImageCompare from './ImageCompare.astro';
 
   const format = (): ConvertFormat => {
     const v = document.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value;
-    return v === 'png' || v === 'webp' ? v : 'jpeg';
+    return v === 'png' || v === 'webp' || v === 'avif' ? v : 'jpeg';
   };
 
   // 形式に関係のない設定は隠す(PNGに画質はない / 背景色はJPEGだけ)

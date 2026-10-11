@@ -10,8 +10,8 @@ import {
 
 export { LIMITS, UserFacingError, toFriendlyMessage };
 
-export type OutFormat = 'auto' | 'jpeg' | 'webp';
-type CMime = 'image/jpeg' | 'image/webp';
+export type OutFormat = 'auto' | 'jpeg' | 'webp' | 'avif';
+type CMime = 'image/jpeg' | 'image/webp' | 'image/avif';
 
 export interface CompressOptions {
   format: OutFormat;
@@ -139,14 +139,14 @@ export async function compressImage(
   try {
     const notes: string[] = [];
     const { hasAlpha, isGraphic } = analyze(bitmap);
-    const [jpegOk, webpOk] = await Promise.all([canEncode('image/jpeg'), canEncode('image/webp')]);
-
+    
     let mimes: CMime[];
     if (options.format === 'jpeg') mimes = ['image/jpeg'];
     else if (options.format === 'webp') mimes = ['image/webp'];
+    else if (options.format === 'avif') mimes = ['image/avif'];
     else if (hasAlpha) mimes = ['image/webp'];
     else mimes = isGraphic ? ['image/webp', 'image/jpeg'] : ['image/jpeg', 'image/webp'];
-    mimes = mimes.filter((m) => (m === 'image/jpeg' ? jpegOk : webpOk));
+    mimes = (await Promise.all(mimes.map(async (m) => ((await canEncode(m)) ? m : null)))).filter((m): m is CMime => m !== null);
     if (mimes.length === 0) {
       throw new UserFacingError('お使いのブラウザでは、この形式への変換に対応していません。');
     }

@@ -10,12 +10,6 @@ export default defineConfig({
   site: 'https://anygamesjp.com',
   integrations: [mdx(), sitemap()],
 
-  // TypeScript設定を追加
-  typescript: {
-    // TypeScriptの厳密なチェックを緩和
-    strict: false,
-    checkJs: false
-  },
   // Vite設定でesbuildのターゲットを指定
   vite: {
     define: {
@@ -24,7 +18,9 @@ export default defineConfig({
 
     esbuild: {
       target: 'es2020'
-    }
+    },
+    // 画像ツールのWorkerがWASMを動的importするため ES モジュール形式にする
+    worker: { format: 'es' }
   },
   markdown: {
     // remarkプラグインはimportしたものを配列で指定
@@ -37,8 +33,6 @@ export default defineConfig({
       theme: 'github-dark',
       wrap: true
     },
-    // ドラフト機能
-    drafts: false,
     // remark-rehypeの追加設定（必要な場合のみ）
     remarkRehype: {
       footnoteLabel: "脚注"

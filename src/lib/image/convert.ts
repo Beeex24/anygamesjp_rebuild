@@ -2,13 +2,13 @@ import {
   ACCEPTED, LIMITS, UserFacingError, canEncode, getCtx, makeCanvas, toBlob, type Mime,
 } from './canvas';
 
-export type ConvertFormat = 'jpeg' | 'png' | 'webp';
+export type ConvertFormat = 'jpeg' | 'png' | 'webp' | 'avif';
 export type ConvertQuality = 'high' | 'standard' | 'small';
 export type Background = 'white' | 'black';
 
 export interface ConvertOptions {
   format: ConvertFormat;
-  /** JPEG / WebP のみ有効 */
+  /** JPEG / WebP / AVIF のみ有効 */
   quality: ConvertQuality;
   /** JPEG に変換するとき、透明な部分を塗る色 */
   background: Background;
@@ -28,7 +28,7 @@ export interface ConvertResult {
 
 export type ProgressFn = (message: string) => void;
 
-const MIME: Record<ConvertFormat, Mime> = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+const MIME: Record<ConvertFormat, Mime> = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', avif: 'image/avif' };
 const LABEL: Record<string, string> = { 'image/jpeg': 'JPEG', 'image/png': 'PNG', 'image/webp': 'WebP', 'image/avif': 'AVIF' };
 const QUALITY: Record<ConvertQuality, number> = { high: 0.92, standard: 0.8, small: 0.65 };
 
@@ -80,7 +80,7 @@ export async function convertImage(file: File, options: ConvertOptions, onProgre
       notes.push('PNGは写真をそのまま保存するためファイルサイズが大きくなりがちです。軽さを優先するなら JPEG か WebP がおすすめです。');
     }
 
-    onProgress('変換しています…');
+    onProgress(mime === 'image/avif' ? 'AVIFに変換しています(時間がかかることがあります)…' : '変換しています…');
     const canvas = makeCanvas(width, height);
     const ctx = getCtx(canvas);
     if (opaque) {

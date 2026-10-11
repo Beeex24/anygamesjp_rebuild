@@ -36,6 +36,7 @@ import ImageCompare from './ImageCompare.astro';
             <option value="auto">自動で最適なものを選ぶ</option>
             <option value="jpeg">JPEG</option>
             <option value="webp">WebP</option>
+            <option value="avif">AVIF(最小・処理が遅め)</option>
           </select>
         </label>
       </div>
@@ -75,7 +76,7 @@ import ImageCompare from './ImageCompare.astro';
     const t = $<HTMLSelectElement>('opt-target').value;
     const e = $<HTMLSelectElement>('opt-edge').value;
     const f = $<HTMLSelectElement>('opt-format').value;
-    const format: OutFormat = f === 'jpeg' || f === 'webp' ? f : 'auto';
+    const format: OutFormat = f === 'jpeg' || f === 'webp' || f === 'avif' ? f : 'auto';
     return { format, targetBytes: t ? Number(t) : null, maxEdge: e ? Number(e) : null };
   }
 

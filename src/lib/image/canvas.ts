@@ -3,7 +3,7 @@
  * Web Worker とメインスレッドの両方で動く。
  */
 
-export type Mime = 'image/jpeg' | 'image/webp' | 'image/png';
+export type Mime = 'image/jpeg' | 'image/webp' | 'image/png' | 'image/avif';
 
 /** ユーザーにそのまま表示してよいエラー */
 export class UserFacingError extends Error {}
@@ -38,7 +38,8 @@ export function getCtx(canvas: AnyCanvas): AnyCtx {
   return ctx;
 }
 
-export async function toBlob(canvas: AnyCanvas, mime: Mime, quality: number): Promise<Blob | null> {
+/** Canvas標準のエンコード(WASMが使えない場合の代替) */
+async function toBlobNative(canvas: AnyCanvas, mime: Mime, quality: number): Promise<Blob | null> {
   let blob: Blob | null;
   if ('convertToBlob' in canvas) {
     blob = await canvas.convertToBlob({ type: mime, quality });
@@ -47,6 +48,21 @@ export async function toBlob(canvas: AnyCanvas, mime: Mime, quality: number): Pr
   }
   // 非対応形式は PNG にフォールバックされるため、種類が一致しなければ失敗扱い
   return blob && blob.type === mime ? blob : null;
+}
+
+/** WASMの読み込みに失敗した形式は、以降Canvasエンコードに切り替える */
+const wasmBroken = new Set<Mime>();
+
+export async function toBlob(canvas: AnyCanvas, mime: Mime, quality: number): Promise<Blob | null> {
+  if (!wasmBroken.has(mime)) {
+    try {
+      const { encodeWithWasm } = await import('./wasm');
+      return await encodeWithWasm(canvas, mime, quality);
+    } catch {
+      wasmBroken.add(mime);
+    }
+  }
+  return toBlobNative(canvas, mime, quality);
 }
 
 const supportCache = new Map<Mime, boolean>();
