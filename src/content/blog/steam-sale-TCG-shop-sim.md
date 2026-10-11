@@ -272,7 +272,7 @@ Steamで異例の大ヒットを記録しているカードショップ経営シ
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-    <li><a href="/blog/steam-sale-sniper-elite-5">【Steamオータムセール】名作スナイパーゲーム「Sniper Elite 5」が90%オフで858円！史上最安値のWW2狙撃シミュレーター</a></li>
+    <li><a href="/blog/steam-sale-sniper_elite_5/">【Steamオータムセール】名作スナイパーゲーム「Sniper Elite 5」が90%オフで858円！史上最安値のWW2狙撃シミュレーター</a></li>
     <li><a href="/blog/steam-sale-7days-to-die">【Steamオータムセール】元祖ゾンビサバイバル「7 Days to Die」が40%オフで2,940円！2000万本突破の名作が正式版リリース後初の大型セール</a></li>
     <li><a href="/blog/steam-sale-repo">【Steamオータムセール】話題の協力ホラー「R.E.P.O.」が30%オフで840円！最大6人マルチで楽しむLethal Company系物理エンジン搭載ホラー</a></li>
   </ul>

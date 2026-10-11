@@ -120,7 +120,7 @@ Backroomsは、インターネット上で生まれた都市伝説「クリー�
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-    <li><a href="/blog/EscapetheBackrooms-news-0827">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
+    <li><a href="/blog/escapethebackrooms-news-0827/">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
   </ul>
 </div>
 

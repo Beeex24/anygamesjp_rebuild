@@ -131,9 +131,9 @@ Escape from Tarkovのクローズドαテストは2016年に開始され、正�
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-  　<li><a href="/blog/steam-sale-Digging-A-Hole">【Steamセール】話題沸騰「A Game About Digging A Hole」が25%オフで615円！初週25万本売上の穴掘りゲーム</a></li>
+  　<li><a href="/blog/steam-sale-digging-a-hole/">【Steamセール】話題沸騰「A Game About Digging A Hole」が25%オフで615円！初週25万本売上の穴掘りゲーム</a></li>
     <li><a href="/blog/steam-sale-tcg-shop-sim">【Steamセール】大ヒット経営シム「TCG Card Shop Simulator」が40%オフで900円！カードショップ経営の夢を叶える神ゲー</a></li>
-    <li><a href="/blog/steam-sale-sniper-elite-5">【Steamオータムセール】名作スナイパーゲーム「Sniper Elite 5」が90%オフで858円！史上最安値のWW2狙撃シミュレーター</a></li>
+    <li><a href="/blog/steam-sale-sniper_elite_5/">【Steamオータムセール】名作スナイパーゲーム「Sniper Elite 5」が90%オフで858円！史上最安値のWW2狙撃シミュレーター</a></li>
   </ul>
 </div>
 
