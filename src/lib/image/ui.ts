@@ -36,9 +36,24 @@ export function initDropzone(onFile: (f: File | undefined) => void): void {
   drop.addEventListener('drop', (e) => onFile((e as DragEvent).dataTransfer?.files?.[0]));
 }
 
-export function showFileName(f: File): void {
+/** 複数選択対応のファイル選択。選ばれたファイル一覧(画像のみ)を onFiles に渡す */
+export function initDropzoneMulti(onFiles: (files: File[]) => void): void {
+  const input = $<HTMLInputElement>('file');
+  const drop = $<HTMLLabelElement>('drop');
+  const pick = (list: FileList | null | undefined) => onFiles(Array.from(list ?? []).filter((f) => f.type.startsWith('image/')));
+  input.addEventListener('change', () => pick(input.files));
+  (['dragenter', 'dragover'] as const).forEach((ev) =>
+    drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  (['dragleave', 'drop'] as const).forEach((ev) =>
+    drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', (e) => pick(e.dataTransfer?.files));
+}
+
+export function showFileName(f: File | File[]): void {
   const el = $('file-name');
-  el.textContent = `${f.name}(${formatBytes(f.size)})`;
+  el.textContent = Array.isArray(f)
+    ? f.length === 1 ? `${f[0].name}(${formatBytes(f[0].size)})` : `${f.length}枚の画像を選択中(合計 ${formatBytes(f.reduce((n, x) => n + x.size, 0))})`
+    : `${f.name}(${formatBytes(f.size)})`;
   el.hidden = false;
 }
 
@@ -60,6 +75,9 @@ export interface CompareInfo {
 const typeLabel = (mime: string) => mime.replace('image/', '').toUpperCase();
 
 export function showCompare(file: File, r: CompareInfo): void {
+  if (!sliderReady) { initSlider(); sliderReady = true; }
+  $<HTMLInputElement>('slider-range').value = '50';
+  $('slider').style.setProperty('--pos', '50%');
   revokeUrls();
   $<HTMLImageElement>('img-before').src = trackUrl(file);
   $<HTMLImageElement>('img-after').src = trackUrl(r.blob);
@@ -75,6 +93,14 @@ export function showCompare(file: File, r: CompareInfo): void {
   $('result').hidden = false;
   $('result').scrollIntoView({ block: 'start' });
 }
+
+/** 比較スライダー。位置をCSS変数 --pos に反映する */
+function initSlider(): void {
+  const range = $<HTMLInputElement>('slider-range');
+  const slider = $('slider');
+  range.addEventListener('input', () => slider.style.setProperty('--pos', `${range.value}%`));
+}
+let sliderReady = false;
 
 /** 「別の画像を選ぶ」。フォーム固有のリセットは onReset で行う */
 export function initCompareReset(onReset: () => void): void {

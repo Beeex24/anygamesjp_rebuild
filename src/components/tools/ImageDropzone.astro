@@ -1,9 +1,11 @@
 ---
 /** 画像ツール共通: ファイル選択エリア。idは src/lib/image/ui.ts と対応。 */
+interface Props { multiple?: boolean }
+const { multiple = false } = Astro.props;
 ---
 <label class="drop" id="drop">
-  <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/avif" />
-  <span class="drop-main">画像を選択、またはここにドラッグ</span>
+  <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple={multiple} />
+  <span class="drop-main">{multiple ? '画像を選択(複数OK)、またはここにドラッグ' : '画像を選択、またはここにドラッグ'}</span>
   <span class="drop-sub">JPEG / PNG / WebP / AVIF ・ 40MBまで</span>
 </label>
 <p class="file-name" id="file-name" hidden></p>

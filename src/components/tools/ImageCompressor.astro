@@ -8,7 +8,7 @@ import ImageCompare from './ImageCompare.astro';
 
   <section class="panel" aria-labelledby="step-input" id="input-panel">
     <h2 id="step-input" class="sr-only">画像を選択</h2>
-    <ImageDropzone />
+    <ImageDropzone multiple />
 
     <details class="adv">
       <summary>詳細設定</summary>
@@ -48,6 +48,16 @@ import ImageCompare from './ImageCompare.astro';
   </section>
 
   <ImageCompare />
+
+  <section class="batch" id="batch" aria-labelledby="batch-title" hidden>
+    <h2 id="batch-title" class="section-title">結果</h2>
+    <p class="saved" id="batch-summary"></p>
+    <ul class="rows" id="batch-rows"></ul>
+    <div class="actions">
+      <a class="btn" id="zip" href="#" download="anygames-images.zip">すべてZIPで保存</a>
+      <button type="button" class="btn btn-sub" id="batch-reset">別の画像を選ぶ</button>
+    </div>
+  </section>
 </div>
 
 <style>
@@ -60,17 +70,29 @@ import ImageCompare from './ImageCompare.astro';
   select { min-height: 48px; font: inherit; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); }
   .go { width: 100%; font-size: 1.05rem; }
   .status { min-height: 1.5em; margin: 10px 0 0; color: var(--text-sub); font-size: .9rem; }
+  .batch { scroll-margin-top: 72px; }
+  .rows { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+  .rows li { display: grid; grid-template-columns: 56px 1fr auto; gap: 4px 12px; align-items: center; padding: 8px 12px 8px 8px; border: 1px solid var(--line); border-radius: var(--radius); }
+  .rows img { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; background: var(--bg-soft); }
+  .rows .name { font-size: .85rem; font-weight: 700; word-break: break-all; }
+  .rows .sub { font-size: .78rem; color: var(--text-sub); }
+  .rows .fail { color: var(--danger); }
+  .rows a { font-size: .85rem; white-space: nowrap; }
+  .actions { display: grid; gap: 10px; margin-top: 16px; }
+  @media (min-width: 640px) { .actions { grid-template-columns: 1fr 1fr; } }
   .error { margin: 10px 0 0; padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--danger); color: var(--danger); }
 </style>
 
 <script>
-  import { runCompress } from '../../lib/image/client';
+  import { runCompress, formatBytes, buildFileName } from '../../lib/image/client';
   import type { CompressOptions, OutFormat } from '../../lib/image/compress';
-  import { $, clearError, describeSizeChange, initCompareReset, initDropzone, showCompare, showError, showFileName } from '../../lib/image/ui';
+  import { buildZip, uniqueName } from '../../lib/image/zip';
+  import { $, clearError, describeSizeChange, initCompareReset, initDropzoneMulti, revokeUrls, showCompare, showError, showFileName, trackUrl } from '../../lib/image/ui';
 
+  const MAX_FILES = 30;
   const runBtn = $<HTMLButtonElement>('run');
   const statusEl = $('status');
-  let current: File | null = null;
+  let files: File[] = [];
 
   function readOptions(): CompressOptions {
     const t = $<HTMLSelectElement>('opt-target').value;
@@ -80,37 +102,113 @@ import ImageCompare from './ImageCompare.astro';
     return { format, targetBytes: t ? Number(t) : null, maxEdge: e ? Number(e) : null };
   }
 
-  initDropzone((f) => {
+  initDropzoneMulti((picked) => {
     clearError();
     statusEl.textContent = '';
-    if (!f) return;
-    current = f;
-    showFileName(f);
+    if (picked.length === 0) return;
+    if (picked.length > MAX_FILES) {
+      showError(`一度に処理できるのは ${MAX_FILES} 枚までです。先頭の ${MAX_FILES} 枚を選択しました。`);
+      picked = picked.slice(0, MAX_FILES);
+    }
+    files = picked;
+    showFileName(files);
     runBtn.disabled = false;
   });
 
+  async function runSingle(file: File) {
+    const r = await runCompress(file, readOptions(), (m) => { statusEl.textContent = m; });
+    statusEl.textContent = '';
+    const summary = r.keptOriginal ? 'これ以上は小さくできませんでした' : describeSizeChange(file.size, r.blob.size);
+    showCompare(file, {
+      ...r,
+      afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
+      summary,
+      fileSuffix: 'anygames',
+    });
+  }
+
+  async function runBatch(list: File[]) {
+    const options = readOptions();
+    const rows = $('batch-rows');
+    rows.replaceChildren();
+    revokeUrls();
+    const done: { name: string; blob: Blob }[] = [];
+    const used = new Set<string>();
+    let before = 0;
+    let after = 0;
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      const prefix = `(${i + 1}/${list.length}) `;
+      const li = document.createElement('li');
+      const thumb = document.createElement('img');
+      thumb.alt = '';
+      thumb.src = trackUrl(file);
+      const info = document.createElement('div');
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = file.name;
+      const sub = document.createElement('div');
+      sub.className = 'sub';
+      info.append(name, sub);
+      li.append(thumb, info);
+      rows.append(li);
+      try {
+        const r = await runCompress(file, options, (m) => { statusEl.textContent = prefix + m; });
+        const outName = uniqueName(buildFileName(file.name, r.mime, 'anygames'), used);
+        done.push({ name: outName, blob: r.blob });
+        before += file.size;
+        after += r.blob.size;
+        sub.textContent = `${formatBytes(file.size)} → ${formatBytes(r.blob.size)}(${r.keptOriginal ? '元のまま' : describeSizeChange(file.size, r.blob.size)})`;
+        const a = document.createElement('a');
+        a.href = trackUrl(r.blob);
+        a.download = outName;
+        a.textContent = '保存';
+        li.append(a);
+      } catch (err) {
+        sub.textContent = err instanceof Error ? err.message : '処理できませんでした。';
+        sub.classList.add('fail');
+      }
+    }
+    statusEl.textContent = '';
+    if (done.length === 0) {
+      showError('処理できる画像がありませんでした。');
+      return;
+    }
+    $('batch-summary').textContent = `${done.length}枚を処理しました(合計 ${formatBytes(before)} → ${formatBytes(after)}・${describeSizeChange(before, after)})`;
+    const zip = $<HTMLAnchorElement>('zip');
+    zip.hidden = done.length < 2;
+    if (done.length >= 2) zip.href = trackUrl(await buildZip(done));
+    $('input-panel').hidden = true;
+    $('batch').hidden = false;
+    $('batch').scrollIntoView({ block: 'start' });
+  }
+
   runBtn.addEventListener('click', async () => {
-    if (!current) return;
-    const file = current;
+    if (files.length === 0) return;
+    const list = files;
     clearError();
     runBtn.disabled = true;
     try {
-      const r = await runCompress(file, readOptions(), (m) => { statusEl.textContent = m; });
-      statusEl.textContent = '';
-      const summary = r.keptOriginal ? 'これ以上は小さくできませんでした' : describeSizeChange(file.size, r.blob.size);
-      showCompare(file, {
-        ...r,
-        afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
-        summary,
-        fileSuffix: 'anygames',
-      });
+      if (list.length === 1) await runSingle(list[0]);
+      else await runBatch(list);
     } catch (err) {
       statusEl.textContent = '';
       showError(err instanceof Error ? err.message : '処理中に問題が発生しました。もう一度お試しください。');
     } finally {
-      runBtn.disabled = false;
+      runBtn.disabled = files.length === 0;
     }
   });
 
-  initCompareReset(() => { current = null; runBtn.disabled = true; });
+  initCompareReset(() => { files = []; runBtn.disabled = true; });
+  $('batch-reset').addEventListener('click', () => {
+    revokeUrls();
+    $<HTMLInputElement>('file').value = '';
+    $('file-name').hidden = true;
+    $('batch').hidden = true;
+    $('input-panel').hidden = false;
+    statusEl.textContent = '';
+    clearError();
+    files = [];
+    runBtn.disabled = true;
+  });
 </script>
