@@ -1,12 +1,11 @@
 ---
-import Picture from './Picture.astro';
 import { AFFILIATE_ITEMS } from '../lib/affiliate';
 import { AFFILIATE_NOTICE } from '../consts';
 ---
 <ul class="grid">
   {AFFILIATE_ITEMS.map((i) => (
     <li class="item">
-      <Picture src={i.image} width={240} height={240} />
+      <img src={i.image} alt="" width="240" height="240" loading="lazy" decoding="async" />
       <h3>{i.name}</h3>
       <p class="sum">{i.summary}</p>
       <p class="price">{i.price}<span>(目安)</span></p>
@@ -19,7 +18,7 @@ import { AFFILIATE_NOTICE } from '../consts';
   .grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
   .item { display: flex; flex-direction: column; gap: 6px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); }
-  .item :global(img) { width: 100%; aspect-ratio: 1; object-fit: contain; }
+  img { width: 100%; aspect-ratio: 1; object-fit: contain; }
   h3 { font-size: .9rem; margin: 0; }
   .sum { margin: 0; font-size: .8rem; color: var(--text-sub); flex: 1; }
   .price { margin: 0; font-weight: 800; }

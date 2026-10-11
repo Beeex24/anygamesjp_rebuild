@@ -3,7 +3,6 @@ import { render, getCollection } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import ArticleList from '../components/ArticleList.astro';
-import Picture from '../components/Picture.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
 import AffiliateGrid from '../components/AffiliateGrid.astro';
@@ -69,7 +68,7 @@ const crumbs = [
         <h1>{title}</h1>
       </header>
 
-      {heroImage && <Picture class="hero" src={heroImage} width={1200} height={630} loading="eager" fetchpriority="high" />}
+      {heroImage && <img class="hero" src={heroImage} alt="" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async" />}
 
       {specs.length > 0 && (
         <section class="spec" aria-label="MODの基本情報">
@@ -126,7 +125,7 @@ const crumbs = [
   .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin: 0 0 10px; font-size: .8rem; color: var(--text-sub); }
   .tag { background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 999px; font-weight: 700; text-decoration: none; }
   h1 { font-size: clamp(1.4rem, 4.5vw, 2rem); line-height: 1.4; margin: 0; text-wrap: balance; }
-  .article :global(.hero) { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--radius); background: var(--bg-soft); margin: 4px 0 8px; }
+  .hero { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--radius); background: var(--bg-soft); margin: 4px 0 8px; }
   .spec { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; background: var(--bg-soft); }
   .spec dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 16px; margin: 0; }
   .spec dt { font-size: .75rem; color: var(--text-sub); }
