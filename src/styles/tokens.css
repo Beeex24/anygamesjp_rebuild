@@ -10,14 +10,14 @@
   --accent-soft: #e5f4fc;
   --cyan: #00a8ff; /* ナビ・強調(暗い背景の上で使う) */
   --navy: #0a1d33; /* ナビの背景 */
-  --grad: linear-gradient(135deg, #667eea, #764ba2); /* 記事タイトル帯 */
+  --grad: #1c3a5e; /* 記事タイトル帯(単色) */
   --rank-game: #29b6e8;
   --rank-gadget: #4caf50;
   --rank-mod: #3f8cf0;
   --danger: #c0392b;
-  --radius: 10px;
-  --card-radius: 14px;
-  --shadow: 0 2px 10px rgba(10, 29, 51, .08);
+  --radius: 4px;
+  --card-radius: 6px;
+  --shadow: 0 1px 2px rgba(10, 29, 51, .08);
   --content: 1120px;
   --prose: 720px;
   --font: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif;
@@ -53,7 +53,7 @@ main > .container:not(.bare) {
 .section { padding: 32px 0; }
 .section-title { font-size: 1.25rem; margin-bottom: 16px; }
 /* 旧サイトの見出し(中央・字間広め) */
-.heading-c { text-align: center; font-size: clamp(1.4rem, 3.5vw, 1.9rem); letter-spacing: .25em; font-weight: 800; margin: 12px 0 20px; }
+.heading-c { text-align: left; font-size: clamp(1.2rem, 3vw, 1.5rem); letter-spacing: .02em; font-weight: 800; margin: 14px 0 18px; padding: 2px 0 2px 12px; border-left: 6px solid var(--accent); line-height: 1.4; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
 
 /* 計算ツール共通(ゲーム・PCツール) */

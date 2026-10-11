@@ -106,24 +106,22 @@ const rest = listed.slice(6);
   )}
 </BaseLayout>
 <style>
-  .head { margin: 8px 0 18px; padding: 26px 20px 22px; text-align: center; color: #fff; border-radius: var(--card-radius); background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 55%, #0a1d33)); position: relative; overflow: hidden; }
-  .head::after { content: ''; position: absolute; right: -40px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255, 255, 255, .1); }
-  h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 8px; letter-spacing: .2em; font-weight: 800; position: relative; text-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
-  .head p { margin: 0 0 12px; opacity: .95; position: relative; }
-  .count { position: relative; display: inline-block; padding: 2px 14px; border-radius: 999px; background: rgba(255, 255, 255, .22); font-size: .8rem; font-weight: 700; }
-  .feature { display: grid; grid-template-columns: 1fr; margin-bottom: 20px; border-radius: var(--card-radius); overflow: hidden; background: var(--bg); box-shadow: var(--shadow); border: 2px solid var(--c); color: inherit; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .head { margin: 8px 0 18px; padding: 4px 0 4px 14px; border-left: 8px solid var(--c); }
+  h1 { font-size: clamp(1.4rem, 4vw, 1.8rem); margin: 0 0 4px; letter-spacing: .03em; font-weight: 800; }
+  .head p { margin: 0 0 4px; color: var(--text-sub); font-size: .9rem; }
+  .count { display: inline-block; color: var(--c); font-size: .8rem; font-weight: 800; }
+  .feature { display: grid; grid-template-columns: 1fr; margin-bottom: 20px; border-radius: var(--card-radius); overflow: hidden; background: var(--bg); border: 1px solid var(--line); border-top: 4px solid var(--c); color: inherit; text-decoration: none; }
   .feature[hidden] { display: none; }
-  .feature:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10, 29, 51, .16); }
   .fimg { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--bg-soft); overflow: hidden; }
   .fimg img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
   .feature:hover .fimg img { transform: scale(1.04); }
-  .flabel { position: absolute; left: 12px; top: 12px; background: #ff3d57; color: #fff; font-size: .78rem; font-weight: 800; padding: 3px 12px; border-radius: 999px; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+  .flabel { position: absolute; left: 12px; top: 12px; background: #ff3d57; color: #fff; font-size: .78rem; font-weight: 800; padding: 2px 10px; border-radius: 2px; }
   .ftext { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
   .ftext time { font-size: .8rem; color: var(--text-sub); }
   .ftext strong { font-size: 1.2rem; line-height: 1.5; }
   .feature:hover strong { color: var(--c); }
   .fdesc { font-size: .9rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .fmore { align-self: flex-start; margin-top: auto; padding: 8px 22px; border-radius: 999px; background: var(--c); color: #fff; font-weight: 700; font-size: .85rem; }
+  .fmore { align-self: flex-start; margin-top: auto; padding: 8px 20px; border-radius: 3px; background: var(--c); color: #fff; font-weight: 700; font-size: .85rem; }
   @media (min-width: 760px) {
     .feature { grid-template-columns: 1.15fr 1fr; }
     .fimg { aspect-ratio: auto; min-height: 280px; }
@@ -131,7 +129,7 @@ const rest = listed.slice(6);
     .ftext strong { font-size: 1.4rem; }
   }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-  .chip { border: 1.5px solid var(--c); background: var(--bg); color: var(--c); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+  .chip { border: 1.5px solid var(--c); background: var(--bg); color: var(--c); border-radius: 3px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
   .chip.on { background: var(--c); color: #fff; }
   .ad { margin: 20px 0; }
   .empty { text-align: center; color: var(--text-sub); padding: 32px 0; }
