@@ -9,7 +9,7 @@ category: 'minecraft'
 
 ## Mounts of Mayhemに追加される新MOBたち
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem1.png)
+![Mounts of Mayhemに追加される新MOBたちの画像](/pcgame/minecraft/others/mayhem/mayhem1.png)
 
 Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・メイヘム）に、さらなる新MOBが追加されることが明らかになりました！ノーチラス、ゾンビノーチラス、ゾンビホースに続き、砂漠バイオームに新たな脅威が登場します。
 
@@ -23,7 +23,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 
 ## 新MOB①：キャメルハスク（Camel Husk）
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem2.png)
+![新MOB①：キャメルハスク（Camel Husk）の画像](/pcgame/minecraft/others/mayhem/mayhem2.png)
 
 ### キャメルハスクの基本情報
 
@@ -61,7 +61,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 
 ## 新MOB②：パーチド（Parched）
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem3.png)
+![新MOB②：パーチド（Parched）の画像](/pcgame/minecraft/others/mayhem/mayhem3.png)
 
 ### パーチドの基本情報
 
@@ -86,7 +86,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 
 ## 革命的機能：馬の水泳が実装！
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem4.png)
+![革命的機能：馬の水泳が実装！の画像](/pcgame/minecraft/others/mayhem/mayhem4.png)
 
 ### 長年の課題がついに解決
 
@@ -257,7 +257,7 @@ Minecraftで馬をテイムして基地に連れて帰ろうとしたら巨大�
 
 ## 槍（Spear）の追加詳細
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem5.png)
+![槍（Spear）の追加詳細の画像](/pcgame/minecraft/others/mayhem/mayhem5.png)
 
 ### 槍の全ティアと作成方法
 
@@ -292,7 +292,7 @@ Minecraftで馬をテイムして基地に連れて帰ろうとしたら巨大�
 
 ## 騎乗戦闘の新時代
 
-![blog placeholder](/pcgame/minecraft/others/mayhem/mayhem6.png)
+![騎乗戦闘の新時代の画像](/pcgame/minecraft/others/mayhem/mayhem6.png)
 
 ### マウント別の戦闘スタイル
 

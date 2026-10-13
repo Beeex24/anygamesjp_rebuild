@@ -13,7 +13,7 @@ category: 'others'
 
 ## 『ステラソラ』とは？注目の新作ファンタジーRPG
 
-![blog placeholder](/mobilegame/stellasora/register/stella2.png)
+![『ステラソラ』とは？注目の新作ファンタジーRPGの画像](/mobilegame/stellasora/register/stella2.png)
 
 ### ゲームの基本情報
 

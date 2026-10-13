@@ -18,13 +18,26 @@ const color = tool ? TOOL_COLORS[tool.category] : 'var(--accent)';
 const others = TOOLS.filter((t) => t.slug !== current);
 const crumbs = [
   { name: 'ホーム', href: '/' },
-  { name: 'Tools', href: '/tools/' },
+  { name: 'ツール', href: '/tools/' },
   ...(tool ? [{ name: TOOL_CATEGORIES[tool.category], href: '/tools/' }] : []),
   { name: heading },
 ];
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: heading,
+  description,
+  url: new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any (Web browser)',
+  inLanguage: 'ja',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+  isAccessibleForFree: true,
+};
 ---
 <BaseLayout title={title} description={description} image={`/og/tool-${current}.png`} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
     <AdSenseScript slot="head" />
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(appLd)} />
   <div class="container">
     <Breadcrumb items={crumbs} />
     <header class="head" style={`--c:${color}`}>

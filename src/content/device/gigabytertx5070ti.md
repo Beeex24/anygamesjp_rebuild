@@ -11,7 +11,7 @@ category: 'others'
 
 ## GIGABYTE RTX 5070 Ti WINDFORCEの基本スペック
 
-![blog placeholder](/devicese/device/pcparts/gigabyte5070ti.png)
+![GIGABYTE RTX 5070 Ti WINDFORCEの基本スペックの画像](/devicese/device/pcparts/gigabyte5070ti.png)
 
 ### 主要仕様一覧
 
@@ -57,7 +57,7 @@ RTX 5070 Tiの最大の特徴は、**DLSS 4（Deep Learning Super Sampling 4）*
 
 ### 革新的な冷却テクノロジー
 
-![blog placeholder](/devicese/device/pcparts/gigabyte5070tifan.png)
+![革新的な冷却テクノロジーの画像](/devicese/device/pcparts/gigabyte5070tifan.png)
 
 **Hawk Fan（ホークファン）：**
 - ワシの翼からヒントを得た独自ブレード設計
@@ -71,7 +71,7 @@ RTX 5070 Tiの最大の特徴は、**DLSS 4（Deep Learning Super Sampling 4）*
 
 ### 高度な熱管理機能
 
-![blog placeholder](/devicese/device/pcparts/gigabyte5070tijel.png)
+![高度な熱管理機能の画像](/devicese/device/pcparts/gigabyte5070tijel.png)
 
 **サーバーグレード熱伝導ゲル：**
 - VRAMやMOSFETを効率的に冷却

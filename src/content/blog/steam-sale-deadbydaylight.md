@@ -9,7 +9,7 @@ category: 'pcgame'
 
 ## Dead by Daylight が今なら60%オフ！見逃せないSteamセール情報
 
-![blog placeholder](/pcgame/steam/sale/dbd/saleplice.png)
+![Dead by Daylight が今なら60%オフ！見逃せないSteamセールの画像](/pcgame/steam/sale/dbd/saleplice.png)
 
 現在、Steamにて『デッドバイデイライト』が60%オフの792円（税込）で販売中です！世界中で愛される非対称型対戦ホラーゲームが驚きの価格で手に入るこの機会を見逃すわけにはいきません。
 

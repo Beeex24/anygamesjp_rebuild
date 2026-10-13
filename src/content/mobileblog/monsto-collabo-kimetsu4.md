@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## 【10月25日開始】モンスト×鬼滅の刃コラボ第4弾の概要
 
-![blog placeholder](/mobilegame/monsuto/event/kimetsu4/kimetsu1.png)
+![【10月25日開始】モンスト×鬼滅の刃コラボ第4弾の概要の画像](/mobilegame/monsuto/event/kimetsu4/kimetsu1.png)
 
 ついに **『鬼滅の刃』とモンストのコラボイベント第4弾** が2025年10月25日（土）12時より期間限定で開催されます！今回のコラボでは、第1弾～第3弾で登場した人気キャラクターの新バージョンや追加キャラクターが総勢**5体**の新キャラクターとして登場。さらに、過去コラボの **15体のキャラクターも復刻** されます！
 
@@ -97,7 +97,7 @@ category: 'monsuto'
 
 ### 無料ガチャ「1体確定！鬼滅の刃」
 
-![blog placeholder](/mobilegame/monsuto/event/kimetsu4/kimetsu3.png)
+![無料ガチャ「1体確定！鬼滅の刃」の画像](/mobilegame/monsuto/event/kimetsu4/kimetsu3.png)
 
 **開催期間**：2025年10月25日（土）12:00 ～ 11月4日（火）11:59
 
@@ -116,7 +116,7 @@ category: 'monsuto'
 
 ## EXおまけでコラボ限定グッジョブをゲット！
 
-![blog placeholder](/mobilegame/monsuto/event/kimetsu4/kimetsu2.png)
+![EXおまけでコラボ限定グッジョブをゲット！の画像](/mobilegame/monsuto/event/kimetsu4/kimetsu2.png)
 
 ### 1周目の特典内容
 

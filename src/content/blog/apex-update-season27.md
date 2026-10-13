@@ -15,7 +15,7 @@ Apex Legendsのシーズン27「アンプド」が、2025年11月4日につい�
 
 ## オリンパス・ライジング マップが大幅刷新
 
-![blog placeholder](/pcgame/apex/update/season27/image1.png)
+![オリンパス・ライジング マップが大幅刷新の画像](/pcgame/apex/update/season27/image1.png)
 
 ### 新オリンパスのコンセプト
 
@@ -31,25 +31,25 @@ Apex Legendsのシーズン27「アンプド」が、2025年11月4日につい�
 
 #### ソマーズ大学（旧・軌道砲）
 
-![blog placeholder](/pcgame/apex/update/season27/image2.png)
+![ソマーズ大学（旧・軌道砲）の画像](/pcgame/apex/update/season27/image2.png)
 
 ホライゾンが息子ニュートンを称えるために建てた大学施設。軌道砲に取って代わり、大胆な建築と**高空を飛ぶリフト**が特徴です。高低差を活かした戦闘が楽しめるエリアとなっています。
 
 #### グラビティエンジン（旧・エネルギー貯蔵庫）
 
-![blog placeholder](/pcgame/apex/update/season27/image3.png)
+![グラビティエンジン（旧・エネルギー貯蔵庫）の画像](/pcgame/apex/update/season27/image3.png)
 
 オリンパスの新たな心臓部。ブランシウムの力を利用して街を浮かび上がらせる重要施設です。**リフト、ジップレール、高低差**が織りなす、アクションが活発に繰り広げられる探索ポイントになります。
 
 #### スタビライザー（旧・ドック）
 
-![blog placeholder](/pcgame/apex/update/season27/image4.png)
+![スタビライザー（旧・ドック）の画像](/pcgame/apex/update/season27/image4.png)
 
 空中プラットフォームで、オリンパスの位置を適切に維持する役割を担っています。下の惑星から浮遊する岩石が、外側のバラスト構造への道となる独特な地形が特徴です。
 
 #### 造船所（水耕施設近く）
 
-![blog placeholder](/pcgame/apex/update/season27/image5.png)
+![造船所（水耕施設近く）の画像](/pcgame/apex/update/season27/image5.png)
 
 元のオリンパスのノスタルジックな要素と、高低差に注目を置いたゲームプレイが組み合わさった、大幅にアップグレードされたキャンプエリアです。
 
@@ -59,7 +59,7 @@ Apex Legendsのシーズン27「アンプド」が、2025年11月4日につい�
 
 ## アンプドレジェンド 3体のレジェンドに大型調整
 
-![blog placeholder](/pcgame/apex/update/season27/image6.png)
+![アンプドレジェンド 3体のレジェンドに大型調整の画像](/pcgame/apex/update/season27/image6.png)
 
 シーズン27では、**ヴァルキリー**、**ランパート**、**ホライゾン**の3体のレジェンドに大きな変更が加えられます。
 
@@ -81,7 +81,7 @@ Apex Legendsのシーズン27「アンプド」が、2025年11月4日につい�
 
 ### 新ホップアップ「ダブルタップ」登場
 
-![blog placeholder](/pcgame/apex/update/season27/image7.png)
+![新ホップアップ「ダブルタップ」登場の画像](/pcgame/apex/update/season27/image7.png)
 
 オルタネーターに装着できる新しいホップアップ「**ダブルタップ**」が追加されます。
 
@@ -95,7 +95,7 @@ Apex Legendsのシーズン27「アンプド」が、2025年11月4日につい�
 
 ## マントルブースト 新しい移動テクニック
 
-![blog placeholder](/pcgame/apex/update/season27/image8.png)
+![マントルブースト 新しい移動テクニックの画像](/pcgame/apex/update/season27/image8.png)
 
 ### アクセシビリティを重視した公式移動方法
 

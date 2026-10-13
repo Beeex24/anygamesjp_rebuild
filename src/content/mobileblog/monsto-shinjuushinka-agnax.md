@@ -13,9 +13,9 @@ category: 'monsuto'
 
 ## アグナムート真獣神化の基本情報
 
-![blog placeholder](/mobilegame/monsuto/shinka/agnamuto/image1.png)
+![アグナムート真獣神化の基本情報の画像](/mobilegame/monsuto/shinka/agnamuto/image1.png)
 
-![blog placeholder](/mobilegame/monsuto/shinka/agnamuto/image2.png)
+![アグナムート真獣神化の基本情報の画像(2)](/mobilegame/monsuto/shinka/agnamuto/image2.png)
 
 ### 進化素材・必要アイテム
 

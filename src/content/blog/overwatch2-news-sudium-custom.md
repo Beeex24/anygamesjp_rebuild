@@ -13,7 +13,7 @@ category: 'overwatch2'
 
 ## スタジアムとは？基本ルールをおさらい
 
-![blog placeholder](/pcgame/overwatch2/news/studium/image12.png)
+![スタジアムとは？基本ルールをおさらいの画像](/pcgame/overwatch2/news/studium/image12.png)
 
 スタジアムは4ラウンド先取制（最大7ラウンド）の対戦モードで、従来のオーバーウォッチとは大きく異なる特徴があります
 

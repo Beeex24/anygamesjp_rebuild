@@ -13,7 +13,7 @@ category: 'valorant'
 
 ## Champions Paris 2025の概要
 
-![blog placeholder](/pcgame/valorant/vct/parisntk/vctteam3.png)
+![Champions Paris 2025の概要の画像](/pcgame/valorant/vct/parisntk/vctteam3.png)
 
 **開催期間：** 2025年9月12日～10月5日  
 **開催地：** フランス・パリ  
@@ -24,7 +24,7 @@ VALORANT Champions Tourの頂点を決める大会として、世界16チーム�
 
 ## 出場チーム一覧
 
-![blog placeholder](/pcgame/valorant/vct/parisntk/vctteam1.png)
+![出場チーム一覧の画像](/pcgame/valorant/vct/parisntk/vctteam1.png)
 
 各インターナショナルリーグの上位2チーム（8チーム）とチャンピオンシップポイント上位8チームが出場権を獲得しました。
 
@@ -54,7 +54,7 @@ VALORANT Champions Tourの頂点を決める大会として、世界16チーム�
 
 ## トーナメント形式
 
-![blog placeholder](/pcgame/valorant/vct/parisntk/vctteam2.png)
+![トーナメント形式の画像](/pcgame/valorant/vct/parisntk/vctteam2.png)
 
 ### グループステージ（9月12日～22日）
 
@@ -81,7 +81,7 @@ VALORANT Champions Tourの頂点を決める大会として、世界16チーム�
 
 ### Champions Paris限定ドロップ
 
-![blog placeholder](/pcgame/valorant/vct/parisntk/vctteam5.png)
+![Champions Paris限定ドロップの画像](/pcgame/valorant/vct/parisntk/vctteam5.png)
 
 ライブ配信を視聴して限定アイテムを獲得しよう！
 
@@ -96,7 +96,7 @@ VALORANT Champions Tourの頂点を決める大会として、世界16チーム�
 
 ## Pick'Ems & Factions powered by AWS
 
-![blog placeholder](/pcgame/valorant/vct/parisntk/vctteam4.png)
+![Pick'Ems & Factions powered by AWSの画像](/pcgame/valorant/vct/parisntk/vctteam4.png)
 
 ### Pick'Emsの参加方法
 - **グループステージ予想：** 9月4日～12日

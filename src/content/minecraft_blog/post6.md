@@ -8,7 +8,7 @@ category: 'MINECRAFT'
 
 ## 【2025年最新】Minecraftが大幅進化！空を飛べる新アップデート配信開始
 
-![blog placeholder](/pcgame/minecraft/maikura2.png)
+![【2025年最新】Minecraftが大幅進化！空を飛べる新アップデート配信開始の画像](/pcgame/minecraft/maikura2.png)
 
 Minecraftの待望の新アップデート「Chase the Skies」が2025年6月17日にリリースされ、ついにプレイヤーが空を飛べる時代が到来しました。同時に配信された「Vibrant Visuals」により、Minecraftのグラフィックは10年の歴史の中で最大級の視覚的刷新を遂げています。
 
@@ -19,7 +19,7 @@ Minecraftの待望の新アップデート「Chase the Skies」が2025年6月17�
 
 **ハッピーガストの入手方法**
 
-![blog placeholder](/pcgame/minecraft/maikura6.png)
+![新機能「Chase the Skies」の目玉：ハッピーガストで空の旅の画像](/pcgame/minecraft/maikura6.png)
 
 1. **ネザーで「干からびたガスト」ブロックを発見**
    - ネザーの化石構造物の近くで見つけることができます
@@ -36,7 +36,7 @@ Minecraftの待望の新アップデート「Chase the Skies」が2025年6月17�
 
 ### ✨ 革命的なグラフィック更新「Vibrant Visuals」
 
-![blog placeholder](/pcgame/minecraft/maikura4.png)
+![革命的なグラフィック更新「Vibrant Visuals」の画像](/pcgame/minecraft/maikura4.png)
 
 **主な改善点**
 - 太陽光による個別ブロックへの影の投影
@@ -76,7 +76,7 @@ Amos Roddyによる5つの新しいアンビエント楽曲がオーバーワー
 
 **プレイヤーロケーターバー**
 
-![blog placeholder](/pcgame/minecraft/maikura5.png)
+![その他の重要な改善点の画像](/pcgame/minecraft/maikura5.png)
 
 マルチプレイヤーモードで友達の位置を色付きドットで表示し、高度も矢印で確認できる新機能です。
 

@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【BF6発売前の今が絶好機】Battlefield V が驚異の90%オフ！見逃せないSteam最安値セール
 
-![blog placeholder](/pcgame/steam/sale/bfv/saleplice.png)
+![【BF6発売前の今が絶好機】Battlefield V が驚異の90%オフ！見逃の画像](/pcgame/steam/sale/bfv/saleplice.png)
 
 **2025年10月11日にBattlefield 6発売決定！** その前に、現在Steamにて『Battlefield™ V』が大幅割引で販売中です！最新作発売前に第二次世界大戦を舞台にした大規模戦争FPSの傑作を体験して、Battlefieldシリーズの魅力を予習しておく絶好のチャンスです。
 

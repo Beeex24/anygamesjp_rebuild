@@ -13,7 +13,7 @@ category: 'rainbowsixsiege'
 
 ## Dual Frontマップの大型変更
 
-![blog placeholder](/pcgame/r6s/dual.png)
+![Dual Frontマップの大型変更の画像](/pcgame/r6s/dual.png)
 
 ### 新たに追加されたオペレーター
 

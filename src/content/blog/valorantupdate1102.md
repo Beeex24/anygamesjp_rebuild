@@ -83,7 +83,7 @@ Unreal Engine 5への移行に伴い、**最低動作環境が更新**されま�
 
 ## 🎁 新要素：「ホットなニューエンジン」ガンバディー
 
-![blog placeholder](/pcgame/valorant/bady.png)
+![新要素：「ホットなニューエンジン」ガンバディーの画像](/pcgame/valorant/bady.png)
 
 Unreal Engine 5アップデートを記念して、新しいガンバディー「ホットなニューエンジン」が追加されました。コレクションをチェックして入手しましょう！
 

@@ -9,7 +9,7 @@ category: 'others'
 
 # 【数量限定】GTRacing ゲーミングチェアがタイムセール特価！28%OFFで¥15,718
 
-![blog placeholder](/devicese/amazonsale/salechair.png)
+![GTRacing ゲーミングチェアが28%OFF！オットマン付きで¥15,718の画像](/devicese/amazonsale/salechair.png)
 
 <div class="sale-highlight">
 ⏰ タイムセール開催中！通常価格¥21,800から28%OFF → ¥15,718

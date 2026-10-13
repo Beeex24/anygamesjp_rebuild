@@ -15,7 +15,7 @@ VALORANTに待望の夏限定スキン「PUMP IT UP // スプラッシュX」が
 
 ## スプラッシュXスキンの特徴と魅力
 
-![blog placeholder](/pcgame/valorant/skin/newskins.png)
+![スプラッシュXスキンの特徴と魅力の画像](/pcgame/valorant/skin/newskins.png)
 
 ### デザインコンセプト
 - **水鉄砲モチーフ**：夏の定番アイテムである水鉄砲をベースとした親しみやすいデザイン
@@ -28,20 +28,20 @@ VALORANTに待望の夏限定スキン「PUMP IT UP // スプラッシュX」が
 **主要武器**
 - ヴァンダル（水鉄砲デザイン） 
 
-![blog placeholder](/pcgame/valorant/skin/sprashvandal.png)
+![対象武器（推定）の画像](/pcgame/valorant/skin/sprashvandal.png)
 
 - オペレーター（特別フィニッシャー付き）
 
-![blog placeholder](/pcgame/valorant/skin/sprashope.png)
+![対象武器（推定）の画像(2)](/pcgame/valorant/skin/sprashope.png)
 
 **サブ武器・その他**
 - グローブナイフ（近接武器）
 
-![blog placeholder](/pcgame/valorant/skin/sprashgrobe.png)
+![対象武器（推定）の画像(3)](/pcgame/valorant/skin/sprashgrobe.png)
 
 - アクセサリー
 
-![blog placeholder](/pcgame/valorant/skin/sprashcharm.png)
+![対象武器（推定）の画像(4)](/pcgame/valorant/skin/sprashcharm.png)
 
 - その他アクセサリーでフレックスアイテムやカードなども含まれています！
 

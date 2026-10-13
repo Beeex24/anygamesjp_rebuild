@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## モンスト夏キャンペーン2025が熱い！
 
-![blog placeholder](/mobilegame/monsuto/0808/summercp1.png)
+![モンスト夏キャンペーン2025が熱い！の画像](/mobilegame/monsuto/0808/summercp1.png)
 
 **8月9日12:00より開催される「コースを選んで最大200連！アゲインガチャ」** は、今年のモンスト夏のメインイベントです！
 
@@ -22,7 +22,7 @@ category: 'monsuto'
 
 ## 3つのコースから選ぶアゲインガチャシステム
 
-![blog placeholder](/mobilegame/monsuto/0808/summercp3.png)
+![3つのコースから選ぶアゲインガチャシステムの画像](/mobilegame/monsuto/0808/summercp3.png)
 
 今回のアゲインガチャは、プレイヤーが**3つのコースから1つを選択**して挑戦する新しいシステムです。
 
@@ -36,7 +36,7 @@ category: 'monsuto'
 
 ### ガチャの引き方
 
-![blog placeholder](/mobilegame/monsuto/0808/summercp2.png)
+![ガチャの引き方の画像](/mobilegame/monsuto/0808/summercp2.png)
 
 1. **ホーム画面の専用アイコンをタップ**
 2. **3つのコースから1つを選択**

@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【ローンチセール10%OFF】話題沸騰「CloverPit」が1,080円で楽しめる！
 
-![blog placeholder](/pcgame/steam/sale/clover/saleprice.png)
+![【ローンチセール10%OFF】話題沸騰「CloverPit」が1,080円で楽しの画像](/pcgame/steam/sale/clover/saleprice.png)
 
 Steamで話題沸騰中の **ローグライト・ホラーゲーム「CloverPit」** が、**10%OFFのローンチセール** を実施中です！通常価格 **1,200円** から **1,080円** まで値下げされており、**2025年10月11日まで** の期間限定セールとなっています。50万人がウィッシュリストに登録し、80万回以上デモがダウンロードされた超話題作を今すぐチェックしましょう！
 
@@ -19,7 +19,7 @@ Steamで話題沸騰中の **ローグライト・ホラーゲーム「CloverPit
 
 #### ゲームの核となる特徴
 
-![blog placeholder](/pcgame/steam/sale/clover/image1.png)
+![ゲームの核となる特徴の画像](/pcgame/steam/sale/clover/image1.png)
 
 **悪魔的なゲーム設定**
 - 錆びた独房に閉じ込められた主人公
@@ -33,7 +33,7 @@ Steamで話題沸騰中の **ローグライト・ホラーゲーム「CloverPit
 
 ### 豊富なゲーム要素とコンテンツ
 
-![blog placeholder](/pcgame/steam/sale/clover/image4.png)
+![豊富なゲーム要素とコンテンツの画像](/pcgame/steam/sale/clover/image4.png)
 
 #### 革新的なスロットマシンシステム
 - **オッズ操作**: 確率を自分に有利に変更する戦略性
@@ -46,7 +46,7 @@ Steamで話題沸騰中の **ローグライト・ホラーゲーム「CloverPit
 - **複数エンディング**: プレイヤーの選択で変化する結末
 - **無限スコア**: エンドレスモードで限界に挑戦
 
-![blog placeholder](/pcgame/steam/sale/clover/image2.png)
+![充実のローグライト要素の画像](/pcgame/steam/sale/clover/image2.png)
 
 ### セール情報詳細
 
@@ -74,7 +74,7 @@ Steamで話題沸騰中の **ローグライト・ホラーゲーム「CloverPit
 
 ### ゲームシステムの詳細解説
 
-![blog placeholder](/pcgame/steam/sale/clover/image3.png)
+![ゲームシステムの詳細解説の画像](/pcgame/steam/sale/clover/image3.png)
 
 #### 緊迫のデット・サバイバル
 - **借金返済システム**: 毎ラウンド増加する借金額

@@ -1,6 +1,11 @@
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
+// 更新日は公開日以降でなければならない（逆転すると検索結果やJSON-LDの日付が矛盾する）
+const dateOrder = (d: { pubDate: Date; updatedDate?: Date }) =>
+  !d.updatedDate || d.updatedDate.valueOf() >= d.pubDate.valueOf();
+const dateOrderError = { message: 'updatedDate は pubDate 以降の日付にしてください', path: ['updatedDate'] };
+
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
   loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
@@ -14,7 +19,9 @@ const blog = defineCollection({
     heroImage: z.string().optional(),
     // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
     pickup: z.number().int().min(1).max(3).optional(),
-  }),
+    // セール・イベント等の終了日。過ぎると記事冒頭に「終了しました」を出し、トップの新着から外す
+    endsAt: z.coerce.date().optional(),
+  }).refine(dateOrder, dateOrderError),
 });
 
 const mobileblog = defineCollection({
@@ -30,7 +37,9 @@ const mobileblog = defineCollection({
     heroImage: z.string().optional(),
     // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
     pickup: z.number().int().min(1).max(3).optional(),
-  }),
+    // セール・イベント等の終了日。過ぎると記事冒頭に「終了しました」を出し、トップの新着から外す
+    endsAt: z.coerce.date().optional(),
+  }).refine(dateOrder, dateOrderError),
 });
 
 const device = defineCollection({
@@ -43,7 +52,9 @@ const device = defineCollection({
     heroImage: z.string().optional(),
     // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
     pickup: z.number().int().min(1).max(3).optional(),
-  }),
+    // セール・イベント等の終了日。過ぎると記事冒頭に「終了しました」を出し、トップの新着から外す
+    endsAt: z.coerce.date().optional(),
+  }).refine(dateOrder, dateOrderError),
 });
 
 const minecraft_blog = defineCollection({
@@ -59,7 +70,9 @@ const minecraft_blog = defineCollection({
     heroImage: z.string().optional(),
     // トップの目玉枠に載せる順番(1〜3)。未指定なら載らない
     pickup: z.number().int().min(1).max(3).optional(),
-  }),
+    // セール・イベント等の終了日。過ぎると記事冒頭に「終了しました」を出し、トップの新着から外す
+    endsAt: z.coerce.date().optional(),
+  }).refine(dateOrder, dateOrderError),
 });
 
 // 🆕 マインクラフトMOD紹介コレクション
@@ -95,7 +108,7 @@ const minecraft_mod_blog = defineCollection({
         z.array(z.enum(["Forge", "Fabric", "NeoForge", "Quilt", "OptiFine", "Iris"])),
       ])
       .optional(), // MODローダー
-  }),
+  }).refine(dateOrder, dateOrderError),
 });
 
 export const collections = {

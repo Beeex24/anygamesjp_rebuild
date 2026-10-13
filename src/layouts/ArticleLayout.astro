@@ -6,6 +6,7 @@ import ArticleList from '../components/ArticleList.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
 import AffiliateGrid from '../components/AffiliateGrid.astro';
+import ArticleNotices from '../components/ArticleNotices.astro';
 import { SECTIONS, SECTION_COLORS, sectionLabel, formatDate, getAllPosts, type Post } from '../lib/site';
 import { relatedPosts } from '../lib/related';
 
@@ -32,7 +33,7 @@ const crumbs = [
   <div class="container">
     <Breadcrumb items={crumbs.map((c, i) => (i === crumbs.length - 1 ? { name: c.name } : c))} />
     <article class="article">
-      {heroImage && <img class="hero" src={heroImage} alt="" width="1200" height="630" loading="eager" fetchpriority="high" decoding="async" />}
+      {heroImage && <img class="hero" src={heroImage} alt={title} width="1200" height="630" loading="eager" fetchpriority="high" decoding="async" />}
       <header class="head" style={`--c:${SECTION_COLORS[post.collection] ?? 'var(--accent)'}`}>
         <p class="meta">
           <a class="tag" href={section.path}>{sectionLabel(post.collection)}</a>
@@ -41,6 +42,8 @@ const crumbs = [
         </p>
         <h1>{title}</h1>
       </header>
+
+      <ArticleNotices post={post} />
 
       <AdSlot slot="postBottom" />
 

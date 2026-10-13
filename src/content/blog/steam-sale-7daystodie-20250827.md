@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 今だけ超お得！『7 Days to Die』が40%オフで購入可能
 
-![blog placeholder](/pcgame/steam/sale/7daystodie/saleprice.png)
+![今だけ超お得！『7 Days to Die』が40%オフで購入可能の画像](/pcgame/steam/sale/7daystodie/saleprice.png)
 
 現在Steamで人気ゾンビサバイバルゲーム『7 Days to Die』が40%オフの特別価格で販売中です。**通常価格4900円が2940円**で購入できる絶好のチャンスとなっています。
 
@@ -26,13 +26,13 @@ category: 'sale'
 
 ## 『7 Days to Die』とは？
 
-![blog placeholder](/pcgame/sale/days.png)
+![『7 Days to Die』とは？の画像](/pcgame/sale/days.png)
 
 2000万本以上のセールスを記録した『7 Days to Die』は、他の追随を許さないクラフトと世界観のコンテンツで、サバイバルというジャンルを定義してきました。FPS、サバイバルホラー、タワーディフェンス、ロールプレイングゲームをユニークに組み合わせたオープンワールド型のゲームとして、多くのプレイヤーから愛され続けています。
 
 ### ゲームの特徴
 
-![blog placeholder](/pcgame/sale/days3.png)
+![ゲームの特徴の画像](/pcgame/sale/days3.png)
 
 **ブラッドムーンホードシステム**
 7日間周期で大量のゾンビの襲撃を受けるという「ブラッドムーンホード」というシステムが最大の特徴。プレイヤーは期限までに武器や要塞を準備し、ゾンビの大群を迎え撃つ必要があります。
@@ -71,7 +71,7 @@ Steamでは254,344件のレビューのうち88%が好評価という高い評�
 
 ## マルチプレイでさらに楽しく
 
-![blog placeholder](/pcgame/sale/days2.png)
+![マルチプレイでさらに楽しくの画像](/pcgame/sale/days2.png)
 
 『7 Days to Die』はソロプレイはもちろん、最大8人でのマルチプレイに対応。友達と協力して要塞を築いたり、役割分担をして効率的にサバイバルを楽しめます。
 

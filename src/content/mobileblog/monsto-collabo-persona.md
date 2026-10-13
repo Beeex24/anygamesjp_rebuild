@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## 【8月16日開始】モンスト×ペルソナ5コラボの概要
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona1.png)
+![【8月16日開始】モンスト×ペルソナ5コラボの概要の画像](/mobilegame/monsuto/event/persona/persona1.png)
 
 ついに **『ペルソナ5 ザ・ロイヤル』とモンストのコラボイベント** が2025年8月16日（土）12時より期間限定で開催されます！今回のコラボでは、怪盗団のメンバーや敵キャラクターが総勢**11体**の新キャラクターとして登場。
 
@@ -19,7 +19,7 @@ category: 'monsuto'
 
 ## 限定コラボキャラクター一覧
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona2.png)
+![限定コラボキャラクター一覧の画像](/mobilegame/monsuto/event/persona/persona2.png)
 
 ### ガチャ排出対象キャラクター（5体）
 
@@ -33,7 +33,7 @@ category: 'monsuto'
 
 ### 有料限定キャラクター
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona3.png)
+![有料限定キャラクターの画像](/mobilegame/monsuto/event/persona/persona3.png)
 
 **クロウ 明智吾郎（★6）**
 - **属性**：光
@@ -76,35 +76,35 @@ category: 'monsuto'
 
 #### カモシダパレス（火属性・★5）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona4.png)
+![カモシダパレス（火属性・5）の画像](/mobilegame/monsuto/event/persona/persona4.png)
 
 - **初回クリア報酬**：オーブ×5
 - **5回クリアボーナス**：ジョーカー、パンサー、スカルのボイスセット
 
 #### マダラメパレス（水属性・★5）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona5.png)
+![マダラメパレス（水属性・5）の画像](/mobilegame/monsuto/event/persona/persona5.png)
 
 - **初回クリア報酬**：オーブ×5
 - **5回クリアボーナス**：フォックスのボイスセット
 
 #### ニイジマパレス（木属性・★6）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona6.png)
+![ニイジマパレス（木属性・6）の画像](/mobilegame/monsuto/event/persona/persona6.png)
 
 - **初回クリア報酬**：オーブ×5
 - **10回クリアボーナス**：クロウのボイスセット
 
 #### オクムラパレス（光属性・★6）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona7.png)
+![オクムラパレス（光属性・6）の画像](/mobilegame/monsuto/event/persona/persona7.png)
 
 - **初回クリア報酬**：オーブ×5
 - **10回クリアボーナス**：ノワールのボイスセット
 
 #### カネシロパレス（闇属性・★6）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona8.png)
+![カネシロパレス（闇属性・6）の画像](/mobilegame/monsuto/event/persona/persona8.png)
 
 - **初回クリア報酬**：オーブ×5
 - **10回クリアボーナス**：クイーンのボイスセット
@@ -112,7 +112,7 @@ category: 'monsuto'
 
 ### ベルベットルーム（水属性・★6）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona9.png)
+![ベルベットルーム（水属性・6）の画像](/mobilegame/monsuto/event/persona/persona9.png)
 
 **開催期間**：8月18日（月）19:00 ～ 9月2日（火）11:59
 
@@ -124,7 +124,7 @@ category: 'monsuto'
 
 ### フタバパレス（守護獣の森）
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona10.png)
+![フタバパレス（守護獣の森）の画像](/mobilegame/monsuto/event/persona/persona10.png)
 
 - **入手方法**：究極難易度クリア
 - **守護スキル**：ネクロノミコン
@@ -133,7 +133,7 @@ category: 'monsuto'
 
 ## コープミッション
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona11.png)
+![コープミッションの画像](/mobilegame/monsuto/event/persona/persona11.png)
 
 ### 開催期間
 **8月16日（土）12:00 ～ 9月5日（金）3:59**
@@ -223,7 +223,7 @@ category: 'monsuto'
 
 ### SNS投稿キャンペーン
 
-![blog placeholder](/mobilegame/monsuto/event/persona/persona12.png)
+![SNS投稿キャンペーンの画像](/mobilegame/monsuto/event/persona/persona12.png)
 
 **期間**：8月16日12:00 ～ 8月21日11:59
 

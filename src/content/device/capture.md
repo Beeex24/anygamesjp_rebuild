@@ -9,7 +9,7 @@ category: 'others'
 
 # 【2025年最新版】配信者必見！キャプチャボードの選び方とおすすめ製品完全紹介
 
-![blog placeholder](/devicese/device/capture/capthree.png)
+![配信者必見！キャプチャボードの選び方とおすすめ製品完全紹介の画像](/devicese/device/capture/capthree.png)
 
 ゲーム配信やライブストリーミングを始めたい配信者にとって、**キャプチャボード**は必須のデバイスです。しかし、ElgatoやAVerMediaなど多くのメーカーから様々な製品が発売されており、どれを選べば良いか迷っている方も多いのではないでしょうか？
 
@@ -30,7 +30,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ## キャプチャボードの種類と特徴
 
-![blog placeholder](/devicese/device/capture/pciecap.png)
+![キャプチャボードの種類と特徴の画像](/devicese/device/capture/pciecap.png)
 
 ### 内蔵型（PCIe接続）
 
@@ -43,7 +43,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 - デスクトップPCが必要
 - 取り付けはさほど難しくはないが、丁寧に取り付けないと破損する可能性がある
 
-![blog placeholder](/devicese/device/capture/usbcap.png)
+![内蔵型（PCIe接続）の画像](/devicese/device/capture/usbcap.png)
 
 ### 外付け型（USB接続）
 
@@ -96,7 +96,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ### 1. Elgato Game Capture HD60 X
 
-![blog placeholder](/devicese/device/capture/captwo.png)
+![1. Elgato Game Capture HD60 Xの画像](/devicese/device/capture/captwo.png)
 
 **価格帯**: ¥22000～
 
@@ -126,7 +126,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ### 2. Live Gamer ULTRA 2.1 GC553G2
 
-![blog placeholder](/devicese/device/capture/capeight.png)
+![2. Live Gamer ULTRA 2.1 GC553G2の画像](/devicese/device/capture/capeight.png)
 
 **価格帯**: ¥25000～
 
@@ -155,7 +155,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ### 3. AVerMedia Live Gamer BOLT GC555
 
-![blog placeholder](/devicese/device/capture/capfor.png)
+![3. AVerMedia Live Gamer BOLT GC555の画像](/devicese/device/capture/capfor.png)
 
 **価格帯**: ¥31000～
 
@@ -184,7 +184,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ### 4. Elgato 4K60 Pro MK.2
 
-![blog placeholder](/devicese/device/capture/capfive.png)
+![4. Elgato 4K60 Pro MK.2の画像](/devicese/device/capture/capfive.png)
 
 **価格帯**: ¥42000～
 
@@ -213,7 +213,7 @@ PlayStation 5、Nintendo Switch、Xbox Series X/Sでの配信を検討してい�
 
 ### 5. AVerMedia Live Gamer MINI GC311
 
-![blog placeholder](/devicese/device/capture/capsix.png)
+![5. AVerMedia Live Gamer MINI GC311の画像](/devicese/device/capture/capsix.png)
 
 **価格帯**: ¥12000～
 

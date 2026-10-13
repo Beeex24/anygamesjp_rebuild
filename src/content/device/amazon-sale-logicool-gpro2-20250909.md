@@ -9,7 +9,7 @@ category: 'sale'
 
 # 【Amazonセール】Logicool G PRO 2 LIGHTSPEED が27%OFF！プロ仕様の最新ワイヤレスゲーミングマウスが12,780円
 
-![blog placeholder](/devicese/amazonsale/logicool/gpro220250909/image.png)
+![Logicool G PRO 2 LIGHTSPEED が27%OFF！プロ仕様の画像](/devicese/amazonsale/logicool/gpro220250909/image.png)
 
 ## セール情報サマリー
 

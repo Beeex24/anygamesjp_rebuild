@@ -9,7 +9,7 @@ category: 'monsuto'
 
 # 【モンスト】2025年夏キャンペーン開催中！夏オーブ50個プレゼントや大英雄の書がもらえる招待キャンペーン実施中
 
-![blog placeholder](/mobilegame/monsuto/0801/monstosummercp.png)
+![2025年夏キャンペーン開催中！夏オーブ50個プレゼントや大英雄の書がもらえる招の画像](/mobilegame/monsuto/0801/monstosummercp.png)
 
 モンスターストライク（モンスト）で2025年夏の大型キャンペーン **「昭和百年のモンスターストライク」** が開催中です！
 
@@ -19,7 +19,7 @@ category: 'monsuto'
 
 ## 夏オーブ50個プレゼント！使い忘れに注意
 
-![blog placeholder](/mobilegame/monsuto/0801/summercp1.png)
+![夏オーブ50個プレゼント！使い忘れに注意の画像](/mobilegame/monsuto/0801/summercp1.png)
 
 ### キャンペーン概要
 
@@ -46,7 +46,7 @@ category: 'monsuto'
 
 ## 期間限定招待キャンペーン！大英雄の書がもらえる
 
-![blog placeholder](/mobilegame/monsuto/0801/invite.png)
+![期間限定招待キャンペーン！大英雄の書がもらえるの画像](/mobilegame/monsuto/0801/invite.png)
 
 ### キャンペーン詳細
 
@@ -68,7 +68,7 @@ category: 'monsuto'
 
 ## オーブ爆獲れルーレット！最大400個のオーブが当たる
 
-![blog placeholder](/mobilegame/monsuto/0801/orbetore.png)
+![オーブ爆獲れルーレット！最大400個のオーブが当たるの画像](/mobilegame/monsuto/0801/orbetore.png)
 
 ### ルーレット概要
 
@@ -82,7 +82,7 @@ category: 'monsuto'
 
 ## 期間限定イベント「モンスト夏休み2025」開催
 
-![blog placeholder](/mobilegame/monsuto/0801/monstosummer.png)
+![期間限定イベント「モンスト夏休み2025」開催の画像](/mobilegame/monsuto/0801/monstosummer.png)
 
 ### イベント概要
 

@@ -15,8 +15,8 @@ const { title, description, image, ogType = 'website', pubDate, updatedDate, bre
 
 const site = Astro.site ?? new URL(Astro.url.origin);
 const canonical = new URL(Astro.url.pathname, site).href;
-const ogImage = new URL(image || '/placeholder-image.jpg', site).href;
-const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
+const ogImage = new URL(image || '/og/default.png', site).href;
+const fullTitle = title.includes(SITE_TITLE) ? title : `${title} | ${SITE_TITLE}`;
 
 const jsonLd: object[] = [];
 if (breadcrumbs?.length) {
@@ -36,7 +36,8 @@ if (ogType === 'article' && pubDate) {
     datePublished: pubDate.toISOString(),
     dateModified: (updatedDate ?? pubDate).toISOString(),
     mainEntityOfPage: canonical,
-    publisher: { '@type': 'Organization', name: SITE_TITLE },
+    author: { '@type': 'Person', name: 'クリス', url: new URL('/infosite/', site).href },
+    publisher: { '@type': 'Organization', name: SITE_TITLE, logo: { '@type': 'ImageObject', url: new URL('/og/default.png', site).href } },
   });
 }
 ---

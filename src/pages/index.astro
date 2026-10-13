@@ -6,41 +6,37 @@ import AffiliateGrid from '../components/AffiliateGrid.astro';
 import AdSlot from '../components/AdSlot.astro';
 import AdSenseScript from '../components/AdSenseScript.astro';
 import { getCollection } from 'astro:content';
-import { getAllPosts, SECTIONS, type Post, type SectionKey } from '../lib/site';
+import { getAllPosts, SECTIONS, SECTION_COLORS, type Post, type SectionKey } from '../lib/site';
 import { TOOLS, TOOL_COLORS } from '../lib/tools';
 import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL } from '../consts';
 import { postUrl, sectionLabel } from '../lib/site';
+import { onlyFresh } from '../lib/expiry';
 
 const byDate = (xs: Post[]) => [...xs].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const get = async (key: SectionKey) => byDate((await getCollection(key)) as Post[]);
 const [game, mobile, device, mc, mod] = await Promise.all((['blog', 'mobileblog', 'device', 'minecraft_blog', 'minecraft_mod_blog'] as SectionKey[]).map(get));
 const all = await getAllPosts();
-const latest = all.slice(0, 6);
-
-// 記事一覧タブ(各9件)
-const tabs = [
-  { key: 'all', label: 'すべての記事', posts: all.slice(0, 9) },
-  { key: 'blog', label: 'ゲーム', posts: game.slice(0, 9) },
-  { key: 'mobileblog', label: 'モバイル・ゲーム機', posts: mobile.slice(0, 9) },
-  { key: 'device', label: 'ガジェット', posts: device.slice(0, 9) },
-  { key: 'minecraft_blog', label: 'マインクラフト', posts: mc.slice(0, 9) },
-];
-
-// ランキング風の新着ボックス(ガジェットはデバイス+モバイルの新着)
-const gadget = byDate([...device, ...mobile]).slice(0, 6);
+// 期限切れ・古いセール/イベント記事は新着枠から外す(記事自体は一覧で読める)
+const fresh = onlyFresh(all);
+const latest = fresh.slice(0, 6);
+// カテゴリ別: 新しい情報を優先し、足りないときだけ古い記事で埋める
+const top = (xs: Post[], n = 4) => { const f = onlyFresh(xs); return [...f, ...xs.filter((x) => !f.includes(x))].slice(0, n); };
 
 // 目玉枠: frontmatter の pickup(1〜3)で手動指定。足りない分は画像つきの新着で補う
-const withImage = all.filter((p) => p.data.heroImage);
-const picked = all.filter((p) => p.data.pickup && p.data.heroImage).sort((a, b) => (a.data.pickup ?? 0) - (b.data.pickup ?? 0));
+const withImage = fresh.filter((p) => p.data.heroImage);
+const picked = fresh.filter((p) => p.data.pickup && p.data.heroImage).sort((a, b) => (a.data.pickup ?? 0) - (b.data.pickup ?? 0));
 const pickup = [...picked, ...withImage.filter((p) => !picked.includes(p))].slice(0, 3);
 
 // 4つのバナー(ジャンルの最新記事の画像を背景に使う)
 const tiles = [
-  { href: '/minecraft_blog/', label: 'マイクラ関連', img: mc[0]?.data.heroImage },
-  { href: '/blog/', label: 'ゲーム評価特集', img: game[0]?.data.heroImage },
-  { href: '/device/', label: '実機レビュー', img: device[0]?.data.heroImage },
+  { href: '/minecraft_blog/', label: 'マインクラフト', img: mc[0]?.data.heroImage },
+  { href: '/blog/', label: 'ゲーム', img: game[0]?.data.heroImage },
+  { href: '/device/', label: 'ガジェット', img: device[0]?.data.heroImage },
   { href: SOCIAL.youtube, label: '公式チャンネル', img: undefined, external: true },
 ];
+
+const TOP_TITLE = 'ANYGAMES放送局｜Steamセール・Apex/VALORANT更新情報・マイクラMOD解説と無料ツール';
+const TOP_DESCRIPTION = 'Steamセールのお得情報、Apex・VALORANT・オーバーウォッチ2のアップデート解説、マイクラMODの導入方法、画像圧縮やeDPI計算などの無料ツールをまとめたゲーム情報サイトです。';
 
 const websiteLd = {
   '@context': 'https://schema.org',
@@ -50,7 +46,7 @@ const websiteLd = {
   description: SITE_DESCRIPTION,
 };
 ---
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={TOP_TITLE} description={TOP_DESCRIPTION}>
   <AdSenseScript slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
   <h1 class="sr-only">ANYGAMES放送局 - ゲーム・ガジェットの情報と無料ツール</h1>
@@ -84,9 +80,11 @@ const websiteLd = {
     </section>
 
     <div class="ranks">
-      <RankingBox title="ゲーム情報(最新記事)" color="var(--rank-game)" posts={game.slice(0, 6)} href="/blog/" moreLabel="最新ゲーム記事をすべて見る" />
-      <RankingBox title="ガジェット・お役立ち情報(最新記事)" color="var(--rank-gadget)" posts={gadget} href="/device/" moreLabel="ガジェット記事をすべて見る" />
-      <RankingBox title="マインクラフトMOD解説(最新記事)" color="var(--rank-mod)" posts={mod.slice(0, 6)} href="/minecraft_mod_blog/" moreLabel="マインクラフトMOD記事をすべて見る" />
+      <RankingBox title="ゲーム" color={SECTION_COLORS.blog} posts={top(game)} href="/blog/" moreLabel="ゲーム記事をすべて見る" />
+      <RankingBox title="マインクラフト" color={SECTION_COLORS.minecraft_blog} posts={top(mc)} href="/minecraft_blog/" moreLabel="マインクラフト記事をすべて見る" />
+      <RankingBox title="MOD解説" color={SECTION_COLORS.minecraft_mod_blog} posts={top(mod)} href="/minecraft_mod_blog/" moreLabel="MOD解説をすべて見る" />
+      <RankingBox title="ガジェット" color={SECTION_COLORS.device} posts={top(device)} href="/device/" moreLabel="ガジェット記事をすべて見る" />
+      <RankingBox title="モバイル・ゲーム機" color={SECTION_COLORS.mobileblog} posts={top(mobile)} href="/mobileblog/" moreLabel="モバイル・ゲーム機の記事をすべて見る" />
     </div>
 
     <section class="card" aria-labelledby="tools-h">
@@ -101,47 +99,12 @@ const websiteLd = {
 
     <AdSlot slot="listFeed" />
 
-    <section class="card tabsec" aria-labelledby="list-h">
-      <h2 id="list-h" class="heading-c">記事一覧</h2>
-      <div class="tabs" role="tablist" aria-label="記事のジャンル">
-        {tabs.map((t, i) => (
-          <button type="button" role="tab" id={`tab-${t.key}`} aria-controls={`panel-${t.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.key}>{t.label}</button>
-        ))}
-      </div>
-      {tabs.map((t, i) => (
-        <div role="tabpanel" id={`panel-${t.key}`} aria-labelledby={`tab-${t.key}`} hidden={i !== 0}>
-          <ArticleList posts={t.posts} />
-        </div>
-      ))}
-      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
-    </section>
 
     <section class="card" aria-labelledby="dev-h">
       <h2 id="dev-h" class="heading-c">おすすめのデバイス</h2>
       <AffiliateGrid />
     </section>
   </div>
-  <script>
-    const tabButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tabs [role=tab]'));
-    const select = (btn: HTMLButtonElement) => {
-      tabButtons.forEach((b) => {
-        const on = b === btn;
-        b.setAttribute('aria-selected', String(on));
-        b.tabIndex = on ? 0 : -1;
-        const panel = document.getElementById(b.getAttribute('aria-controls') ?? '');
-        if (panel) panel.hidden = !on;
-      });
-    };
-    tabButtons.forEach((b, i) => {
-      b.addEventListener('click', () => select(b));
-      b.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        const next = tabButtons[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabButtons.length) % tabButtons.length];
-        next.focus();
-        select(next);
-      });
-    });
-  </script>
 </BaseLayout>
 <style>
   /* 列幅は必ず画面幅に固定する(広告など幅の大きい要素が入っても、他のブロックを横に押し広げない) */
@@ -192,9 +155,5 @@ const websiteLd = {
   .tools a:hover { border-color: var(--c); background: #fff; }
   .tools strong { color: var(--c); }
   .tools span { font-size: .82rem; color: var(--text-sub); }
-  .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tabs button { flex: 0 0 auto; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 3px; background: var(--bg); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
-  .tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
   @media (max-width: 640px) { .card { padding: 4px 14px 20px; } }
 </style>

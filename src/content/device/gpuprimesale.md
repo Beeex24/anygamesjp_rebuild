@@ -9,7 +9,7 @@ category: 'others'
 
 ## 【速報】MSI GeForce RTX 5070 Ti VENTUS 3X OC が19%OFF！プライムデー限定価格
 
-![blog placeholder](/devicese/primeday/rtx5070ti.png)
+![【速報】MSI GeForce RTX 5070 Ti VENTUS 3X OCの画像](/devicese/primeday/rtx5070ti.png)
 
 **Amazonプライムデー2025で注目の大型セールが開催中！** MSI GeForce RTX 5070 Ti 16G VENTUS 3X OC グラフィックスカード VD9043が19%の割引で138,700円（参考価格: 171,710円）という破格のセール価格で提供されています。
 

@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【Steam Winter Sale】硬派な抽出型FPS「Escape from Tarkov」が25%OFF!
 
-![blog placeholder](/pcgame/steam/eft/20251218/saleprice.png)
+![【Steam Winter Sale】硬派な抽出型FPS「Escape fromの画像](/pcgame/steam/eft/20251218/saleprice.png)
 
 2025年11月15日にSteamでついに正式リリースされた**ハードコアFPS「Escape from Tarkov」**が、**Steam Winter Sale**で**25%OFFの大幅割引**を実施中です!9年間のクローズドα/βテストを経て満を持して登場した本作が、初の大型セールとなっています。
 
@@ -29,7 +29,7 @@ category: 'sale'
 
 #### ゲームの特徴
 
-![blog placeholder](/pcgame/steam/eft/20251218/eft1.png)
+![ゲームの特徴の画像](/pcgame/steam/eft/20251218/eft1.png)
 
 **極限のリアリズムとサバイバル要素**
 - **一度死んだら装備はすべて失う**過酷なルール
@@ -50,7 +50,7 @@ category: 'sale'
 
 ### Steam版の評価は?賛否両論の理由
 
-![blog placeholder](/pcgame/steam/eft/20251218/image.png)
+![Steam版の評価は?賛否両論の理由の画像](/pcgame/steam/eft/20251218/image.png)
 
 **肯定的な意見**
 - 9年待った甲斐がある緊張感とリアリズム

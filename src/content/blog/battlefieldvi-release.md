@@ -9,7 +9,7 @@ category: 'battlefieldvi'
 
 ## Battlefield 6がついに正式発表！シリーズ史上最大の全面戦争が始まる
 
-![blog placeholder](/pcgame/bf/release/bf1.png)
+![Battlefield 6がついに正式発表！シリーズ史上最大の全面戦争が始まるの画像](/pcgame/bf/release/bf1.png)
 
 Electronic Arts（EA）とBattlefield Studiosは日本時間2025年7月25日『Battlefield 6（バトルフィールド6）』の公式トレーラーを公開し、FPSファンが長らく待ち望んでいた新作の全貌がついに明らかになりました！
 
@@ -23,14 +23,14 @@ Electronic Arts（EA）とBattlefield Studiosは日本時間2025年7月25日『B
 
 #### エディション詳細
 
-![blog placeholder](/pcgame/bf/release/kakaku.png)
+![エディション詳細の画像](/pcgame/bf/release/kakaku.png)
 *～steam価格より～*
 - **通常版**: 9,800円
 - **ファントムエディション**: 13,900円（予約特典付き）
 
 ### ストーリー・設定
 
-![blog placeholder](/pcgame/bf/release/bf2.png)
+![ストーリー・設定の画像](/pcgame/bf/release/bf2.png)
 
 今作では新たな脅威となるPMC"パックス・アルマータ"とNATO軍の全面戦争が描かれ、現代戦に回帰したミリタリーアクションが展開されます。前作「Battlefield 2042」の未来的設定から一転し、プレイヤーが慣れ親しんだリアルな現代戦場が舞台となります。
 
@@ -40,7 +40,7 @@ Electronic Artsが、4つのスタジオ（DICE、CRITERION、RIPPLE EFFECT、MO
 
 ## オープンベータテスト情報
 
-![blog placeholder](/pcgame/bf/release/beta.png)
+![オープンベータテスト情報の画像](/pcgame/bf/release/beta.png)
 
 ### 参加方法・日程
 

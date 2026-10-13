@@ -22,7 +22,7 @@ category: 'overwatch2'
 
 ## シグマの大幅強化内容
 
-![blog placeholder](/pcgame/overwatch2/patch/0808/sigma.png)
+![シグマの大幅強化内容の画像](/pcgame/overwatch2/patch/0808/sigma.png)
 
 今回のアップデートで最も注目すべきは、タンクヒーロー「**シグマ**」への大幅な強化です。
 

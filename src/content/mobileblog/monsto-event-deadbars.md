@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## アニメ「モンスターストライク デッドバースリローデッド」放送記念！ゲーム連動イベント徹底解説
 
-![blog placeholder](/mobilegame/monsuto/event/deadbars/deadbars1.png)
+![アニメ「モンスターストライク デッドバースリローデッド」放送記念！ゲーム連動イベの画像](/mobilegame/monsuto/event/deadbars/deadbars1.png)
 
 2025年10月21日より、待望のアニメ「モンスターストライク デッドバースリローデッド」がいよいよ放送開始されます。全10話にわたる本作の放送期間中、モンストでは豪華なゲーム連動イベントが開催されます。
 
@@ -27,13 +27,13 @@ category: 'monsuto'
 
 ## 見逃せない3つの連動特典
 
-![blog placeholder](/mobilegame/monsuto/event/deadbars/deadbars2.png)
+![見逃せない3つの連動特典の画像](/mobilegame/monsuto/event/deadbars/deadbars2.png)
 
 ### 1. 毎週シリアルコードで「ヤクモ&オラゴン」をゲット！
 
 アニメのエンディングで毎週発表される「シリアルコード」を入力することで、限定キャラクター「**モンストアニメを楽しむ二人 ヤクモ&オラゴン（★6）**」を10体ずつ獲得できます。
 
-![blog placeholder](/mobilegame/monsuto/event/deadbars/deadbars3.png)
+![1. 毎週シリアルコードで「ヤクモ&オラゴン」をゲット！の画像](/mobilegame/monsuto/event/deadbars/deadbars3.png)
 
 **キャラクター情報**
 - 属性：火属性
@@ -79,7 +79,7 @@ category: 'monsuto'
 
 ### 3. アニメ放送日ログインでトク玉プレゼント！
 
-![blog placeholder](/mobilegame/monsuto/event/deadbars/tokudama.png)
+![3. アニメ放送日ログインでトク玉プレゼント！の画像](/mobilegame/monsuto/event/deadbars/tokudama.png)
 
 アニメ放送日にログインするだけで、「**トク玉で引ける！オールスター感謝ガチャ**」が引ける「トク玉」を1個獲得できます。
 

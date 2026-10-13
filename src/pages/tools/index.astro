@@ -9,18 +9,18 @@ const groups = (Object.keys(TOOL_CATEGORIES) as (keyof typeof TOOL_CATEGORIES)[]
   .map((key) => ({ key, label: TOOL_CATEGORIES[key], items: TOOLS.filter((t) => t.category === key) }))
   .filter((g) => g.items.length > 0);
 const goals = TOOL_GOALS.map((g) => ({ ...g, tool: TOOLS.find((t) => t.slug === g.slug)! })).filter((g) => g.tool);
-const crumbs = [{ name: 'ホーム', href: '/' }, { name: 'Tools' }];
+const crumbs = [{ name: 'ホーム', href: '/' }, { name: 'ツール' }];
 ---
 <BaseLayout
-  title="Tools(無料Webツール一覧)"
+  title="ツール(無料Webツール一覧)"
   image="/og/tools.png"
   description="ANYGAMESの無料Webツール一覧。画像圧縮など、ブラウザだけで使える便利ツールを順次追加しています。"
-  breadcrumbs={[{ name: 'ホーム', href: '/' }, { name: 'Tools', href: '/tools/' }]}
+  breadcrumbs={[{ name: 'ホーム', href: '/' }, { name: 'ツール', href: '/tools/' }]}
 >
   <AdSenseScript slot="head" />
   <div class="container">
     <Breadcrumb items={crumbs} />
-    <h1 class="heading-c">Tools</h1>
+    <h1 class="heading-c">ツール</h1>
     <p class="lead">ブラウザだけで使える無料ツール。データは外部に送信されません。</p>
 
     <section class="section goals" aria-labelledby="goals-h">

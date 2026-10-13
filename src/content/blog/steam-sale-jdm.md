@@ -9,7 +9,7 @@ category: 'sale'
 
 ## JDM: Japanese Drift Master - 25%オフセール実施中！
 
-![blog placeholder](/pcgame/steam/jdm/jdm2.png)
+![JDM: Japanese Drift Master - 25%オフセール実施中の画像](/pcgame/steam/jdm/jdm2.png)
 
 日本のカーカルチャーとドリフトの魅力を存分に体験できる「JDM: Japanese Drift Master」が、現在Steamで **25%オフの特価セール** を実施中です！
 
@@ -27,17 +27,17 @@ category: 'sale'
 #### 本格的なドリフト体験
 JDM: Japanese Drift Masterは、洗練されたシムケード物理エンジンを採用し、リアルなドリフト感覚を再現しています。初心者から上級者まで楽しめる調整された操作性で、誰でも日本のドリフト文化を体験できます。
 
-![blog placeholder](/pcgame/steam/jdm/jdm1.png)
+![本格的なドリフト体験の画像](/pcgame/steam/jdm/jdm1.png)
 
 #### 美しい日本の風景
 実在する日本の美しいロケーションをベースにしたオープンワールドが特徴です。峠道から都市部まで、多彩なコースでドリフトスキルを磨くことができます。
 
-![blog placeholder](/pcgame/steam/jdm/jdm3.png)
+![美しい日本の風景の画像](/pcgame/steam/jdm/jdm3.png)
 
 #### マンガ風ストーリー
 ゲーム内のストーリーはマンガページを通して展開され、日本のカーカルチャーの奥深さを感じながら楽しめます。
 
-![blog placeholder](/pcgame/steam/jdm/jdm4.png)
+![マンガ風ストーリーの画像](/pcgame/steam/jdm/jdm4.png)
 
 ### 最新アップデート情報
 

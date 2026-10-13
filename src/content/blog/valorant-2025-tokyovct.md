@@ -15,7 +15,7 @@ category: 'valorant'
 
 ## 千葉雄喜によるオープニングライブパフォーマンス
 
-![blog placeholder](/pcgame/valorant/vct/ntk/tokyovct2.png)
+![千葉雄喜によるオープニングライブパフォーマンスの画像](/pcgame/valorant/vct/ntk/tokyovct2.png)
 
 **8月31日のグランドファイナル**では、千葉雄喜さんによる特別なライブパフォーマンスでイベントが開幕します。ステージ上で「心配無用」のライブ演奏が行われた後、いよいよVCT Pacificの王者を決める決勝戦がスタートします。
 
@@ -23,7 +23,7 @@ category: 'valorant'
 
 ## 限定グッズ＆ショッピング情報
 
-![blog placeholder](/pcgame/valorant/vct/ntk/tokyovct3.png)
+![限定グッズ＆ショッピング情報の画像](/pcgame/valorant/vct/ntk/tokyovct3.png)
 
 ### VCT Pacific限定グッズ
 
@@ -86,7 +86,7 @@ Clutch Fi主催のDevil Clutch杯優勝チーム
 
 ## 来場者特典
 
-![blog placeholder](/pcgame/valorant/vct/ntk/tokyovct4.png)
+![来場者特典の画像](/pcgame/valorant/vct/ntk/tokyovct4.png)
 
 入場時に以下の記念品がもらえます！
 

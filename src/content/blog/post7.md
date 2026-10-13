@@ -8,13 +8,13 @@ category: 'SALE'
 
 ## 現在の価格情報
 
-![blog placeholder](/pcgame/sale/sale1.png)
+![現在の価格情報の画像](/pcgame/sale/sale1.png)
 
 現在、７Days to die の価格はサマーセールで **4900円** から **2940円** になっています！！
 
 ## 🧟‍♂️ サバイバルゲームの原点「7 Days to Die」とは？
 
-![blog placeholder](/pcgame/sale/days2.png)
+![サバイバルゲームの原点「7 Days to Die」とは？の画像](/pcgame/sale/days2.png)
 
 **7 Days to Die**は、2000万本以上の売上を誇るサバイバルゲームの決定版として知られる名作ゲームです。ゾンビが蔓延る終末世界で、プレイヤーは生き残りをかけて戦い続けます。
 
@@ -53,7 +53,7 @@ Steamでは254,344件のレビューのうち88%が好評価という高い評�
 
 ## 🎮 なぜ今「7 Days to Die」なのか？
 
-![blog placeholder](/pcgame/sale/days.png)
+![なぜ今「7 Days to Die」なのか？の画像](/pcgame/sale/days.png)
 
 ### 1. バージョン1.0の正式リリース
 2024年6月にアーリーアクセスを脱し、バージョン1.0として正式リリースされました。長年の開発期間を経て(若干長すぎな気もしましたがｗ)、ついに完成形となったこの作品は、今が始めるベストタイミングです。

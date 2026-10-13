@@ -9,7 +9,7 @@ category: 'others'
 
 # 【Neon Abyss 2】最大4人協力プレイ対応！無限シナジーで楽しむローグライクアクション
 
-![blog placeholder](/pcgame/steam/neon1.png)
+![最大4人協力プレイ対応！サイバーパンクな世界で無限シナジーを楽しむローグライクアの画像](/pcgame/steam/neon1.png)
 
 ## 概要
 - **最大4人のオンライン協力プレイ**に対応したローグライクアクション
@@ -22,7 +22,7 @@ category: 'others'
 
 ## Neon Abyss 2とは？
 
-![blog placeholder](/pcgame/steam/neon2.png)
+![Neon Abyss 2とは？の画像](/pcgame/steam/neon2.png)
 
 **Neon Abyss 2**は、Veewo Gamesが開発する**サイバーパンクな世界観**のローグライクアクションゲームです。2020年にリリースされ、Steam上で**19,000件以上のレビューで86%が好評**を獲得した前作「Neon Abyss」の待望の続編となります。
 
@@ -32,7 +32,7 @@ category: 'others'
 
 ### 最大4人オンライン協力プレイ
 
-![blog placeholder](/pcgame/steam/neon3.png)
+![最大4人オンライン協力プレイの画像](/pcgame/steam/neon3.png)
 
 前作がシングルプレイのみだったのに対し、**Neon Abyss 2**では**最大4人でのオンライン協力プレイ**が可能になりました。
 

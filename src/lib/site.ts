@@ -14,14 +14,14 @@ export type SectionKey = (typeof SECTIONS)[number]['key'];
 /** グローバルナビ。実在するページだけを載せる。 */
 export const NAV = [
   { label: 'ホーム', href: '/' },
-  { label: 'ゲーム関連', href: '/blog/' },
+  { label: 'ゲーム', href: '/blog/' },
   { label: 'マインクラフト', href: '/minecraft_blog/' },
-  { label: 'マインクラフト MOD解説', href: '/minecraft_mod_blog/' },
-  { label: 'ガジェットレビュー', href: '/device/' },
-  { label: 'モバイル＆ゲーム機記事', href: '/mobileblog/' },
-  { label: 'Tools', href: '/tools/' },
+  { label: 'MOD解説', href: '/minecraft_mod_blog/' },
+  { label: 'ガジェット', href: '/device/' },
+  { label: 'モバイル・ゲーム機', href: '/mobileblog/' },
+  { label: 'ツール', href: '/tools/' },
   { label: 'お問い合わせ', href: '/about/' },
-  { label: '当サイトについて', href: '/infosite/' },
+  { label: 'サイトについて', href: '/infosite/' },
 ] as const;
 
 export type Post = CollectionEntry<SectionKey>;

@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## 【モンスト12周年】禁忌の獄でオーブ100個＆わくわくBANK解放！
 
-![blog placeholder](/mobilegame/monsuto/eventstage/kinki/20251016/image1.png)
+![【モンスト12周年】禁忌の獄でオーブ100個＆わくわくBANK解放！の画像](/mobilegame/monsuto/eventstage/kinki/20251016/image1.png)
 
 モンスターストライクの12周年を記念して、期間限定で「禁忌の獄」と「禁忌の獄〜深淵〜」が登場します。今回は特別に、二十九ノ獄をクリアするだけでオーブ100個が獲得できる豪華特典が用意されています。
 
@@ -17,7 +17,7 @@ category: 'monsuto'
 
 ### イベント開催期間
 
-![blog placeholder](/mobilegame/monsuto/eventstage/kinki/20251016/image2.png)
+![イベント開催期間の画像](/mobilegame/monsuto/eventstage/kinki/20251016/image2.png)
 
 **禁忌の獄 出現期間**：2025年10月21日（火）12:00～11月8日（土）11:59
 
@@ -78,7 +78,7 @@ category: 'monsuto'
 
 ## 禁忌の獄〜深淵〜で次回開催を有利に
 
-![blog placeholder](/mobilegame/monsuto/eventstage/kinki/20251016/image3.png)
+![禁忌の獄〜深淵〜で次回開催を有利にの画像](/mobilegame/monsuto/eventstage/kinki/20251016/image3.png)
 
 禁忌の獄（三十ノ獄まで）を制覇すると、さらなる高難度クエスト「禁忌の獄〜深淵〜」に挑戦できるようになります。
 

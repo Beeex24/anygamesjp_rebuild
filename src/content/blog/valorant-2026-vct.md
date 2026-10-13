@@ -9,7 +9,7 @@ category: 'valorant'
 
 # VALORANT Champions 2026が上海開催決定！VCTの新たな歴史が刻まれる
 
-![blog placeholder](/pcgame/valorant/vct/vctimage.png)
+![Champions 2026が上海で開催決定！VCT史上最大規模のイベントが中国の画像](/pcgame/valorant/vct/vctimage.png)
 
 ## 衝撃の発表：Champions 2026は中国・上海で開催
 

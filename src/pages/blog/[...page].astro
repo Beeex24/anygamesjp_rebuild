@@ -10,5 +10,5 @@ export async function getStaticPaths() {
 const p = Astro.props as ListPageProps;
 const href = (n: number) => (n === 1 ? '/blog/' : `/blog/${n}/`);
 ---
-<PostListPage {...p} heading="ゲーム記事" lead="ゲームの新作情報・アップデート・セール情報をまとめています。" basePath="/blog/" pageHref={href} gameFilter={true}
-  breadcrumb={[{ name: 'ホーム', href: '/' }, { name: 'ゲーム記事' }]} />
+<PostListPage {...p} heading="ゲーム" lead="ゲームの新作情報・アップデート・セール情報をまとめています。" basePath="/blog/" pageHref={href} gameFilter={true}
+  breadcrumb={[{ name: 'ホーム', href: '/' }, { name: 'ゲーム' }]} />

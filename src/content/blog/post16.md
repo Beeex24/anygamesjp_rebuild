@@ -12,7 +12,7 @@ category: 'others'
 
 ## ToHeartとは？ - 90年代を代表する恋愛アドベンチャーゲーム
 
-![blog placeholder](/pcgame/others/heart2.png)
+![ToHeartとは？ - 90年代を代表する恋愛アドベンチャーゲームの画像](/pcgame/others/heart2.png)
 
 **ToHeart**は、1997年にAQUAPLUSが開発したビジュアルノベルで、90年代の学園恋愛ゲームの金字塔として知られています。主人公は「ごく普通の青年」ですが、幼馴染のあかりや友人の雅史、志保たちと過ごす日常が描かれる「ハートフル」な恋愛コメディです。
 

@@ -9,7 +9,7 @@ category: 'sale'
 
 ## PICO PARK 2がついにSteamセール開始！
 
-![blog placeholder](/pcgame/steam/sale/pico2/picoparksale.png)
+![PICO PARK 2がついにSteamセール開始！の画像](/pcgame/steam/sale/pico2/picoparksale.png)
 
 2025年8月現在、世界中で愛され続ける協力パズルアクションゲーム「PICO PARK 2」がSteamで**最大40%オフセール**を実施中です！TECOPARK・Gemdrops, Inc.が開発・パブリッシングを手がけるこの作品は、最大8人のフレンドと一緒に協力必須のパズルステージに挑戦するユニークな協力ゲームとなっています。
 
@@ -25,7 +25,7 @@ category: 'sale'
 
 ## ゲーム内容・システム詳細
 
-![blog placeholder](/pcgame/steam/sale/pico2/pico1.png)
+![ゲーム内容・システム詳細の画像](/pcgame/steam/sale/pico2/pico1.png)
 
 ### 協力必須のパズルアクションの基本ルール
 

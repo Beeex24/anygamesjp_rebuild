@@ -1,4 +1,5 @@
 ---
+import { formatDate } from '../lib/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSenseScript from './AdSenseScript.astro';
 import { getCollection } from 'astro:content';
@@ -52,7 +53,7 @@ const ICON: Record<string, string> = { version: '📦', category: '📁', diffic
 
   <header class="mc-hero">
     <div class="in">
-      <h1 class="mc-title mc-pixel">MineCraft MOD Database</h1>
+      <h1 class="mc-title mc-pixel">Minecraft MOD Database</h1>
       <p class="sub">{lead}</p>
     </div>
   </header>
@@ -110,6 +111,7 @@ const ICON: Record<string, string> = { version: '📦', category: '📁', diffic
                     {m.downloads && <span class="mc-tag downloads">⬇️ {m.downloads}</span>}
                     {m.difficulty && <span class="mc-tag difficulty">🎯 {m.difficulty}</span>}
                   </p>
+                  <p class="date"><time datetime={new Date(m.upd).toISOString()}>{m.upd !== m.pub ? '更新' : '公開'}: {formatDate(new Date(m.upd))}</time></p>
                 </div>
               </a>
             </li>
@@ -204,6 +206,7 @@ const ICON: Record<string, string> = { version: '📦', category: '📁', diffic
   .filter[open] summary::before { transform: rotate(90deg); }
   .filter:not([open]) summary { border-bottom: 0; }
   .items { padding: 14px; display: grid; gap: 8px; }
+  .date { margin: 8px 0 0; font-size: .78rem; color: #666; }
   .item { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 11px 14px; background: #f5f5f5; border: 2px solid transparent; font: inherit; font-size: .92rem; color: var(--dark); cursor: pointer; }
   .item:hover { background: var(--light); border-color: var(--stone); }
   .item[aria-pressed='true'] { background: var(--diamond); color: #fff; border-color: var(--dark); font-weight: 700; }

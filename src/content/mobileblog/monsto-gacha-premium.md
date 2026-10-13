@@ -27,7 +27,7 @@ category: 'monsuto'
 
 ## プレミアムセレクションガチャの仕組み
 
-![blog placeholder](/mobilegame/monsuto/0801/premiumgacha1.png)
+![プレミアムセレクションガチャの仕組みの画像](/mobilegame/monsuto/0801/premiumgacha1.png)
 
 ### 1. キャラクター選択システム
 
@@ -55,7 +55,7 @@ category: 'monsuto'
 
 ## 選択可能な限定キャラクター一覧
 
-![blog placeholder](/mobilegame/monsuto/0801/premiumgacha.png)
+![選択可能な限定キャラクター一覧の画像](/mobilegame/monsuto/0801/premiumgacha.png)
 
 ### 火属性の注目キャラ
 

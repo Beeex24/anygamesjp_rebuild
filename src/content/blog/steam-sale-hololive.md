@@ -23,7 +23,7 @@ category: 'pcgame'
 
 ## ゲーム内容・システム詳細
 
-![blog placeholder](/pcgame/steam/hololive/hololivegame2.png)
+![ゲーム内容・システム詳細の画像](/pcgame/steam/hololive/hololivegame2.png)
 
 ### 花札の基本ルール
 

@@ -9,7 +9,7 @@ category: 'monsuto'
 
 # 【モンスト】Ver.30.1アップデート情報完全ガイド！新機能とお得情報まとめ
 
-![blog placeholder](/mobilegame/monsuto/update/v301/update301.png)
+![Ver.30.1アップデート情報完全ガイド！新機能とお得情報まとめの画像](/mobilegame/monsuto/update/v301/update301.png)
 
 モンスターストライクが9月11日（木）に**Ver.30.1**へアップデートします！今回のアップデートでは、**マルチプレイの利便性向上**や**自動化機能の追加**など、プレイヤーの要望に応えた機能が多数追加されます。
 
@@ -32,7 +32,7 @@ category: 'monsuto'
 - パーティー編成時の効率が大幅向上
 - 他のプレイヤーに自分の戦力をアピール可能
 
-![blog placeholder](/mobilegame/monsuto/update/v301/update2.png)
+![ラック数と絆のカケラ数が一目でわかるの画像](/mobilegame/monsuto/update/v301/update2.png)
 
 ### ショートカット機能の改善
 
@@ -40,11 +40,11 @@ category: 'monsuto'
 
 これにより、目的のクエストにより速くアクセスできるようになります。
 
-![blog placeholder](/mobilegame/monsuto/update/v301/update4.png)
+![ショートカット機能の改善の画像](/mobilegame/monsuto/update/v301/update4.png)
 
 ## 自動化機能でプレイがもっと快適に
 
-![blog placeholder](/mobilegame/monsuto/update/v301/update3.png)
+![自動化機能でプレイがもっと快適にの画像](/mobilegame/monsuto/update/v301/update3.png)
 
 ### マイスポット自動アンテナ取り付け
 
@@ -108,7 +108,7 @@ Ver.30.1アップデート後、**既に購入済みの各種パックが再度�
 
 ## アップデート記念イベント
 
-![blog placeholder](/mobilegame/monsuto/update/v301/50off.png)
+![アップデート記念イベントの画像](/mobilegame/monsuto/update/v301/50off.png)
 
 ### アプデ完了！★5以上キャラ50％ガチャ
 

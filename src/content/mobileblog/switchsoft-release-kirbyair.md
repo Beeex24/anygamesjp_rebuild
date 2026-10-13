@@ -9,7 +9,7 @@ category: 'switch2'
 
 ## 【朗報】22年ぶりの新作『カービィのエアライダー』が2025年11月20日に発売決定！
 
-![blog placeholder](/mobilegame/switch/soft/kirby/kirbyair1.png)
+![【朗報】22年ぶりの新作『カービィのエアライダー』が2025年11月20日に発売の画像](/mobilegame/switch/soft/kirby/kirbyair1.png)
 
 Nintendo Switch 2専用ソフト『カービィのエアライダー』の発売が正式に決定しました！2003年にニンテンドー ゲームキューブで発売された『カービィのエアライド』の続編として、実に22年ぶりとなる最新作が登場します。
 
@@ -31,7 +31,7 @@ Nintendo Switch 2専用ソフトとして開発されており、Nintendo Switch
 
 ## 『カービィのエアライダー』の基本システム・操作方法
 
-![blog placeholder](/mobilegame/switch/soft/kirby/kirby2air.png)
+![『カービィのエアライダー』の基本システム・操作方法の画像](/mobilegame/switch/soft/kirby/kirby2air.png)
 
 ### シンプルで直感的な操作
 
@@ -105,7 +105,7 @@ Nintendo Switch 2専用ソフトとして開発されており、Nintendo Switch
 
 ## オンライン・マルチプレイ要素
 
-![blog placeholder](/mobilegame/switch/soft/kirby/kirbyair3.png)
+![オンライン・マルチプレイ要素の画像](/mobilegame/switch/soft/kirby/kirbyair3.png)
 
 ### 最大16人のオンライン対戦に対応
 

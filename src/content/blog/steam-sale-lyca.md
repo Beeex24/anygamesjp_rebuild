@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【今だけ40%OFF】癒し系ゲーム「Lyca」がお買い得！
 
-![blog placeholder](/pcgame/steam/sale/lyca/saleprice.png)
+![【今だけ40%OFF】癒し系ゲーム「Lyca」がお買い得！の画像](/pcgame/steam/sale/lyca/saleprice.png)
 
 Steamで大人気の**インクリメンタルゲーム「Lyca」**が、**40%OFFの大幅セール**を開催中です！通常価格 **580円** から **348円** まで値下げされており、癒しゲーム好きにはまたとないチャンスとなっています。
 
@@ -19,7 +19,7 @@ Steamで大人気の**インクリメンタルゲーム「Lyca」**が、**40%OF
 
 #### ゲームの特徴
 
-![blog placeholder](/pcgame/steam/sale/lyca/lyca2.png)
+![ゲームの特徴の画像](/pcgame/steam/sale/lyca/lyca2.png)
 
 **基本的なゲームプレイ**
 - 魔法のオオカミ「Lyca」を操作して広大な土地を自由に駆け回る
@@ -49,7 +49,7 @@ Steamで大人気の**インクリメンタルゲーム「Lyca」**が、**40%OF
 
 ### ゲームの魅力を詳しく解説
 
-![blog placeholder](/pcgame/steam/sale/lyca/lyca3.png)
+![ゲームの魅力を詳しく解説の画像](/pcgame/steam/sale/lyca/lyca3.png)
 
 #### 段階的成長システム
 リソース管理とアンロック要素による満足感のある成長を体験できるインクリメンタルシステムが特徴。少しずつ世界が美しくなっていく過程を楽しめます。

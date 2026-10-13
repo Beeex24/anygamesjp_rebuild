@@ -9,7 +9,7 @@ category: 'overwatch2'
 
 ## オーバーウォッチ2の夏を彩る大型アップデート！シーズン18「スタジアム：クイックプレイ」開幕
 
-![blog placeholder](/pcgame/overwatch2/bigwave/bigwave1.png)
+![オーバーウォッチ2の夏を彩る大型アップデート！シーズン18「スタジアム：クイックの画像](/pcgame/overwatch2/bigwave/bigwave1.png)
 
 オーバーウォッチ2プレイヤーの皆さん、お待たせしました！**2025年8月27日**にシーズン18「スタジアム：クイックプレイ」がついに開幕します。今回は今年最大級のアップデートとして、新ヒーロー「ウーヤン」の登場をはじめ、スタジアムモードの大幅拡張、パークシステムの大規模リニューアルなど、盛りだくさんの内容となっています。
 
@@ -17,7 +17,7 @@ category: 'overwatch2'
 
 ## 新サポートヒーロー「ウーヤン」が正式参戦！
 
-![blog placeholder](/pcgame/overwatch2/bigwave/bigwave3.png)
+![新サポートヒーロー「ウーヤン」が正式参戦！の画像](/pcgame/overwatch2/bigwave/bigwave3.png)
 
 ### 水を操る若き武術家の魅力
 
@@ -50,7 +50,7 @@ category: 'overwatch2'
 
 ## スタジアムモードが大幅進化！
 
-![blog placeholder](/pcgame/overwatch2/bigwave/bigwave2.png)
+![スタジアムモードが大幅進化！の画像](/pcgame/overwatch2/bigwave/bigwave2.png)
 
 ### 待望のクイックプレイ対応
 
@@ -94,7 +94,7 @@ category: 'overwatch2'
 
 ## プログレッションシステムも一新
 
-![blog placeholder](/pcgame/overwatch2/bigwave/bigwave4.png)
+![プログレッションシステムも一新の画像](/pcgame/overwatch2/bigwave/bigwave4.png)
 
 ### より見やすく、より豪華な報酬
 

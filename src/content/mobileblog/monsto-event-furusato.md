@@ -72,7 +72,7 @@ category: 'monsuto'
 
 ### 東急ふるさとパレット限定キャンペーン
 
-![blog placeholder](/mobilegame/monsuto/event/furusato/furusato1.png)
+![東急ふるさとパレット限定キャンペーンの画像](/mobilegame/monsuto/event/furusato/furusato1.png)
 
 **期間**: 2025年9月1日（月）～ 10月31日（金）
 
