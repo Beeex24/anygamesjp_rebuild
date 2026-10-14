@@ -1,11 +1,11 @@
 ---
 import PostListPage from '../../components/PostListPage.astro';
 import { getCollection } from 'astro:content';
-import { restRoutes, type ListPageProps } from '../../lib/list';
+import { restRoutes, PAGE_SIZE, type ListPageProps } from '../../lib/list';
 
-// 既存URL: /device/ と /device/2/ …（100件/ページ）
+// 既存URL: /device/ と /device/2/ …（13件/ページ）
 export async function getStaticPaths() {
-  return restRoutes(await getCollection('device'), 100);
+  return restRoutes(await getCollection('device'), PAGE_SIZE);
 }
 const p = Astro.props as ListPageProps;
 const href = (n: number) => (n === 1 ? '/device/' : `/device/${n}/`);

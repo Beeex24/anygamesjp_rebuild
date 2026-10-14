@@ -1,12 +1,12 @@
 ---
 import PostListPage from '../../components/PostListPage.astro';
 import { getCollection } from 'astro:content';
-import { pageRoutes, type ListPageProps } from '../../lib/list';
+import { pageRoutes, PAGE_SIZE, type ListPageProps } from '../../lib/list';
 
-// 既存URL: /minecraft_blog/1/ …（12件/ページ）。/minecraft_blog/ は index.astro
+// 既存URL: /minecraft_blog/1/ …（13件/ページ）。/minecraft_blog/ は index.astro
 export async function getStaticPaths() {
   // 1ページ目は /minecraft_blog/（index.astro）。/minecraft_blog/1/ は .htaccess で 301
-  return pageRoutes(await getCollection('minecraft_blog'), 12).filter((r) => r.props.currentPage > 1);
+  return pageRoutes(await getCollection('minecraft_blog'), PAGE_SIZE).filter((r) => r.props.currentPage > 1);
 }
 const p = Astro.props as ListPageProps;
 const href = (n: number) => (n === 1 ? '/minecraft_blog/' : `/minecraft_blog/${n}/`);

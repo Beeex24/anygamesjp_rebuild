@@ -7,6 +7,9 @@ export type ListPageProps = {
   totalPosts: number;
 };
 
+/** 一覧ページの1ページあたりの記事数(スマホの読み込みを軽くするため13件) */
+export const PAGE_SIZE = 13;
+
 /** 日付の新しい順に並べる（元配列は変更しない） */
 export function sortByDate<T extends { data: { pubDate: Date } }>(items: T[]): T[] {
   return [...items].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

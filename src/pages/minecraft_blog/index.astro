@@ -1,9 +1,9 @@
 ---
 import PostListPage from '../../components/PostListPage.astro';
 import { getCollection } from 'astro:content';
-import { pageRoutes } from '../../lib/list';
+import { pageRoutes, PAGE_SIZE } from '../../lib/list';
 
-const p = pageRoutes(await getCollection('minecraft_blog'), 12)[0].props;
+const p = pageRoutes(await getCollection('minecraft_blog'), PAGE_SIZE)[0].props;
 const href = (n: number) => (n === 1 ? '/minecraft_blog/' : `/minecraft_blog/${n}/`);
 ---
 <PostListPage {...p} heading="マインクラフト" lead="マインクラフトの攻略・建築・アップデート情報の一覧です。" basePath="/minecraft_blog/" pageHref={href}

@@ -1,16 +1,16 @@
 ---
 import PostListPage from '../../components/PostListPage.astro';
 import { getCollection } from 'astro:content';
-import { pageRoutes, type ListPageProps } from '../../lib/list';
+import { pageRoutes, PAGE_SIZE, type ListPageProps } from '../../lib/list';
 
-// 既存URL: /all/1/ 〜（ゲーム・モバイル・ガジェットの新着、9件/ページ）
+// 既存URL: /all/1/ 〜（ゲーム・モバイル・ガジェットの新着、13件/ページ）
 export async function getStaticPaths() {
   const all = [
     ...(await getCollection('blog')),
     ...(await getCollection('mobileblog')),
     ...(await getCollection('device')),
   ];
-  return pageRoutes(all, 9);
+  return pageRoutes(all, PAGE_SIZE);
 }
 const p = Astro.props as ListPageProps;
 ---
