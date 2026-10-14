@@ -24,7 +24,7 @@ for (const c of COLLECTIONS) {
 }
 
 // サイトマップに載せないURL: 検索・HTML版サイトマップ・404、新着一覧(/all/)、ページネーション(2ページ目以降)
-const EXCLUDE = [/\/search\/$/, /\/sitemap\/$/, /\/404\/?$/, /\/all\//, /\/(blog|device|mobileblog|minecraft_blog)\/[0-9]+\/$/];
+const EXCLUDE = [/\/search\/$/, /\/sitemap\/$/, /\/404\/?$/, /\/all\//, /\/(blog|device|mobileblog|minecraft_blog)\/[0-9]+\/$/, /\/games\/[^/]+\/[0-9]+\/$/];
 
 // https://astro.build/config
 export default defineConfig({

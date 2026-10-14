@@ -1,0 +1,22 @@
+---
+import PostListPage from '../../../components/PostListPage.astro';
+import { getAllPosts } from '../../../lib/site';
+import { pageRoutes, PAGE_SIZE, type ListPageProps } from '../../../lib/list';
+import { GAME_HUBS, matchesHub, type GameHub } from '../../../lib/games';
+
+// ゲーム別まとめ: /games/valorant/ , /games/valorant/2/ …（13件/ページ）
+export async function getStaticPaths() {
+  const all = await getAllPosts();
+  return GAME_HUBS.flatMap((hub) =>
+    pageRoutes(all.filter((p) => matchesHub(p.data.title, hub)), PAGE_SIZE).map((r) => ({
+      params: { game: hub.slug, page: r.props.currentPage === 1 ? undefined : r.params.page },
+      props: { ...r.props, hub },
+    })),
+  );
+}
+const { hub, ...p } = Astro.props as ListPageProps & { hub: GameHub };
+const base = `/games/${hub.slug}/`;
+const href = (n: number) => (n === 1 ? base : `${base}${n}/`);
+---
+<PostListPage {...p} heading={`${hub.name} 記事まとめ`} lead={hub.lead} basePath={base} pageHref={href}
+  breadcrumb={[{ name: 'ホーム', href: '/' }, { name: 'ゲーム', href: '/blog/' }, { name: `${hub.name} 記事まとめ`, href: base }]} />

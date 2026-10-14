@@ -6,6 +6,7 @@ import Pagination from './Pagination.astro';
 import AdSlot from './AdSlot.astro';
 import AdSenseScript from './AdSenseScript.astro';
 import { GAME_FILTERS, gameKey, type ListPageProps } from '../lib/list';
+import { GAME_HUBS, hubUrl } from '../lib/games';
 import { SECTION_COLORS, postUrl, formatDate } from '../lib/site';
 
 interface Props extends ListPageProps {
@@ -18,8 +19,10 @@ interface Props extends ListPageProps {
   breadcrumb: { name: string; href?: string }[];
   /** 現在ページ内の記事をゲーム名で絞り込むチップを表示 */
   gameFilter?: boolean;
+  /** ゲーム別まとめページへの入口を上部に表示 */
+  showHubs?: boolean;
 }
-const { posts, currentPage, totalPages, totalPosts, heading, lead, pageHref, breadcrumb, gameFilter = false } = Astro.props;
+const { posts, currentPage, totalPages, totalPosts, heading, lead, pageHref, breadcrumb, gameFilter = false, showHubs = false } = Astro.props;
 const title = currentPage > 1 ? `${heading}（${currentPage}ページ目）` : heading;
 const present = new Set(posts.map((p) => gameKey(p.data.title)));
 const chips = GAME_FILTERS.filter((f) => present.has(f.key));
@@ -44,6 +47,12 @@ const rest = listed.slice(6);
       <p>{lead}</p>
       <span class="count">全{totalPosts}記事</span>
     </header>
+    {showHubs && (
+      <nav class="hubs" aria-label="ゲーム別まとめ">
+        <span class="hubs-t">ゲーム別まとめ</span>
+        {GAME_HUBS.map((h) => <a class="hub" href={hubUrl(h)}>{h.name}</a>)}
+      </nav>
+    )}
     {featured && (
       <a class="feature" href={postUrl(featured)} data-key={gameKey(featured.data.title)}>
         <span class="fimg">
@@ -128,6 +137,10 @@ const rest = listed.slice(6);
     .ftext { padding: 24px 28px; justify-content: center; }
     .ftext strong { font-size: 1.4rem; }
   }
+  .hubs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .hubs-t { font-size: .85rem; font-weight: 800; color: var(--text-sub); margin-right: 4px; }
+  .hub { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1.5px solid var(--c); border-radius: 3px; background: var(--c); color: #fff; font-size: .9rem; font-weight: 700; text-decoration: none; }
+  .hub:hover { filter: brightness(1.1); }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
   .chip { border: 1.5px solid var(--c); background: var(--bg); color: var(--c); border-radius: 3px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
   .chip.on { background: var(--c); color: #fff; }
