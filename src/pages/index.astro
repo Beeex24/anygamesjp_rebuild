@@ -17,15 +17,6 @@ const [game, mobile, device, mc, mod] = await Promise.all((['blog', 'mobileblog'
 const all = await getAllPosts();
 const latest = all.slice(0, 6);
 
-// 記事一覧タブ(各9件)
-const tabs = [
-  { key: 'all', label: 'すべての記事', posts: all.slice(0, 9) },
-  { key: 'blog', label: 'ゲーム', posts: game.slice(0, 9) },
-  { key: 'mobileblog', label: 'モバイル・ゲーム機', posts: mobile.slice(0, 9) },
-  { key: 'device', label: 'ガジェット', posts: device.slice(0, 9) },
-  { key: 'minecraft_blog', label: 'マインクラフト', posts: mc.slice(0, 9) },
-];
-
 // ランキング風の新着ボックス(ガジェットはdeviceの記事のみ)
 const gadget = device.slice(0, 6);
 
@@ -42,6 +33,9 @@ const tiles = [
   { href: SOCIAL.youtube, label: '公式チャンネル', img: undefined, external: true },
 ];
 
+const TOP_TITLE = 'ANYGAMES放送局｜Steamセール・Apex/VALORANT更新情報・マイクラMOD解説と無料ツール';
+const TOP_DESCRIPTION = 'Steamセールのお得情報、Apex・VALORANT・オーバーウォッチ2のアップデート解説、マイクラMODの導入方法、画像圧縮やeDPI計算などの無料ツールをまとめたゲーム情報サイトです。';
+
 const websiteLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -50,7 +44,7 @@ const websiteLd = {
   description: SITE_DESCRIPTION,
 };
 ---
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={TOP_TITLE} description={TOP_DESCRIPTION}>
   <AdSenseScript slot="head" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
   <h1 class="sr-only">ANYGAMES放送局 - ゲーム・ガジェットの情報と無料ツール</h1>
@@ -101,47 +95,12 @@ const websiteLd = {
 
     <AdSlot slot="listFeed" />
 
-    <section class="card tabsec" aria-labelledby="list-h">
-      <h2 id="list-h" class="heading-c">記事一覧</h2>
-      <div class="tabs" role="tablist" aria-label="記事のジャンル">
-        {tabs.map((t, i) => (
-          <button type="button" role="tab" id={`tab-${t.key}`} aria-controls={`panel-${t.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.key}>{t.label}</button>
-        ))}
-      </div>
-      {tabs.map((t, i) => (
-        <div role="tabpanel" id={`panel-${t.key}`} aria-labelledby={`tab-${t.key}`} hidden={i !== 0}>
-          <ArticleList posts={t.posts} />
-        </div>
-      ))}
-      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
-    </section>
 
     <section class="card" aria-labelledby="dev-h">
       <h2 id="dev-h" class="heading-c">おすすめのデバイス</h2>
       <AffiliateGrid />
     </section>
   </div>
-  <script>
-    const tabButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tabs [role=tab]'));
-    const select = (btn: HTMLButtonElement) => {
-      tabButtons.forEach((b) => {
-        const on = b === btn;
-        b.setAttribute('aria-selected', String(on));
-        b.tabIndex = on ? 0 : -1;
-        const panel = document.getElementById(b.getAttribute('aria-controls') ?? '');
-        if (panel) panel.hidden = !on;
-      });
-    };
-    tabButtons.forEach((b, i) => {
-      b.addEventListener('click', () => select(b));
-      b.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        const next = tabButtons[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabButtons.length) % tabButtons.length];
-        next.focus();
-        select(next);
-      });
-    });
-  </script>
 </BaseLayout>
 <style>
   /* 列幅は必ず画面幅に固定する(広告など幅の大きい要素が入っても、他のブロックを横に押し広げない) */
@@ -192,9 +151,5 @@ const websiteLd = {
   .tools a:hover { border-color: var(--c); background: #fff; }
   .tools strong { color: var(--c); }
   .tools span { font-size: .82rem; color: var(--text-sub); }
-  .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tabs button { flex: 0 0 auto; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 3px; background: var(--bg); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
-  .tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
   @media (max-width: 640px) { .card { padding: 4px 14px 20px; } }
 </style>
