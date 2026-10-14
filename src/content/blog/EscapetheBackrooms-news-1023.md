@@ -120,8 +120,8 @@ Escape the Backroomsは、バージョン1.0の正式リリースを経て、さ
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-    <li><a href="/blog/EscapetheBackrooms-news-0919">【Escape the Backrooms最新速報！】ついに完全版リリース！10月23日にバージョン1.0が配信開始</a></li>
-    <li><a href="/blog/EscapetheBackrooms-news-0827">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
+    <li><a href="/blog/escapethebackrooms-news-0919/">【Escape the Backrooms最新速報！】ついに完全版リリース！10月23日にバージョン1.0が配信開始</a></li>
+    <li><a href="/blog/escapethebackrooms-news-0827/">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
   </ul>
 </div>
 

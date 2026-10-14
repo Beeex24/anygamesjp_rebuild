@@ -8,7 +8,7 @@ category: 'VALORANT'
 
 ## はじめに：Champions後も続くVALORANT競技シーンの熱狂
 
-![blog placeholder](/pcgame/valorant/event/VCT5.png)
+![はじめに：Champions後も続くVALORANT競技シーンの熱狂の画像](/pcgame/valorant/event/VCT5.png)
 
 VALORANTの最高峰大会「Champions 2025」が10月初旬に幕を閉じた後も、競技シーンの興奮は続きます。**Ascension**、**Game Changers Championship**、そして数々の国際トーナメントが待ち受けており、世界中のトップチームが栄光、昇格、そしてトロフィーをかけて激突する予定です。
 
@@ -55,7 +55,7 @@ Ascensionには複雑な出場・昇格システムが採用されています�
 
 ## Game Changers Championship：ソウルで初開催の歴史的大会
 
-![blog placeholder](/pcgame/valorant/event/VCT4.png)
+![Game Changers Championship：ソウルで初開催の歴史的大会の画像](/pcgame/valorant/event/VCT4.png)
 
 ### 開催詳細
 
@@ -73,7 +73,7 @@ Game Changers Championshipは、女性プレイヤーやマージナライズさ
 
 ## VCT Partner Series：新たなトーナメント体系の始動
 
-![blog placeholder](/pcgame/valorant/event/VCT3.png)
+![VCT Partner Series：新たなトーナメント体系の始動の画像](/pcgame/valorant/event/VCT3.png)
 
 ### 概要と目的
 

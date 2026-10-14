@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【史上最安値80%OFF】ディストピア・サバイバル「Mr. Prepper」が460円で楽しめる！
 
-![blog placeholder](/pcgame/steam/sale/prepper/saleprice.png)
+![【史上最安値80%OFF】ディストピア・サバイバル「Mr. Prepper」が4の画像](/pcgame/steam/sale/prepper/saleprice.png)
 
 Steamで高い評価を獲得している **ディストピア・サバイバルゲーム「Mr. Prepper」** が、**80%OFFの大特価セール** を実施中です！通常価格 **2,300円** から **460円** まで値下げされ、**史上最安値**を記録しています。期間限定セールとなっており、サバイバルゲーム好きには見逃せないチャンスです。
 
@@ -19,7 +19,7 @@ Steamで高い評価を獲得している **ディストピア・サバイバル
 
 #### ゲームの核となる特徴
 
-![blog placeholder](/pcgame/steam/sale/prepper/image1.png)
+![ゲームの核となる特徴の画像](/pcgame/steam/sale/prepper/image1.png)
 
 **緊迫のディストピア体験**
 - かつて自由の国だった場所が、全体主義政府によって支配されている世界観
@@ -43,7 +43,7 @@ Steamで高い評価を獲得している **ディストピア・サバイバル
 - **クエスト**: 反政府活動に協力する仲間からの依頼
 - **情報収集**: 政府の動向や有用な情報を入手
 
-![blog placeholder](/pcgame/steam/sale/prepper/image2.png)
+![近隣住民との交流システムの画像](/pcgame/steam/sale/prepper/image2.png)
 
 ### セール情報詳細
 
@@ -65,7 +65,7 @@ Steamで高い評価を獲得している **ディストピア・サバイバル
 
 ### ゲームシステムの詳細解説
 
-![blog placeholder](/pcgame/steam/sale/prepper/image3.png)
+![ゲームシステムの詳細解説の画像](/pcgame/steam/sale/prepper/image3.png)
 
 #### 緊張感あふれるステルス要素
 - **政府調査**: 定期的に行われる家宅捜索を回避

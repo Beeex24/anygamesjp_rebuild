@@ -21,7 +21,7 @@ VCTシーズンのクライマックスが近づいています！**VCT Ascensio
 
 ## 出場チーム一覧
 
-![blog placeholder](/pcgame/valorant/vct/ascension/pacific2025/pacific1.png)
+![出場チーム一覧の画像](/pcgame/valorant/vct/ascension/pacific2025/pacific1.png)
 
 今大会には、各地域の強豪チームが集結します。特に注目すべきは、VCT Pacificでの出場権を維持するために戦う**2つの既存チーム**です。
 
@@ -53,7 +53,7 @@ VCTシーズンのクライマックスが近づいています！**VCT Ascensio
 
 ## トーナメント形式詳細
 
-![blog placeholder](/pcgame/valorant/vct/ascension/pacific2025/pacific2.png)
+![トーナメント形式詳細の画像](/pcgame/valorant/vct/ascension/pacific2025/pacific2.png)
 
 ### グループステージ（10月14日～21日）
 
@@ -85,7 +85,7 @@ VCTシーズンのクライマックスが近づいています！**VCT Ascensio
 
 ## 大会スケジュール
 
-![blog placeholder](/pcgame/valorant/vct/ascension/pacific2025/pacific3.png)
+![大会スケジュールの画像](/pcgame/valorant/vct/ascension/pacific2025/pacific3.png)
 
 ### 詳細日程
 

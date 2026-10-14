@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Riyoukiyaku.astro';
+import Layout from '../layouts/PageLayout.astro';
 ---
 
 <Layout
@@ -45,6 +45,11 @@ import Layout from '../layouts/Riyoukiyaku.astro';
           <label for="message">お問い合わせ内容 <span class="required">*</span></label>
           <textarea id="message" name="message" rows="5" placeholder="お問い合わせ内容を入力してください" required></textarea>
         </div>
+        <!-- スパム対策: 人間には見えない罠欄(ボットが埋めたら送信しない) -->
+        <div class="hp" aria-hidden="true"><label>こちらは空のままにしてください<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+        <div class="form-group consent">
+          <label><input type="checkbox" name="consent" required /> <a href="/policy/" target="_blank" rel="noopener">プライバシーポリシー</a>に同意して送信します <span class="required">*</span></label>
+        </div>
         <button type="submit" class="submit-button" id="personalSubmitBtn">
           <span class="btn-text">送信</span>
           <span class="loading-spinner" style="display: none;"></span>
@@ -76,6 +81,11 @@ import Layout from '../layouts/Riyoukiyaku.astro';
         <div class="form-group">
           <label for="corporate_message">お問い合わせ内容 <span class="required">*</span></label>
           <textarea id="corporate_message" name="corporate_message" rows="5" placeholder="お問い合わせ内容を入力してください" required></textarea>
+        </div>
+        <!-- スパム対策: 人間には見えない罠欄(ボットが埋めたら送信しない) -->
+        <div class="hp" aria-hidden="true"><label>こちらは空のままにしてください<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+        <div class="form-group consent">
+          <label><input type="checkbox" name="consent" required /> <a href="/policy/" target="_blank" rel="noopener">プライバシーポリシー</a>に同意して送信します <span class="required">*</span></label>
         </div>
         <button type="submit" class="submit-button" id="corporateSubmitBtn">
           <span class="btn-text">送信</span>
@@ -166,6 +176,9 @@ import Layout from '../layouts/Riyoukiyaku.astro';
       display: flex;
       flex-direction: column;
     }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .consent label { font-weight: 400; font-size: .95rem; }
+    .consent input { width: auto; margin-right: .4em; }
     .form-group label {
       margin-bottom: 0.4rem;
       font-weight: 600;
@@ -266,11 +279,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
     const TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
     const PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    // デバッグ用ログ（本番環境では削除してください）
-    console.log('EmailJS設定確認:');
-    console.log('SERVICE_ID:', SERVICE_ID);
-    console.log('TEMPLATE_ID:', TEMPLATE_ID);
-    console.log('PUBLIC_KEY:', PUBLIC_KEY ? '設定済み' : '未設定');
 
     // 設定値の検証
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
@@ -293,7 +301,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
     if (CONFIG.publicKey) {
       try {
         emailjs.init(CONFIG.publicKey);
-        console.log('EmailJS初期化完了');
       } catch (error) {
         console.error('EmailJS初期化エラー:', error);
       }
@@ -337,6 +344,10 @@ import Layout from '../layouts/Riyoukiyaku.astro';
       let isValid = true;
 
       requiredFields.forEach(field => {
+        if (field instanceof HTMLInputElement && field.type === 'checkbox') {
+          if (!field.checked) isValid = false;
+          return;
+        }
         const value = field.value.trim();
         
         if (!value) {
@@ -376,6 +387,22 @@ import Layout from '../layouts/Riyoukiyaku.astro';
         return;
       }
 
+      // スパム対策: 罠欄が埋まっていたら送ったふりをして終了
+      const trap = form.querySelector<HTMLInputElement>('input[name="website"]');
+      if (trap && trap.value.trim() !== '') {
+        showMessage('送信しました。お問い合わせありがとうございます。', 'success');
+        form.reset();
+        return;
+      }
+      // 連続送信の制限(同じブラウザから60秒以内の再送信は不可)
+      try {
+        const last = Number(localStorage.getItem('contactLastSent') ?? '0');
+        if (Date.now() - last < 60_000) {
+          showMessage('続けて送信できません。1分ほど待ってからもう一度お試しください。', 'error');
+          return;
+        }
+      } catch { /* localStorage が使えない環境では制限なしで続行 */ }
+
       toggleSubmitButton(submitButton, true);
 
       try {
@@ -386,12 +413,6 @@ import Layout from '../layouts/Riyoukiyaku.astro';
         hiddenInput.value = new Date().toLocaleString('ja-JP');
         form.appendChild(hiddenInput);
 
-        console.log('メール送信開始...');
-        console.log('使用する設定:', {
-          serviceId: CONFIG.serviceId,
-          templateId: CONFIG.templateId,
-          publicKey: CONFIG.publicKey ? '設定済み' : '未設定'
-        });
 
         const result = await emailjs.sendForm(
           CONFIG.serviceId,
@@ -404,6 +425,7 @@ import Layout from '../layouts/Riyoukiyaku.astro';
 
         if (result.status === 200) {
           showMessage('お問い合わせを正常に送信いたしました。ご連絡いただきありがとうございます。', 'success');
+          try { localStorage.setItem('contactLastSent', String(Date.now())); } catch { /* 無視 */ }
           form.reset();
           
           // バリデーションクラスをリセット

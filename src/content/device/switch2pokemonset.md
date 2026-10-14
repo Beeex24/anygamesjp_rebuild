@@ -27,13 +27,13 @@ category: 'others'
 
 Nintendo Switch 2 ポケモンエディションセットには以下が含まれています
 
-![blog placeholder](/devicese/device/switch/photo1.png)
+![セット内容の詳細の画像](/devicese/device/switch/photo1.png)
 
 ### 1. Nintendo Switch 2（日本語・国内専用モデル）
 
 次世代ゲーム機Nintendo Switch 2の本体が含まれます。日本語・国内専用モデルとなっており、日本市場向けに最適化されています。
 
-![blog placeholder](/devicese/device/switch/photo2.png)
+![1. Nintendo Switch 2（日本語・国内専用モデル）の画像](/devicese/device/switch/photo2.png)
 
 ### 2. 『Pokémon LEGENDS Z-A Nintendo Switch 2 Edition』（ダウンロード版）
 

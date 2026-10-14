@@ -12,7 +12,7 @@ category: 'rainbowsixsiege'
 
 ## **Dual Frontモードの重要な変更**
 
-![blog placeholder](/pcgame/r6s/dual.png)
+![Dual Frontモードの重要な変更の画像](/pcgame/r6s/dual.png)
 
 ### ダウン状態オペレーターの体力調整
 
@@ -24,7 +24,7 @@ category: 'rainbowsixsiege'
 
 ### オペレーター別修正内容
 
-![blog placeholder](/pcgame/r6s/clash.png)
+![オペレーター別修正内容の画像](/pcgame/r6s/clash.png)
 
 **Clash（クラッシュ）関連**
 - CCEシールド装備時にDokkaebi（ドッケビ）のLogic Bombを防げるバグを修正
@@ -32,7 +32,7 @@ category: 'rainbowsixsiege'
 &nbsp;  
 &nbsp;  
 
-![blog placeholder](/pcgame/r6s/teru.png)
+![オペレーター別修正内容の画像(2)](/pcgame/r6s/teru.png)
 
 **Thermite（テルミット）関連**
 - Exothermic Charge（テルミットチャージ）とHard Breach Charge（ハードブリーチチャージ）が、電気が作動する前に設置された場合に破壊されないバグを修正

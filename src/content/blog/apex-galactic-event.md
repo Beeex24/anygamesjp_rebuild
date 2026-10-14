@@ -9,7 +9,7 @@ category: 'apexlegends'
 
 ## ギャラクティックゲームイベント開催中！新システムで戦局が激変
 
-![blog placeholder](/pcgame/apex/event/galactic/galactic1.png)
+![ギャラクティックゲームイベント開催中！新システムで戦局が激変の画像](/pcgame/apex/event/galactic/galactic1.png)
 
 **2025年8月19日から9月9日**まで開催される「ギャラクティックゲームイベント」が遂にスタート！このイベントでは、新しく導入された**ワイルドカードシステム**により、従来のApexとは一味違う戦略性の高いバトルが楽しめます。
 
@@ -22,9 +22,9 @@ category: 'apexlegends'
 
 ## グランドスラムバット：新格闘武器の詳細
 
-![blog placeholder](/pcgame/apex/event/galactic/galactic2.png)
+![グランドスラムバット：新格闘武器の詳細の画像](/pcgame/apex/event/galactic/galactic2.png)
 
-![blog placeholder](/pcgame/apex/event/galactic/galactic3.png)
+![グランドスラムバット：新格闘武器の詳細の画像(2)](/pcgame/apex/event/galactic/galactic3.png)
 
 ### 基本性能と特徴
 
@@ -86,7 +86,7 @@ category: 'apexlegends'
 
 ### 報酬ショップシステム
 
-![blog placeholder](/pcgame/apex/event/galactic/galactic4.png)
+![報酬ショップシステムの画像](/pcgame/apex/event/galactic/galactic4.png)
 
 **栄誉ポイントの獲得方法：**
 - デイリーイベントチャレンジのクリア

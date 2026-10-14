@@ -9,13 +9,13 @@ category: 'valorant'
 
 ## VALORANT Challengers Japan 2025 Season Finals ついに開幕！
 
-![blog placeholder](/pcgame/valorant/vcj/vcj1.png)
+![VALORANT Challengers Japan 2025 Season Fの画像](/pcgame/valorant/vcj/vcj1.png)
 
 2025年8月6日（水）15時45分、VALORANT Challengers Japan 2025 Season Finals Onlineがついに開催されます。今年のサーキットポイント上位4チームが激突し、世界への扉「Ascension Pacific」を目指した最終決戦が始まります。
 
 ### Season Finals Onlineスケジュール
 
-![blog placeholder](/pcgame/valorant/vcj/vcj2.png)
+![Season Finals Onlineスケジュールの画像](/pcgame/valorant/vcj/vcj2.png)
 
 **配信開始日程：**
 - **8月6日（水）15:45-**
@@ -29,7 +29,7 @@ category: 'valorant'
 
 ## 出場4チーム詳細分析
 
-![blog placeholder](/pcgame/valorant/vcj/vcj3.png)
+![出場4チーム詳細分析の画像](/pcgame/valorant/vcj/vcj3.png)
 
 ### 🥇 サーキットポイント1位：RIDDLE ORDER
 

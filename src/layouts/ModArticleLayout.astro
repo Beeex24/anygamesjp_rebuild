@@ -1,0 +1,203 @@
+---
+// MOD解説の記事ページ(旧サイトの見た目: 土色ヘッダー・太枠の白カード・右サイドバー)
+import '../styles/mc.css';
+import { render, getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import { formatDate, getAllPosts } from '../lib/site';
+import { relatedPosts } from '../lib/related';
+
+interface Props { post: CollectionEntry<'minecraft_mod_blog'> }
+const { post } = Astro.props;
+const d = post.data;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+const arr = <T,>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+const versions = arr(d.version);
+const loaders = arr(d.modLoader);
+
+// 関連記事: タイトルの共通ワードが多い順
+const related = relatedPosts(post, await getAllPosts(), 4);
+
+const dl = [
+  { href: d.downloadLink, label: '⬇️ ダウンロード', cls: '' },
+  { href: d.curseforgeUrl, label: '🔥 CurseForge', cls: 'cyan' },
+  { href: d.modrinthUrl, label: '🟢 Modrinth', cls: 'cyan' },
+  { href: d.neoforgeUrl, label: '🔨 NeoForge', cls: 'neo' },
+  { href: d.fabricUrl, label: '🪡 Fabric', cls: 'fabric' },
+  { href: d.quiltUrl, label: '🧵 Quilt', cls: 'quilt' },
+].filter((b) => b.href);
+
+const crumbs = [
+  { name: 'ホーム', href: '/' },
+  { name: 'MOD解説', href: '/minecraft_mod_blog/' },
+  { name: d.title, href: `/minecraft_mod_blog/${post.id}/` },
+];
+---
+<BaseLayout title={d.title} description={d.description} image={d.heroImage} ogType="article"
+  pubDate={d.pubDate} updatedDate={d.updatedDate} breadcrumbs={crumbs} bodyClass="mc">
+  <AdSenseScript slot="head" />
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+
+  <header class="mc-hero">
+    <div class="in">
+      <a href="/minecraft_mod_blog/" class="back">← MOD一覧に戻る</a>
+      <h1 class="mc-title mc-pixel">{d.title}</h1>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="info mc-box" aria-label="MODの基本情報">
+      {d.heroImage
+        ? <img class="hero-img" src={d.heroImage} alt="" width="1200" height="400" loading="eager" fetchpriority="high" decoding="async" />
+        : <div class="hero-img empty" aria-hidden="true">🎮</div>}
+      <div class="info-body">
+        <p class="tags">
+          {versions.length > 0 && <span class="mc-tag version">📦 {versions.join(' / ')}</span>}
+          {d.category && <span class="mc-tag category">📁 {d.category}</span>}
+          {d.downloads && <span class="mc-tag downloads">⬇️ {d.downloads}</span>}
+          {d.difficulty && <span class="mc-tag difficulty">🎯 {d.difficulty}</span>}
+          {d.author && <span class="mc-tag author">👤 {d.author}</span>}
+          {loaders.length > 0 && <span class="mc-tag loader">{loaders.join(' / ')}</span>}
+        </p>
+        <p class="lead">{d.description}</p>
+        <dl class="dates">
+          <div><dt>公開日</dt><dd><time datetime={d.pubDate.toISOString()}>{formatDate(d.pubDate)}</time></dd></div>
+          {d.updatedDate && <div><dt>更新日</dt><dd><time datetime={d.updatedDate.toISOString()}>{formatDate(d.updatedDate)}</time></dd></div>}
+        </dl>
+      </div>
+    </section>
+
+    {dl.length > 0 && (
+      <nav class="dl mc-box" aria-label="ダウンロード先">
+        {dl.map((b) => <a class={`mc-btn ${b.cls}`} href={b.href} target="_blank" rel="noopener noreferrer">{b.label}</a>)}
+      </nav>
+    )}
+
+    <div class="cols">
+      <article class="main mc-box">
+        {toc.length >= 3 && (
+          <details class="toc" open>
+            <summary>📖 目次</summary>
+            <ol>{toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </details>
+        )}
+        <div class="prose-body"><Content /></div>
+        <AdSlot slot="postBottom" />
+      </article>
+
+      <aside class="side">
+        {d.requirements && d.requirements.length > 0 && (
+          <section class="box mc-box">
+            <h2>前提MOD</h2>
+            <ul class="req">{d.requirements.map((r) => <li>⚙️ {r}</li>)}</ul>
+          </section>
+        )}
+        {d.tags && d.tags.length > 0 && (
+          <section class="box mc-box">
+            <h2>タグ</h2>
+            <p class="taglist">{d.tags.map((t) => <span>{t}</span>)}</p>
+          </section>
+        )}
+        {related.length > 0 && (
+          <section class="box mc-box">
+            <h2>関連記事</h2>
+            <ul class="rel">
+              {related.map((p) => (
+                <li><a href={`/${p.collection}/${p.id}/`}>
+                  {p.data.heroImage && <img src={p.data.heroImage} alt="" width="96" height="64" loading="lazy" decoding="async" />}
+                  <span>{p.data.title}</span>
+                </a></li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .back { display: inline-block; color: #fff; font-weight: 700; text-decoration: none; margin-bottom: 14px; transition: transform .2s; }
+  .back:hover { transform: translateX(-4px); }
+  h1.mc-title { font-size: clamp(.95rem, 2.6vw, 1.5rem); margin-bottom: 0; overflow-wrap: anywhere; }
+  .wrap { max-width: 1200px; margin: -26px auto 0; padding: 0 20px 48px; position: relative; z-index: 2; }
+  .info { overflow: hidden; margin-bottom: 36px; box-shadow: 0 8px 0 var(--mcshadow); }
+  .hero-img { display: block; width: 100%; height: clamp(180px, 40vw, 400px); object-fit: cover; border-bottom: 4px solid var(--dark); background: linear-gradient(135deg, var(--grass), #00c853); }
+  .hero-img.empty { display: grid; place-items: center; font-size: 6rem; }
+  .info-body { padding: 24px 28px 26px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 20px; }
+  .tags .mc-tag { padding: 8px 16px; font-size: .9rem; border-width: 3px; border-radius: 6px; }
+  .lead { font-size: 1.05rem; color: #555; line-height: 1.8; margin: 0 0 20px; }
+  .dates { display: flex; flex-wrap: wrap; gap: 8px 32px; margin: 0; padding-top: 16px; border-top: 2px solid #eee; font-size: .9rem; color: #666; }
+  .dates div { display: flex; flex-direction: column; }
+  .dates dt { font-weight: 700; color: var(--dark); }
+  .dates dd { margin: 0; }
+  .dl { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; padding: 22px; margin-bottom: 36px; }
+  .dl .mc-btn { font-size: 1.05rem; padding: 0 28px; min-height: 54px; }
+  .dl .cyan { background: var(--diamond); box-shadow: 0 4px 0 #0097a7; }
+  .dl .cyan:hover { box-shadow: 0 6px 0 #0097a7; }
+  .dl .neo { background: #d97706; box-shadow: 0 4px 0 #92400e; }
+  .dl .neo:hover { box-shadow: 0 6px 0 #92400e; }
+  .dl .fabric { background: #6366f1; box-shadow: 0 4px 0 #3730a3; }
+  .dl .fabric:hover { box-shadow: 0 6px 0 #3730a3; }
+  .dl .quilt { background: #ec4899; box-shadow: 0 4px 0 #9d174d; }
+  .dl .quilt:hover { box-shadow: 0 6px 0 #9d174d; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+  .main { padding: 28px 32px 32px; min-width: 0; }
+  .side { display: grid; gap: 22px; position: sticky; top: 12px; }
+  .box h2 { margin: 0; padding: 14px 18px; background: var(--grass); color: #fff; font-size: 1rem; border-bottom: 3px solid var(--dark); }
+  .req, .rel { list-style: none; margin: 0; padding: 14px 18px; }
+  .req li { padding: 8px 0; border-bottom: 2px dashed #ddd; }
+  .req li:last-child { border-bottom: 0; }
+  .taglist { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 16px 18px; }
+  .taglist span { background: var(--light); border: 2px solid var(--stone); padding: 4px 10px; border-radius: 4px; font-size: .85rem; }
+  .rel li + li { margin-top: 12px; }
+  .rel a { display: flex; gap: 10px; align-items: center; color: var(--dark); text-decoration: none; font-size: .88rem; font-weight: 700; line-height: 1.45; }
+  .rel a:hover span { text-decoration: underline; }
+  .rel img { width: 84px; height: 56px; object-fit: cover; border: 2px solid var(--dark); flex-shrink: 0; }
+  .toc { border: 3px solid var(--dark); background: var(--light); padding: 14px 18px; margin: 0 0 28px; }
+  .toc summary { font-weight: 700; cursor: pointer; }
+  .toc ol { margin: 10px 0 0; padding-left: 1.3em; display: grid; gap: 4px; font-size: .92rem; }
+  .toc .d3 { margin-left: 1em; list-style: circle; font-size: .88rem; }
+  .toc a { color: var(--dark); text-decoration: none; }
+  .toc a:hover { color: #1976d2; text-decoration: underline; }
+
+  /* 本文(Markdown由来なので :global) */
+  .prose-body { font-size: 1.0625rem; line-height: 1.9; overflow-wrap: anywhere; }
+  .prose-body :global(h2) { font-size: 1.45rem; line-height: 1.5; margin: 2.2em 0 .9em; padding-bottom: .4em; border-bottom: 4px solid var(--grass); color: var(--dark); scroll-margin-top: 72px; }
+  .prose-body :global(h2:first-child) { margin-top: 0; }
+  .prose-body :global(h3) { font-size: 1.25rem; line-height: 1.5; margin: 1.8em 0 .7em; color: var(--dark); scroll-margin-top: 72px; }
+  .prose-body :global(h4) { font-size: 1.05rem; margin: 1.5em 0 .5em; }
+  .prose-body :global(p) { margin: 0 0 1.2em; }
+  .prose-body :global(ul), .prose-body :global(ol) { margin: 0 0 1.2em; padding-left: 1.6em; }
+  .prose-body :global(li) { margin-bottom: .45em; }
+  .prose-body :global(a) { color: #1976d2; text-underline-offset: 3px; }
+  .prose-body :global(img) { max-width: 100%; height: auto; border: 3px solid var(--dark); margin: 1.2em 0; box-shadow: 0 4px 0 var(--mcshadow); }
+  .prose-body :global(video), .prose-body :global(iframe) { max-width: 100%; }
+  .prose-body :global(blockquote) { margin: 0 0 1.2em; padding: .8em 1.1em; border-left: 6px solid var(--grass); background: var(--light); }
+  .prose-body :global(blockquote p:last-child) { margin-bottom: 0; }
+  .prose-body :global(code) { background: var(--light); padding: .15em .45em; border: 2px solid var(--stone); border-radius: 4px; font-size: .9em; font-family: 'Courier New', monospace; }
+  .prose-body :global(pre) { overflow-x: auto; padding: 14px 16px; background: var(--dark); color: #fff; border: 3px solid var(--stone); border-radius: 8px; margin: 1.4em 0; line-height: 1.6; }
+  .prose-body :global(pre code) { background: none; border: 0; padding: 0; color: inherit; }
+  .prose-body :global(table) { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.4em; font-size: .95rem; }
+  .prose-body :global(th), .prose-body :global(td) { border: 2px solid var(--dark); padding: 8px 12px; text-align: left; }
+  .prose-body :global(th) { background: var(--light); white-space: nowrap; }
+  .prose-body :global(hr) { border: 0; border-top: 3px dashed #ccc; margin: 2.2em 0; }
+
+  @media (max-width: 960px) {
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    .side { position: static; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 12px 32px; }
+    .info-body { padding: 18px 16px 20px; }
+    .tags .mc-tag { padding: 6px 12px; font-size: .82rem; }
+    .main { padding: 20px 16px 24px; }
+    .dl { padding: 16px; gap: 12px; }
+    .dl .mc-btn { flex: 1 1 100%; }
+  }
+</style>

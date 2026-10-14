@@ -9,7 +9,7 @@ category: 'sale'
 
 # 【Steamセール】LIMBOが90%オフの激安セール中！
 
-![blog placeholder](/pcgame/steam/sale/limbo/saleplice.png)
+![懐かしすぎるあの作品が90%オフの激安セール中！！LIMBOがsteamストアでの画像](/pcgame/steam/sale/limbo/saleplice.png)
 
 Steamで話題のインディーゲーム「LIMBO」が現在90%オフの大幅割引で販売中です。通常価格1200円のところ、わずか120円で購入可能という驚きの価格設定となっています。この記事では、LIMBOの魅力とセール情報について詳しく解説します。
 

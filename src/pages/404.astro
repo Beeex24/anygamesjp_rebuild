@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { getAllPosts, SECTIONS } from '../lib/site';
+import { TOOLS } from '../lib/tools';
+
+const latest = (await getAllPosts()).slice(0, 6);
+---
+<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。記事の検索や、新着記事・ツールからお探しください。" noindex>
+  <div class="container">
+    <header class="head">
+      <p class="code" aria-hidden="true">404</p>
+      <h1>ページが見つかりませんでした</h1>
+      <p>URLが変わったか、ページが削除された可能性があります。下のリンクからお探しください。</p>
+    </header>
+
+    <form class="form" action="/search/" method="get" role="search">
+      <label class="sr-only" for="q">キーワード</label>
+      <input id="q" name="q" type="search" placeholder="記事を検索(例: VALORANT、MOD、キーボード)" autocomplete="off" />
+      <button class="btn" type="submit">検索</button>
+    </form>
+
+    <nav class="links" aria-label="カテゴリ">
+      <a href="/">トップページ</a>
+      {SECTIONS.map((s) => <a href={s.path}>{s.label}</a>)}
+      <a href="/tools/">ツール</a>
+    </nav>
+
+    <h2 class="heading-c">新着記事</h2>
+    <ArticleList posts={latest} />
+
+    <h2 class="heading-c">無料ツール</h2>
+    <ul class="tools">
+      {TOOLS.map((t) => <li><a href={t.href}>{t.name}</a></li>)}
+    </ul>
+  </div>
+</BaseLayout>
+<style>
+  .head { text-align: center; padding: 24px 0 8px; }
+  .code { font-size: clamp(3.5rem, 14vw, 6rem); font-weight: 800; line-height: 1; margin: 0; color: var(--accent); letter-spacing: .05em; }
+  h1 { font-size: 1.4rem; margin: 8px 0; }
+  .head p:last-child { margin: 0; color: var(--text-sub); }
+  .form { display: flex; gap: 8px; max-width: 560px; margin: 20px auto; }
+  .form input { flex: 1; min-width: 0; height: 48px; padding: 0 14px; font: inherit; border: 1px solid var(--line); border-radius: var(--radius); }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 24px; }
+  .links a { padding: 8px 16px; border: 1px solid var(--line); border-radius: 3px; color: var(--text); text-decoration: none; font-weight: 700; font-size: .9rem; }
+  .links a:hover { border-color: var(--accent); color: var(--accent); }
+  .tools { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools a { display: inline-block; padding: 6px 14px; border: 1px solid var(--line); border-radius: 3px; text-decoration: none; font-size: .9rem; }
+</style>

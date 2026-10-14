@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【緊急セール情報】Emissary Zeroが20%オフ！9月10日まで
 
-![blog placeholder](/pcgame/steam/sale/emissaryzero/saleprice.png)
+![【緊急セール情報】Emissary Zeroが20%オフ！9月10日までの画像](/pcgame/steam/sale/emissaryzero/saleprice.png)
 
 **2025年9月現在、話題のCo-opホラーゲーム「Emissary Zero」がSteamで特別セールを開催中**です！通常価格1,000円から**20%オフの800円**で購入できるこの機会をお見逃しなく。
 
@@ -22,7 +22,7 @@ category: 'sale'
 
 ## Emissary Zeroとは？話題のCo-opホラーゲームの魅力
 
-![blog placeholder](/pcgame/steam/sale/emissaryzero/emizero1.png)
+![Emissary Zeroとは？話題のCo-opホラーゲームの魅力の画像](/pcgame/steam/sale/emissaryzero/emizero1.png)
 
 ### ゲーム概要
 
@@ -48,7 +48,7 @@ category: 'sale'
 
 ## プレイヤーの評価は？Steam評価82%の高評価
 
-![blog placeholder](/pcgame/steam/sale/emissaryzero/emizero2.png)
+![プレイヤーの評価は？Steam評価82%の高評価の画像](/pcgame/steam/sale/emissaryzero/emizero2.png)
 
 Steam上での評価は非常に高く、1,595件のレビューのうち82%が肯定的な評価を獲得しています。多くのプレイヤーから支持される理由を見てみましょう。
 

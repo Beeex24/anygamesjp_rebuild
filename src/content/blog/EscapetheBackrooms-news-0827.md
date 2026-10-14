@@ -17,7 +17,7 @@ Secret Modeは2025年のMCV Develop Indies Publisher of the Year賞を受賞し�
 
 ## 開発者の3年間の奮闘と今後の展望
 
-![blog placeholder](/pcgame/steam/etb/backroom3.png)
+![開発者の3年間の奮闘と今後の展望の画像](/pcgame/steam/etb/backroom3.png)
 
 ### これまでの開発状況
 
@@ -36,7 +36,7 @@ Fancy氏は「プレイヤーに情報を提供できていない状況を改善
 
 ## Escape the Backroomsとは？
 
-![blog placeholder](/pcgame/steam/etb/backroom2.png)
+![Escape the Backroomsとは？の画像](/pcgame/steam/etb/backroom2.png)
 
 ### ゲームの基本情報
 
@@ -55,7 +55,7 @@ Steamでは過去30日間で85%、全体では90%という非常にポジティ�
 
 ## 今後のロードマップ
 
-![blog placeholder](/pcgame/steam/etb/backroom4.png)
+![今後のロードマップの画像](/pcgame/steam/etb/backroom4.png)
 
 ### 正式版1.0に向けて
 

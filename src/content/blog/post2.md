@@ -24,7 +24,7 @@ Stage 2の開幕を彩るのは、日本の人気ラッパー**千葉雄喜氏**
 
 今シーズンのStage 2では、**VALORANT Champions**への出場権を懸けた重要な戦いが繰り広げられます。
 
-![blog placeholder](/pcgame/valorant/event/tonament.png)
+![Stage 2トーナメント形式と重要性の画像](/pcgame/valorant/event/tonament.png)
 
 ### 大会形式
 1. **グループステージ**：各グループ内でシングルラウンドロビン形式

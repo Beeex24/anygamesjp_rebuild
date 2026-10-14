@@ -1,0 +1,23 @@
+---
+import ToolFaq from '../../../../components/tools/ToolFaq.astro';
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import EdpiCalculator from '../../../../components/tools/EdpiCalculator.astro';
+
+const faqs = [
+  { q: 'eDPIとは何ですか?', a: 'マウスのDPIとゲーム内感度を掛け合わせた値(eDPI = DPI × ゲーム内感度)です。マウスの設定が違う人どうしでも、感度を同じ物差しで比べられます。' },
+  { q: 'eDPIが同じなら、ゲームが違っても同じ感度ですか?', a: 'いいえ。ゲームごとに感度の内部係数が違うため、eDPIが同じでも振り向く距離は変わります。ゲーム間で合わせたいときは「感度変換」ツールをお使いください。' },
+  { q: 'cm/360とは何ですか?', a: '画面の中で360°(ぐるっと一周)振り向くために、マウスを動かす距離です。値が小さいほど高感度で、少ない移動で大きく振り向けます。eDPIよりも、感覚に近い指標です。' },
+  { q: 'マウスのDPIはどこで確認できますか?', a: 'ロジクールの「G HUB」やレイザーの「Synapse」など、マウスの設定ソフトで確認できます。ソフトが無い場合は、マウス底面や製品ページに記載された初期値を目安にしてください。' },
+  { q: '感度を変えるときの注意点は?', a: '一度に大きく変えると感覚が崩れやすいため、少しずつ変えて慣らすのがおすすめです。変更前後の感度は、このツールのcm/360で確認すると比べやすくなります。' },
+];
+---
+<ToolLayout
+  current="edpi"
+  title="eDPI計算ツール(DPI×感度・cm/360)【無料】"
+  heading="eDPI計算ツール"
+  description="マウスのDPIとゲーム内感度から、eDPIと360°振り向くのに必要なマウス移動距離(cm/360)を計算できる無料ツール。VALORANT・CS2・Apex・OW2などに対応。"
+  lead="DPIと感度を入力するだけで、eDPIとcm/360がわかります。"
+>
+  <EdpiCalculator />
+  <ToolFaq faqs={faqs} />
+</ToolLayout>

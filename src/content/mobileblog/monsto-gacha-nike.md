@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## 新限定キャラ「ニケ」が遂に登場！超・獣神祭開催中
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike1.png)
+![新限定キャラ「ニケ」が遂に登場！超・獣神祭開催中の画像](/mobilegame/monsuto/gacha/nike/nike1.png)
 
 **8月23日（土）12:00**より、モンストの夏キャンペーン「昭和百年のモンスターストライク」として、**「豪華おまけ付き！超・獣神祭 夏の特大号」**が開催されています！
 
@@ -21,7 +21,7 @@ category: 'monsuto'
 
 ## ニケの基本情報と2つの真獣神化
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike2.png)
+![ニケの基本情報と2つの真獣神化の画像](/mobilegame/monsuto/gacha/nike/nike2.png)
 
 ### 基本スペック
 - **属性**：木属性
@@ -36,12 +36,12 @@ category: 'monsuto'
 #### ニケ：ビクトリアス・フォーム（真獣神化）
 攻撃特化型の進化形態
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike3.png)
+![ニケ：ビクトリアス・フォーム（真獣神化）の画像](/mobilegame/monsuto/gacha/nike/nike3.png)
 
 #### ニケ：グロリアス・フォーム（真獣神化）
 新アビリティ「アウトポジションキラーM」を所持する特別な形態
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike4.png)
+![ニケ：グロリアス・フォーム（真獣神化）の画像](/mobilegame/monsuto/gacha/nike/nike4.png)
 
 ### 新アビリティ「アウトポジションキラーM」
 
@@ -116,17 +116,17 @@ category: 'monsuto'
 - **銭の間の消費ゴールド1/2**
 - **期間**：8月23日（土）0:00～9月1日（月）23:59
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike5.png)
+![英雄の神殿スタミナ1/2の画像](/mobilegame/monsuto/gacha/nike/nike5.png)
 
 ### わくわくの実2個確定
 英雄の神殿の「ノーコンテニュー報酬」で**わくわくの実が2個必ず排出**
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike6.png)
+![わくわくの実2個確定の画像](/mobilegame/monsuto/gacha/nike/nike6.png)
 
 ### チャンスバトル必ず出現
 英雄の神殿で通常まれに出現するチャンスバトルが**必ず出現**する特定時間帯あり
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike7.png)
+![チャンスバトル必ず出現の画像](/mobilegame/monsuto/gacha/nike/nike7.png)
 
 ## Xキャンペーン開催中
 
@@ -134,13 +134,13 @@ category: 'monsuto'
 **最大10,000円分のえらべるPay**が1,000名様に当たる！
 - **期間**：8月22日（金）11:00～9月2日（火）11:59
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike9.png)
+![スロットキャンペーンの画像](/mobilegame/monsuto/gacha/nike/nike9.png)
 
 ### フォロー&リポストキャンペーン
 **その場で当たる抽選**で最大10,000円分のえらべるPayをゲット！
 - **期間**：8月23日（土）12:00～9月2日（火）11:59
 
-![blog placeholder](/mobilegame/monsuto/gacha/nike/nike10.png)
+![フォロー&リポストキャンペーンの画像](/mobilegame/monsuto/gacha/nike/nike10.png)
 
 ## 排出対象の超・獣神祭限定キャラ
 

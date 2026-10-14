@@ -15,7 +15,7 @@ category: 'keyboardmouse'
 
 ## まず結論から言うと、コスパがヤバい
 
-![blog placeholder](/devicese/device/osusume/aim1/image.png)
+![まず結論から言うと、コスパがヤバいの画像](/devicese/device/osusume/aim1/image.png)
 
 ¥14,980という価格で8000Hzポーリングレート対応って、正直「大丈夫？」って思いました（笑）
 
@@ -71,7 +71,7 @@ category: 'keyboardmouse'
 
 ## まとめ：¥14,980でこの性能なら買い
 
-![blog placeholder](/devicese/device/osusume/aim1/image2.png)
+![まとめ：¥14,980でこの性能なら買いの画像](/devicese/device/osusume/aim1/image2.png)
 
 正直、最初は「安すぎて大丈夫？」って疑っていました。
 

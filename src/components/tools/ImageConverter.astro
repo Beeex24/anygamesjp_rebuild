@@ -1,0 +1,153 @@
+---
+/** 画像形式の変換ツールUI。ロジックは src/lib/image/convert.ts。 */
+import ImageDropzone from './ImageDropzone.astro';
+import ImageCompare from './ImageCompare.astro';
+import ImageBatch from './ImageBatch.astro';
+---
+<div class="tool" id="converter">
+  <p class="privacy">🔒 画像はサーバーへアップロードされず、お使いのブラウザ上で処理されます。</p>
+
+  <section class="panel" aria-labelledby="step-input" id="input-panel">
+    <h2 id="step-input" class="sr-only">画像を選択</h2>
+    <ImageDropzone multiple />
+
+    <fieldset class="formats">
+      <legend>変換後の形式</legend>
+      <div class="tabs" role="radiogroup" aria-label="変換後の形式">
+        <label><input type="radio" name="format" value="jpeg" checked /><span><b>JPEG</b><small>写真向け・軽い</small></span></label>
+        <label><input type="radio" name="format" value="png" /><span><b>PNG</b><small>透過OK・劣化なし</small></span></label>
+        <label><input type="radio" name="format" value="webp" /><span><b>WebP</b><small>軽くて透過OK</small></span></label>
+        <label><input type="radio" name="format" value="avif" /><span><b>AVIF</b><small>最小・処理が遅め</small></span></label>
+      </div>
+    </fieldset>
+
+    <details class="adv">
+      <summary>詳細設定</summary>
+      <div class="adv-grid">
+        <label id="row-quality">画質
+          <select id="opt-quality">
+            <option value="high">高画質(おすすめ)</option>
+            <option value="standard">標準</option>
+            <option value="small">軽さ重視</option>
+          </select>
+        </label>
+        <label id="row-bg">透明な部分の色(JPEGのとき)
+          <select id="opt-bg">
+            <option value="white">白</option>
+            <option value="black">黒</option>
+          </select>
+        </label>
+      </div>
+    </details>
+
+    <button type="button" class="btn go" id="run" disabled>変換する</button>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <p class="error" id="error" role="alert" hidden></p>
+  </section>
+
+  <ImageCompare />
+  <ImageBatch />
+</div>
+
+<style>
+  .tool { max-width: var(--prose); margin: 0 auto; padding: 8px 0 24px; }
+  .privacy { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; font-size: .875rem; margin: 0 0 16px; }
+  .formats { border: 0; padding: 0; margin: 20px 0 0; }
+  legend { font-weight: 700; padding: 0; margin-bottom: 8px; }
+  .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  @media (min-width: 640px) { .tabs { grid-template-columns: repeat(4, 1fr); } }
+  .tabs label { position: relative; display: block; }
+  .tabs input { position: absolute; opacity: 0; inset: 0; }
+  .tabs span { display: grid; place-items: center; gap: 2px; min-height: 64px; padding: 8px 4px; text-align: center; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); cursor: pointer; }
+  .tabs b { font-size: 1rem; }
+  .tabs small { font-size: .7rem; color: var(--text-sub); line-height: 1.3; }
+  .tabs input:checked + span { border-color: var(--accent); background: var(--accent-soft); }
+  .tabs input:checked + span b { color: var(--accent); }
+  .tabs input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .adv { margin: 16px 0; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
+  .adv summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+  .adv-grid { display: grid; gap: 14px; padding: 0 0 16px; }
+  .adv-grid label { display: grid; gap: 6px; font-size: .9rem; }
+  .adv-grid label[hidden] { display: none; }
+  select { min-height: 48px; font: inherit; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); }
+  .go { width: 100%; font-size: 1.05rem; }
+  .status { min-height: 1.5em; margin: 10px 0 0; color: var(--text-sub); font-size: .9rem; }
+  .error { margin: 10px 0 0; padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--danger); color: var(--danger); }
+</style>
+
+<script>
+  import { runConvert } from '../../lib/image/client';
+  import { runBatch, initBatchReset, limitFiles } from '../../lib/image/batch';
+  import type { Background, ConvertFormat, ConvertOptions, ConvertQuality } from '../../lib/image/convert';
+  import { $, clearError, describeSizeChange, initCompareReset, initDropzoneMulti, showCompare, showError, showFileName } from '../../lib/image/ui';
+
+  const runBtn = $<HTMLButtonElement>('run');
+  const statusEl = $('status');
+  let files: File[] = [];
+
+  const format = (): ConvertFormat => {
+    const v = document.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value;
+    return v === 'png' || v === 'webp' || v === 'avif' ? v : 'jpeg';
+  };
+
+  // 形式に関係のない設定は隠す(PNGに画質はない / 背景色はJPEGだけ)
+  function syncOptions() {
+    const f = format();
+    $('row-quality').hidden = f === 'png';
+    $('row-bg').hidden = f !== 'jpeg';
+  }
+  document.querySelectorAll('input[name="format"]').forEach((r) => r.addEventListener('change', syncOptions));
+  syncOptions();
+
+  function readOptions(): ConvertOptions {
+    const q = $<HTMLSelectElement>('opt-quality').value;
+    const quality: ConvertQuality = q === 'standard' || q === 'small' ? q : 'high';
+    const background: Background = $<HTMLSelectElement>('opt-bg').value === 'black' ? 'black' : 'white';
+    return { format: format(), quality, background };
+  }
+
+  initDropzoneMulti((picked) => {
+    clearError();
+    statusEl.textContent = '';
+    if (picked.length === 0) return;
+    files = limitFiles(picked);
+    showFileName(files);
+    runBtn.disabled = false;
+  });
+
+  async function runSingle(file: File) {
+    const r = await runConvert(file, readOptions(), (m) => { statusEl.textContent = m; });
+    statusEl.textContent = '';
+    showCompare(file, {
+      ...r,
+      afterExtra: r.quality === null ? '' : `品質 ${Math.round(r.quality * 100)}`,
+      summary: describeSizeChange(file.size, r.blob.size),
+      fileSuffix: 'converted',
+    });
+  }
+
+  runBtn.addEventListener('click', async () => {
+    if (files.length === 0) return;
+    const list = files;
+    clearError();
+    runBtn.disabled = true;
+    try {
+      if (list.length === 1) await runSingle(list[0]);
+      else {
+        const options = readOptions();
+        await runBatch(list, async (file, onProgress) => {
+          const r = await runConvert(file, options, onProgress);
+          return { blob: r.blob, mime: r.mime, suffix: 'converted' };
+        }, statusEl);
+      }
+    } catch (err) {
+      statusEl.textContent = '';
+      showError(err instanceof Error ? err.message : '処理中に問題が発生しました。もう一度お試しください。');
+    } finally {
+      runBtn.disabled = files.length === 0;
+    }
+  });
+
+  initCompareReset(() => { files = []; runBtn.disabled = true; });
+  initBatchReset(statusEl, () => { files = []; runBtn.disabled = true; });
+</script>

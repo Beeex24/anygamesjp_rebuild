@@ -1,23 +1,27 @@
 {
-  "name": "smoggy-series",
+  "name": "anygamesjp",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:content": "node scripts/check-content.mjs"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
     "@emailjs/browser": "^4.4.1",
-    "@fontsource/zen-kaku-gothic-new": "^5.2.6",
+    "@jsquash/avif": "^2.1.1",
+    "@jsquash/jpeg": "^1.6.0",
+    "@jsquash/oxipng": "^2.3.0",
+    "@jsquash/webp": "^1.5.0",
     "astro": "^5.17.1",
+    "fflate": "^0.8.3",
     "prettier": "^3.6.2",
-    "swiper": "^11.2.8"
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",

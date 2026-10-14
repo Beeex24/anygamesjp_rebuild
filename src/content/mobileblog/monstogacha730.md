@@ -13,7 +13,7 @@ category: 'monsuto'
 
 ## 🎯 超・獣神祭ガチャ開催情報
 
-![blog placeholder](/mobilegame/monsuto/0730/0730gacha1.png)
+![超・獣神祭ガチャ開催情報の画像](/mobilegame/monsuto/0730/0730gacha1.png)
 
 ### 開催期間
 **2025年7月30日（水）12:00～8月2日（土）11:59**
@@ -37,7 +37,7 @@ category: 'monsuto'
 
 ### スタミナ・ゴールド半額キャンペーン
 
-![blog placeholder](/mobilegame/monsuto/0730/0730staminaharf.png)
+![スタミナ・ゴールド半額キャンペーンの画像](/mobilegame/monsuto/0730/0730staminaharf.png)
 
 **対象期間：2025年7月30日（水）0:00～8月1日（金）23:59**
 
@@ -48,7 +48,7 @@ category: 'monsuto'
 
 ### わくわくの実2個確定キャンペーン
 
-![blog placeholder](/mobilegame/monsuto/0730/0730wakuwakutwo.png)
+![わくわくの実2個確定キャンペーンの画像](/mobilegame/monsuto/0730/0730wakuwakutwo.png)
 
 **対象期間：2025年7月30日（水）0:00～8月1日（金）23:59**
 
@@ -74,7 +74,7 @@ category: 'monsuto'
 
 ## 📍 モンスポット特別キャンペーン
 
-![blog placeholder](/mobilegame/monsuto/0730/0730monspo.png)
+![モンスポット特別キャンペーンの画像](/mobilegame/monsuto/0730/0730monspo.png)
 
 **対象期間：2025年7月30日（水）4:00～8月2日（土）3:59**
 

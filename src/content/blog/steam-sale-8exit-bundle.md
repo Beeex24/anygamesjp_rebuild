@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【緊急セール情報】The Exit 8 + Platform 8バンドルが30%オフ！期間限定
 
-![blog placeholder](/pcgame/steam/sale/8exit/image.png)
+![【緊急セール情報】The Exit 8 + Platform 8バンドルが30%の画像](/pcgame/steam/sale/8exit/image.png)
 
 **2025年9月現在、Steam大人気ホラーゲーム「The Exit 8 + Platform 8」バンドルが特別セールを開催中**です！単品購入より断然お得な**30%オフ**でこの話題作2本セットを手に入れるチャンスをお見逃しなく。
 
@@ -23,7 +23,7 @@ category: 'sale'
 
 ## The Exit 8 + Platform 8とは？異常探索ホラーの決定版
 
-![blog placeholder](/pcgame/steam/sale/8exit/exit8game1.png)
+![The Exit 8 + Platform 8とは？異常探索ホラーの決定版の画像](/pcgame/steam/sale/8exit/exit8game1.png)
 
 ### ゲーム概要
 
@@ -52,7 +52,7 @@ category: 'sale'
 
 ## プレイヤーの評価は？Steam評価94%の超高評価
 
-![blog placeholder](/pcgame/steam/sale/8exit/exit8game2.png)
+![プレイヤーの評価は？Steam評価94%の超高評価の画像](/pcgame/steam/sale/8exit/exit8game2.png)
 
 The Exit 8のSteam上での評価は圧倒的で、4,059件のレビューのうち94%が肯定的な評価を獲得しています。これほどの高評価を得る理由を見てみましょう。
 

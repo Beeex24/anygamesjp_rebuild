@@ -10,7 +10,7 @@ category: 'apexlegends'
 
 Apex Legendsの新イベント「ハイショット」が2025年7月10日より開催中です。このイベントでは、美しいビーチファッションスキンや新機能が満載で、プレイヤーを魅了すること間違いなし。本記事では、イベントの詳細と見どころを徹底解説します。
 
-![blog placeholder](/pcgame/apex/hishot.png)
+![ハイショットイベント開催！新スキンとアリーナ：デュエル改良で夏を満喫の画像](/pcgame/apex/hishot.png)
 
 ## ハイショットイベントの概要
 
@@ -34,7 +34,7 @@ Apex Legendsの新イベント「ハイショット」が2025年7月10日より�
 
 ### 限定スキンとアイテム
 
-![blog placeholder](/pcgame/apex/hishotskin.png)
+![限定スキンとアイテムの画像](/pcgame/apex/hishotskin.png)
 
 #### レジェンダリースキン
 - **ローバ用レジェンダリースキン**（待望の新スキン！）
@@ -43,8 +43,8 @@ Apex Legendsの新イベント「ハイショット」が2025年7月10日より�
 
 #### 武器スキン
 
-![blog placeholder](/pcgame/apex/301eventskin.png)
-![blog placeholder](/pcgame/apex/wingmaneventskin.png)
+![武器スキンの画像](/pcgame/apex/301eventskin.png)
+![武器スキンの画像(2)](/pcgame/apex/wingmaneventskin.png)
 
 - **R301カービン** - ビーチテーマスキン
 - **ウィングマン** - 夏限定デザイン
@@ -54,7 +54,7 @@ Apex Legendsの新イベント「ハイショット」が2025年7月10日より�
 
 イベント最大の目玉となる新アイテムが登場します。
 
-![blog placeholder](/pcgame/apex/piaser.png)
+![新登場！汎用格闘「スカイピアサー」の画像](/pcgame/apex/piaser.png)
 
 **スカイピアサーの特徴：**
 - 全レジェンドが使用可能な汎用格闘アイテム

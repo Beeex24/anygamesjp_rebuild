@@ -1,0 +1,65 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import { TOOLS, TOOL_CATEGORIES, TOOL_COLORS, type ToolMeta } from '../lib/tools';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  lead?: string;
+  current: ToolMeta['slug'];
+}
+const { title, heading, description, lead, current } = Astro.props;
+const tool = TOOLS.find((t) => t.slug === current);
+const color = tool ? TOOL_COLORS[tool.category] : 'var(--accent)';
+const others = TOOLS.filter((t) => t.slug !== current);
+const crumbs = [
+  { name: 'ホーム', href: '/' },
+  { name: 'ツール', href: '/tools/' },
+  ...(tool ? [{ name: TOOL_CATEGORIES[tool.category], href: '/tools/' }] : []),
+  { name: heading },
+];
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: heading,
+  description,
+  url: new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any (Web browser)',
+  inLanguage: 'ja',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+  isAccessibleForFree: true,
+};
+---
+<BaseLayout title={title} description={description} image={`/og/tool-${current}.png`} breadcrumbs={crumbs.map((c) => ({ name: c.name, href: c.href ?? Astro.url.pathname }))}>
+    <AdSenseScript slot="head" />
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(appLd)} />
+  <div class="container">
+    <Breadcrumb items={crumbs} />
+    <header class="head" style={`--c:${color}`}>
+      {tool && <a class="chip" href="/tools/">{TOOL_CATEGORIES[tool.category]}</a>}
+      <h1>{heading}</h1>
+      {lead && <p class="lead">{lead}</p>}
+    </header>
+    <slot />
+    <!-- 広告はツール本体(選択ボタン・結果表示)から離し、FAQの下と末尾の2か所だけ -->
+    <AdSlot slot="postBottom" />
+    <section class="section prose" aria-labelledby="more-tools" hidden={others.length === 0}>
+      <h2 id="more-tools" class="section-title">ほかのツール</h2>
+      <ul>
+        {others.map((t) => <li><a href={t.href}>{t.name}</a> — {t.summary}</li>)}
+      </ul>
+    </section>
+    <AdSlot slot="postBottom" />
+  </div>
+</BaseLayout>
+<style>
+  .head { padding: 20px 0 8px; max-width: var(--prose); margin: 0 auto; }
+  .chip { display: inline-block; margin-bottom: 8px; padding: 2px 10px; border-radius: 2px; background: var(--c); color: #fff; font-size: .78rem; font-weight: 700; text-decoration: none; }
+  h1 { font-size: 1.6rem; margin-bottom: 8px; padding-bottom: 10px; border-bottom: 3px solid var(--c); }
+  .lead { margin: 0; color: var(--text-sub); }
+</style>

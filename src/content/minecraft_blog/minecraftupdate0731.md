@@ -13,7 +13,7 @@ Minecraftの新しいスナップショット25w31aがリリースされまし�
 
 ### 銅ゴーレム（Copper Golem）
 
-![blog placeholder](/pcgame/minecraft/0731/gorem.png)
+![銅ゴーレム（Copper Golem）の画像](/pcgame/minecraft/0731/gorem.png)
 
 今回最大の目玉である銅ゴーレムが遂に実装されました！
 
@@ -38,7 +38,7 @@ Minecraftの新しいスナップショット25w31aがリリースされまし�
 
 ### 銅チェスト（Copper Chest）
 
-![blog placeholder](/pcgame/minecraft/0731/chest.png)
+![銅チェスト（Copper Chest）の画像](/pcgame/minecraft/0731/chest.png)
 
 銅ゴーレムと連携する新しいストレージブロックです。
 
@@ -50,7 +50,7 @@ Minecraftの新しいスナップショット25w31aがリリースされまし�
 
 ### 銅装備（Copper Equipment）
 
-![blog placeholder](/pcgame/minecraft/0731/armer.png)
+![銅装備（Copper Equipment）の画像](/pcgame/minecraft/0731/armer.png)
 
 ついに銅を使った装備が追加されました！
 
@@ -67,7 +67,7 @@ Minecraftの新しいスナップショット25w31aがリリースされまし�
 
 ### 棚ブロック（Shelf）
 
-![blog placeholder](/pcgame/minecraft/0731/shelf.png)
+![棚ブロック（Shelf）の画像](/pcgame/minecraft/0731/shelf.png)
 
 新しい装飾・収納ブロックが登場！
 

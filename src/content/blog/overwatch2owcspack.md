@@ -40,7 +40,7 @@ category: 'overwatch2'
 
 ## 参加チーム一覧
 
-![blog placeholder](/pcgame/overwatch2/owcscr.png)
+![参加チーム一覧の画像](/pcgame/overwatch2/owcscr.png)
 
 ### Asia地域
 - **Crazy Raccoon** - 日本を代表するeスポーツチーム
@@ -48,14 +48,14 @@ category: 'overwatch2'
 - **Team Falcons** - 中東の注目株
 - **Zeta Division** - 日本のトッププレイヤーが集結
 
-![blog placeholder](/pcgame/overwatch2/owcsgeng.png)
+![Asia地域の画像](/pcgame/overwatch2/owcsgeng.png)
 
 ### EMEA地域
 - **Gen.G** - グローバルに展開する名門チーム
 - **Twisted Minds** - ヨーロッパの実力派
 - **Virtus.Pro** - 老舗の強豪チーム
 
-![blog placeholder](/pcgame/overwatch2/owcstl.png)
+![EMEA地域の画像](/pcgame/overwatch2/owcstl.png)
 
 ### North America地域
 - **Spacestation Gaming** - アメリカの人気チーム
@@ -72,7 +72,7 @@ category: 'overwatch2'
 
 ## マーシーの新レジェンダリースキン「レディアント・エンジェル」
 
-![blog placeholder](/pcgame/overwatch2/marsy.png)
+![マーシーの新レジェンダリースキン「レディアント・エンジェル」の画像](/pcgame/overwatch2/marsy.png)
 
 ### 神秘的なデザインコンセプト
 
@@ -98,7 +98,7 @@ OWCSパックと同時に、マーシー用の美しい新レジェンダリー�
 
 ### 視聴方法と特典
 
-![blog placeholder](/pcgame/overwatch2/owcsinfo.png)
+![視聴方法と特典の画像](/pcgame/overwatch2/owcsinfo.png)
 
 **配信プラットフォーム**
 - [YouTube](https://www.youtube.com/channel/UCiAInBL9kUzz1XRxk66v-gw)（日本語・英語）

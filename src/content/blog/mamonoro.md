@@ -11,7 +11,7 @@ category: 'others'
 
 ## まものろKAI！の基本情報
 
-![blog placeholder](/pcgame/steam/mamonoro/mamonoro2.png)
+![まものろKAI！の基本情報の画像](/pcgame/steam/mamonoro/mamonoro2.png)
 
 ### 発売日・価格情報
 
@@ -33,7 +33,7 @@ category: 'others'
 
 ## ゲームの魅力とは？
 
-![blog placeholder](/pcgame/steam/mamonoro/mamonoro3.png)
+![ゲームの魅力とは？の画像](/pcgame/steam/mamonoro/mamonoro3.png)
 
 ### 独創的な「呪い弾」システム
 
@@ -101,7 +101,7 @@ category: 'others'
 
 ## ストーリー
 
-![blog placeholder](/pcgame/steam/mamonoro/mamonoro1.png)
+![ストーリーの画像](/pcgame/steam/mamonoro/mamonoro1.png)
 
 主人公・まもるクンは交通事故に遭いそうになった瞬間、不思議な冥界に召喚されます。冥界の巫女「地獄谷ふるる」によると、何者かが「闇の世界」への門を開こうとしており、そのため冥界の住人たちが呪われてしまったとのこと。
 
@@ -125,7 +125,7 @@ category: 'others'
 
 ## 記念イベント情報
 
-![blog placeholder](/pcgame/steam/mamonoro/party.png)
+![記念イベント情報の画像](/pcgame/steam/mamonoro/party.png)
 
 ### 音楽イベント開催決定
 

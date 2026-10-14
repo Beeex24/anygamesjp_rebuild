@@ -1,0 +1,87 @@
+---
+import SocialIcons from './SocialIcons.astro';
+import { NAV } from '../lib/site';
+import { SITE_TITLE } from '../consts';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site-header">
+  <div class="top">
+    <div class="container bar">
+      <div class="logo">
+        <a class="brand" href="/">{SITE_TITLE}</a>
+        <p class="tagline">ゲーム・ガジェット・テクノロジー情報サイト</p>
+      </div>
+      <div class="right">
+        <form class="search" action="/search/" method="get" role="search">
+          <label class="sr-only" for="hq">サイト内検索</label>
+          <input id="hq" name="q" type="search" placeholder="サイト内検索" autocomplete="off" />
+          <button type="submit" aria-label="検索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
+          </button>
+        </form>
+        <SocialIcons variant="header" />
+      </div>
+    </div>
+  </div>
+  <nav aria-label="メインメニュー">
+    <div class="container navbar">
+      <button class="toggle" type="button" aria-expanded="false" aria-controls="menu">
+        <span class="bars" aria-hidden="true"></span><span class="label">メニュー</span>
+      </button>
+      <ul id="menu">
+        {NAV.map((n) => (
+          <li><a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+</header>
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.site-header .toggle');
+  const menu = document.getElementById('menu');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    menu?.classList.toggle('open', open);
+  });
+</script>
+<style>
+  .site-header { box-shadow: 0 4px 12px rgba(0, 0, 0, .15); font-family: 'Hiragino Maru Gothic Pro', 'ヒラギノ丸ゴ Pro', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', system-ui, sans-serif; }
+  .top { position: relative; background: #2b3f57 url('/headerimage.png') center / cover no-repeat; }
+  .top::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, .4), rgba(0, 0, 0, .6)); }
+  .bar { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px 28px; padding-top: 22px; padding-bottom: 22px; max-width: 1400px; flex-wrap: wrap; }
+  .brand { color: #fff; text-decoration: none; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0, 0, 0, .8); }
+  .tagline { margin: 4px 0 0; color: #e8e8e8; font-size: .9rem; text-shadow: 0 1px 3px rgba(0, 0, 0, .7); }
+  .right { display: flex; align-items: center; gap: 14px; }
+  .search { display: flex; align-items: center; background: rgba(255, 255, 255, .95); border-radius: 25px; box-shadow: 0 2px 8px rgba(0, 0, 0, .2); padding: 0 6px 0 18px; }
+  .search input { width: 190px; height: 42px; border: 0; outline: 0; background: transparent; font: inherit; font-size: .95rem; color: #333; min-width: 0; }
+  .search input::placeholder { color: #888; }
+  .search:focus-within { outline: 2px solid var(--cyan); }
+  .search button { width: 40px; height: 40px; border: 0; background: none; color: #555; cursor: pointer; display: grid; place-items: center; border-radius: 50%; }
+  .search button:hover { color: var(--cyan); }
+  nav { background: rgba(0, 20, 40, .96); border-top: 2px solid rgba(0, 200, 255, .3); }
+  .navbar { max-width: 1400px; }
+  ul { list-style: none; margin: 0; padding: 8px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 6px; }
+  li a { display: block; padding: 8px 10px; color: #fff; text-decoration: none; font-size: .88rem; border: 2px solid transparent; border-radius: 8px; white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
+  li a:hover { background: rgba(0, 200, 255, .15); border-color: rgba(0, 200, 255, .5); color: #00d4ff; }
+  li a[aria-current='page'] { background: rgba(0, 200, 255, .2); border-color: var(--cyan); color: #00d4ff; font-weight: 700; }
+  .toggle { display: none; }
+  @media (max-width: 860px) {
+    .bar { padding-top: 16px; padding-bottom: 16px; }
+    .right { width: 100%; justify-content: space-between; }
+    .search { flex: 1; max-width: 360px; }
+    .search input { width: 100%; }
+    .toggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; padding: 0; }
+    .bars, .bars::before, .bars::after { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: transform .2s; }
+    .bars { position: relative; }
+    .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
+    .bars::before { top: -7px; } .bars::after { top: 7px; }
+    .toggle[aria-expanded='true'] .bars { background: transparent; }
+    .toggle[aria-expanded='true'] .bars::before { top: 0; transform: rotate(45deg); }
+    .toggle[aria-expanded='true'] .bars::after { top: 0; transform: rotate(-45deg); }
+    ul { display: none; flex-direction: column; padding: 0 0 10px; }
+    ul.open { display: flex; }
+    li a { font-size: 1.02rem; padding: 12px 14px; }
+  }
+</style>

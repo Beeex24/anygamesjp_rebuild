@@ -11,7 +11,7 @@ Minecraftの**Fall Drop 2025**アップデートで、プレイヤー待望の�
 
 ##  コッパーゴーレムが銅像に変身！
 
-![blog placeholder](/pcgame/minecraft/0722/coppergolem.png)
+![コッパーゴーレムが銅像に変身！の画像](/pcgame/minecraft/0722/coppergolem.png)
 
 ### 銅像化システムの仕組み
 
@@ -33,7 +33,7 @@ Minecraftの**Fall Drop 2025**アップデートで、プレイヤー待望の�
 
 ## 革新的なシェルフブロック
 
-![blog placeholder](/pcgame/minecraft/0722/shelf.png)
+![革新的なシェルフブロックの画像](/pcgame/minecraft/0722/shelf.png)
 
 ### 基本機能とクラフト
 

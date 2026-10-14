@@ -26,7 +26,7 @@ category: 'monsuto'
 
 ## エルマ・ルー＆コニィ・ルーの獣神化・改詳細
 
-![blog placeholder](/mobilegame/monsuto/shinka/erma/erma1.png)
+![エルマ・ルー＆コニィ・ルーの獣神化・改詳細の画像](/mobilegame/monsuto/shinka/erma/erma1.png)
 
 ### 基本情報
 - **属性**: 木属性
@@ -55,7 +55,7 @@ category: 'monsuto'
 
 ## ドロシーの獣神化・改詳細
 
-![blog placeholder](/mobilegame/monsuto/shinka/erma/erma2.png)
+![ドロシーの獣神化・改詳細の画像](/mobilegame/monsuto/shinka/erma/erma2.png)
 
 ### 基本情報
 - **属性**: 光属性

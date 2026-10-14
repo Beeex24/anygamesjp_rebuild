@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 今だけ特別価格！『Escape the Backrooms』が20%オフで購入可能
 
-![blog placeholder](/pcgame/steam/sale/backrooms/saleprice.png)
+![今だけ特別価格！『Escape the Backrooms』が20%オフで購入可の画像](/pcgame/steam/sale/backrooms/saleprice.png)
 
 現在Steamで話題のホラーゲーム『Escape the Backrooms』が20%オフの特別価格で販売中です。**通常価格1650円が1320円**で購入できる絶好のチャンスとなっています。
 
@@ -26,13 +26,13 @@ category: 'sale'
 
 ## 『Escape the Backrooms』とは？
 
-![blog placeholder](/pcgame/steam/etb/backrooms1.png)
+![『Escape the Backrooms』とは？の画像](/pcgame/steam/etb/backrooms1.png)
 
 『Escape the Backrooms』は1-4人協力プレイ対応のホラー探索ゲームです。インターネット上で有名になったクリーピーパスタ「バックルーム」をモチーフにした薄気味悪い空間を探索し、脱出を目指します。
 
 ### ゲームの特徴
 
-![blog placeholder](/pcgame/steam/etb/backroom2.png)
+![ゲームの特徴の画像](/pcgame/steam/etb/backroom2.png)
 
 **無限に続く異次元空間**
 人気のクリーピーパスタ伝承に基づいた、見覚えのある不気味なレベルの無限に広がる空間を探索できます。各レベルには様々な脱出方法と危険が待ち受けています。
@@ -69,7 +69,7 @@ Steamでは過去30日間で1,621件のレビューのうち89%が好評価、�
 
 ## 協力プレイでさらに楽しく
 
-![blog placeholder](/pcgame/steam/etb/backroom3.png)
+![協力プレイでさらに楽しくの画像](/pcgame/steam/etb/backroom3.png)
 
 『Escape the Backrooms』はソロプレイも可能ですが、最大4人での協力プレイに対応。友達と一緒にプレイすることで、恐怖を分かち合いながら楽しめます。
 

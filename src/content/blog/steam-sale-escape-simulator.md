@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【史上最安値60%OFF】本格脱出ゲーム「Escape Simulator」が880円で楽しめる！
 
-![blog placeholder](/pcgame/steam/sale/escapesim/saleprice.png)
+![【史上最安値60%OFF】本格脱出ゲーム「Escape Simulator」が8の画像](/pcgame/steam/sale/escapesim/saleprice.png)
 
 Steamで圧倒的人気を誇る**脱出ゲーム「Escape Simulator」**が、**60%OFFの大幅セール**を実施中です！通常価格 **2,200円** から **880円** まで値下げされ、**史上最安値**を記録しています。9月28日までの期間限定セールとなっており、脱出ゲーム好きには見逃せないチャンスです。
 
@@ -19,7 +19,7 @@ Steamで圧倒的人気を誇る**脱出ゲーム「Escape Simulator」**が、*
 
 #### ゲームの核となる特徴
 
-![blog placeholder](/pcgame/steam/sale/escapesim/escape1.png)
+![ゲームの核となる特徴の画像](/pcgame/steam/sale/escapesim/escape1.png)
 
 **高度なインタラクション性**
 - 家具を移動させ、オブジェクトを拾って調べることが可能
@@ -43,7 +43,7 @@ Steamで圧倒的人気を誇る**脱出ゲーム「Escape Simulator」**が、*
 - **クリスマス特別ルーム**: サンタの工房からの脱出
 - **歴史テーマ**: レオナルド・ダ・ヴィンチの工房など
 
-![blog placeholder](/pcgame/steam/sale/escapesim/escape2.png)
+![コミュニティ制作ルーム：4000以上の無料コンテンツの画像](/pcgame/steam/sale/escapesim/escape2.png)
 
 ### セール情報詳細
 
@@ -71,7 +71,7 @@ Steamで圧倒的人気を誇る**脱出ゲーム「Escape Simulator」**が、*
 
 ### ゲームシステムの詳細解説
 
-![blog placeholder](/pcgame/steam/sale/escapesim/escape3.png)
+![ゲームシステムの詳細解説の画像](/pcgame/steam/sale/escapesim/escape3.png)
 
 #### 直感的な操作システム
 - **一人称視点**: 没入感のある謎解き体験

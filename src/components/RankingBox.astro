@@ -1,0 +1,35 @@
+---
+import { postUrl, type Post } from '../lib/site';
+interface Props { title: string; color: string; posts: Post[]; href: string; moreLabel: string }
+const { title, color, posts, href, moreLabel } = Astro.props;
+---
+<section class="box" style={`--c:${color}`}>
+  <h3><span aria-hidden="true">★</span> {title}</h3>
+  <ol>
+    {posts.map((p, i) => (
+      <li>
+        <a href={postUrl(p)}>
+          <span class:list={['num', { top: i < 3 }]}>{i + 1}</span>
+          {p.data.heroImage ? <img src={p.data.heroImage} alt="" width="64" height="64" loading="lazy" decoding="async" /> : <span class="ph"></span>}
+          <span class="t">{p.data.title}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+  <p class="more"><a href={href}>{moreLabel} ›</a></p>
+</section>
+<style>
+  .box { background: var(--bg); border-radius: var(--card-radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  h3 { margin: 0; padding: 12px 16px; background: var(--c); color: #fff; font-size: .95rem; line-height: 1.4; }
+  ol { list-style: none; margin: 0; padding: 4px 12px; flex: 1; }
+  li + li { border-top: 1px solid var(--line); }
+  li a { display: grid; grid-template-columns: 24px 64px 1fr; gap: 10px; align-items: center; padding: 10px 0; color: var(--text); text-decoration: none; }
+  li a:hover .t { color: var(--accent); }
+  .num { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: #b5b9bf; color: #fff; font-size: .75rem; font-weight: 800; }
+  .num.top { background: var(--c); }
+  img, .ph { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; background: var(--bg-soft); display: block; }
+  .t { font-size: .85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .more { margin: 0; padding: 10px 14px 14px; border-top: 1px solid var(--line); text-align: center; }
+  .more a { display: block; padding: 9px 12px; border: 1.5px solid var(--c); border-radius: 8px; color: var(--c); font-weight: 700; font-size: .85rem; text-decoration: none; }
+  .more a:hover { background: var(--c); color: #fff; }
+</style>

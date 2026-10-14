@@ -9,7 +9,7 @@ category: 'valorant'
 
 # 黄金を掴め // Champions 2025 新スキン - 史上最も豪華なチャンピオンズコレクション
 
-![blog placeholder](/pcgame/valorant/skin/champions2025/champions1.png)
+![黄金を掴め // Champions 2025 新スキン - 史上最も豪華なチャの画像](/pcgame/valorant/skin/champions2025/champions1.png)
 
 2025年8月30日、Riot Gamesは待望のVALORANT Champions 2025バンドルの公式トレーラー「Go for Gold」を公開しました。パリで開催される世界最大のVALORANTトーナメント（9月12日～10月5日）を記念したこのコレクションは、プレイヤーたちの間で大きな話題を呼んでいます。
 

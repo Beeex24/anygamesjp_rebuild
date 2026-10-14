@@ -1,0 +1,45 @@
+---
+// 固定ページ（規約・ポリシー・お問い合わせ等）と、レイアウト指定のMarkdownページ共通のレイアウト
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { formatDate } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  /** Markdownページ用（layout: で指定すると frontmatter として渡される） */
+  frontmatter?: { title: string; description: string; pubDate?: string | Date; updatedDate?: string | Date };
+  noindex?: boolean;
+}
+const p = Astro.props;
+const fm = p.frontmatter;
+const title = p.title ?? fm?.title ?? '';
+const description = p.description ?? fm?.description ?? '';
+const toDate = (v?: string | Date) => (v ? new Date(v) : undefined);
+const updated = p.updatedDate ?? toDate(fm?.updatedDate);
+const crumbs = [{ name: 'ホーム', href: '/' }, { name: title, href: Astro.url.pathname }];
+---
+<BaseLayout title={title} description={description} breadcrumbs={crumbs} noindex={p.noindex}>
+  <div class="container">
+    <Breadcrumb items={[{ name: 'ホーム', href: '/' }, { name: title }]} />
+    <article class="page">
+      <h1>{title}</h1>
+      {updated && <p class="updated">最終更新: <time datetime={updated.toISOString()}>{formatDate(updated)}</time></p>}
+      <div class="body"><slot /></div>
+    </article>
+  </div>
+</BaseLayout>
+<style>
+  .page { max-width: var(--prose); margin: 0 auto; padding: 8px 0 48px; }
+  h1 { font-size: clamp(1.5rem, 4.5vw, 2rem); margin: 0 0 8px; }
+  .updated { margin: 0 0 20px; font-size: .8rem; color: var(--text-sub); }
+  .body { line-height: 1.9; overflow-wrap: anywhere; }
+  .body :global(h2) { font-size: 1.3rem; margin: 2em 0 .8em; padding-bottom: .3em; border-bottom: 2px solid var(--accent); }
+  .body :global(h3) { font-size: 1.1rem; margin: 1.6em 0 .6em; }
+  .body :global(p) { margin: 0 0 1.2em; }
+  .body :global(ul), .body :global(ol) { padding-left: 1.5em; margin: 0 0 1.2em; }
+  .body :global(a) { color: var(--accent); }
+  .body :global(img) { max-width: 100%; height: auto; border-radius: 6px; }
+</style>

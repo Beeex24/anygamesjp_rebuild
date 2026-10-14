@@ -1,0 +1,71 @@
+---
+import { GAMES } from '../../lib/game/games';
+---
+<div class="calc" id="edpi">
+  <div class="fields two">
+    <label class="field">マウスのDPI
+      <input type="text" id="dpi" inputmode="decimal" value="800" autocomplete="off" />
+      <small>マウスの設定ソフトで確認できます(例: 400 / 800 / 1600)</small>
+    </label>
+    <label class="field">ゲーム内の感度
+      <input type="text" id="sens" inputmode="decimal" placeholder="例 0.4" autocomplete="off" />
+    </label>
+  </div>
+  <div class="fields" style="margin-top:14px">
+    <label class="field">ゲーム(振り向き距離の計算用)
+      <select id="game">
+        {GAMES.map((g) => <option value={g.id}>{g.name}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <section class="result-card" aria-live="polite">
+    <h2>結果</h2>
+    <p class="hint" id="hint">DPIと感度を入力すると、結果が表示されます。</p>
+    <div id="out" hidden>
+      <p class="big"><span id="r-edpi"></span><small>eDPI</small></p>
+      <p class="sub">360°振り向くのに必要なマウス移動量: <b id="r-cm"></b> cm(<span id="r-inch"></span> インチ)</p>
+      <p class="sub" id="r-note"></p>
+    </div>
+    <p class="warn" id="warn" role="alert" hidden></p>
+  </section>
+  <p class="sub"><a href="/tools/game/sensitivity/">別のゲームに感度を合わせたい方は「感度変換」へ</a></p>
+</div>
+
+<script>
+  import { GAMES, findGame } from '../../lib/game/games';
+  import { cmPer360, edpi, inchesPer360 } from '../../lib/game/edpi';
+  import { fmt, parsePositive } from '../../lib/format';
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const dpiEl = $<HTMLInputElement>('dpi');
+  const sensEl = $<HTMLInputElement>('sens');
+  const gameEl = $<HTMLSelectElement>('game');
+
+  function render() {
+    const dpi = parsePositive(dpiEl.value);
+    const sens = parsePositive(sensEl.value);
+    const game = findGame(gameEl.value) ?? GAMES[0];
+    const warn = $('warn');
+    const empty = dpiEl.value.trim() === '' || sensEl.value.trim() === '';
+    $('out').hidden = true;
+    warn.hidden = true;
+    $('hint').hidden = false;
+    if (empty) return;
+    if (dpi === null || sens === null) {
+      $('hint').hidden = true;
+      warn.textContent = 'DPIと感度は、0より大きい数字で入力してください。';
+      warn.hidden = false;
+      return;
+    }
+    $('hint').hidden = true;
+    $('r-edpi').textContent = fmt(edpi(dpi, sens), 2);
+    $('r-cm').textContent = fmt(cmPer360(dpi, sens, game.yaw), 1);
+    $('r-inch').textContent = fmt(inchesPer360(dpi, sens, game.yaw), 1);
+    $('r-note').textContent = game.note ? `${game.name}の感度は「${game.note}」として計算しています。` : '';
+    $('out').hidden = false;
+  }
+  [dpiEl, sensEl].forEach((e) => e.addEventListener('input', render));
+  gameEl.addEventListener('change', render);
+  render();
+</script>

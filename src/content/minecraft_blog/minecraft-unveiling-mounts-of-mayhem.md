@@ -8,7 +8,7 @@ category: 'minecraft'
 ---
 ## Mounts of Mayhem（マウント・オブ・メイヘム）とは？
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image1.png)
+![Mounts of Mayhem（マウント・オブ・メイヘム）とは？の画像](/pcgame/minecraft/others/unveiling/image1.png)
 
 Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・メイヘム）は、2025年第4弾となるゲームドロップです。従来の年1回の大型アップデートに代わり、より頻繁にリリースされる新しいコンテンツ配信方式の一環として登場します！
 
@@ -18,7 +18,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 
 ## 新マウント：ノーチラス（Nautilus）
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image2.png)
+![新マウント：ノーチラス（Nautilus）の画像](/pcgame/minecraft/others/unveiling/image2.png)
 
 ### ノーチラスの基本情報
 
@@ -30,7 +30,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 - **空気供給システム**：騎乗中は溺れることがない
 - **深海探索の革命**：海底神殿の攻略が格段に楽になる
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image3.png)
+![ノーチラスの基本情報の画像](/pcgame/minecraft/others/unveiling/image3.png)
 
 ### ノーチラスの革新的機能
 
@@ -42,7 +42,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 
 ## 新武器：槍（Spear）
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image4.png)
+![新武器：槍（Spear）の画像](/pcgame/minecraft/others/unveiling/image4.png)
 
 ### 槍の基本システム
 
@@ -54,7 +54,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 - **長距離リーチ**：通常の剣より長い攻撃範囲
 - **多用途性**：徒歩、騎乗、エリトラ飛行時など様々な状況で活用可能
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image5.png)
+![槍の基本システムの画像](/pcgame/minecraft/others/unveiling/image5.png)
 
 ### 槍の戦術的可能性
 
@@ -66,11 +66,11 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 - **トロッコ戦闘**：レール上での移動戦闘
 - **氷上滑走**：氷ブロックでの高速移動攻撃
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image6.png)
+![槍の戦術的可能性の画像](/pcgame/minecraft/others/unveiling/image6.png)
 
 ## ゾンビホースがサバイバルモードに！
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image7.png)
+![ゾンビホースがサバイバルモードに！の画像](/pcgame/minecraft/others/unveiling/image7.png)
 
 ### 長年の要望がついに実現
 
@@ -100,7 +100,7 @@ Minecraft LIVE 2025で発表されたMounts of Mayhem（マウント・オブ・
 - **トライデント装備**：遠距離攻撃能力を持つ
 - **組み合わせ脅威**：ライダーとマウントの2重の危険
 
-![blog placeholder](/pcgame/minecraft/others/unveiling/image8.png)
+![ゾンビノーチラス - 新たな脅威の画像](/pcgame/minecraft/others/unveiling/image8.png)
 
 ## テスト版での先行体験
 

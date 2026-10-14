@@ -9,7 +9,7 @@ category: 'sale'
 
 # 【Amazonタイムセール】Razer DeathStalker V2 Pro が36%OFF！プロ仕様の薄型ゲーミングキーボードが2万円台
 
-![blog placeholder](/devicese/amazonsale/razer/deathstalkerv220250909/image.png)
+![Razer DeathStalker V2 Pro が36%OFF！プロ仕様の薄の画像](/devicese/amazonsale/razer/deathstalkerv220250909/image.png)
 
 ## セール情報サマリー
 

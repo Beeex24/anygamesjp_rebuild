@@ -21,7 +21,7 @@ category: 'others'
 
 ## **キャンペーン内容詳細**
 
-![blog placeholder](/pcgame/others/buruaka1.png)
+![キャンペーン内容詳細の画像](/pcgame/others/buruaka1.png)
 
 ### **📄 クリアファイルプレゼントキャンペーン**
 
@@ -37,7 +37,7 @@ category: 'others'
 
 今回のコラボでは、セミナーらしい学園風アイテムが多数ラインナップ！
 
-![blog placeholder](/pcgame/others/buruaka2.png)
+![限定グッズ販売の画像](/pcgame/others/buruaka2.png)
 
 **販売予定グッズ**
 

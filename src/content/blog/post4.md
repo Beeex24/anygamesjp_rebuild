@@ -8,7 +8,7 @@ category: 'Overwatch2'
 
 ## 世代を超えた名作がOW2で激突！
 
-![blog placeholder](/pcgame/overwatch2/over3.png)
+![世代を超えた名作がOW2で激突！の画像](/pcgame/overwatch2/over3.png)
 
 世界征服をもくろむ悪の軍事組織「コブラ」と、世界を脅威から守るべく結成されたエキスパート集団「G.I.ジョー」の熱い戦いが、ついにOverwatch 2の世界にやってきました！
 

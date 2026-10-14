@@ -1,0 +1,140 @@
+---
+import { GAMES, GAMES_CHECKED_AT } from '../../lib/game/games';
+---
+<div class="calc" id="sens-conv">
+  <div class="fields">
+    <label class="field">変換元のゲーム
+      <select id="from">{GAMES.map((g) => <option value={g.id}>{g.name}</option>)}</select>
+    </label>
+    <label class="field">いまの感度
+      <input type="text" id="sens" inputmode="decimal" placeholder="例 0.35" autocomplete="off" />
+    </label>
+    <button type="button" class="btn btn-sub swap" id="swap" aria-label="変換元と変換先を入れ替える">⇅ 入れ替える</button>
+    <label class="field">変換先のゲーム
+      <select id="to">{GAMES.map((g, i) => <option value={g.id} selected={i === 1}>{g.name}</option>)}</select>
+    </label>
+  </div>
+
+  <details class="adv">
+    <summary>マウスのDPI(詳細設定)</summary>
+    <div class="fields two" style="padding-bottom:14px">
+      <label class="field">変換元のDPI
+        <input type="text" id="dpi-from" inputmode="decimal" value="800" autocomplete="off" />
+      </label>
+      <label class="field">変換先のDPI
+        <input type="text" id="dpi-to" inputmode="decimal" value="800" autocomplete="off" />
+        <small>DPIを変えない場合は、同じ値のままです</small>
+      </label>
+    </div>
+  </details>
+
+  <section class="result-card" aria-live="polite">
+    <h2>変換結果</h2>
+    <p class="hint" id="hint">感度を入力すると、結果が表示されます。</p>
+    <div id="out" hidden>
+      <p class="big"><span id="r-sens"></span><small id="r-to-name"></small></p>
+      <p class="sub">360°振り向く距離: <b id="r-cm"></b> cm(どちらのゲームでも同じ)</p>
+      <p class="sub" id="r-note"></p>
+    </div>
+    <p class="warn" id="warn" role="alert" hidden></p>
+  </section>
+
+  <section id="all" hidden>
+    <h2 class="section-title" style="margin-top:28px">ほかのゲームでは?</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ゲーム</th><th class="num">感度</th></tr></thead>
+        <tbody id="all-body"></tbody>
+      </table>
+    </div>
+    <p class="sub">変換先のDPIで計算しています。</p>
+  </section>
+  <p class="calc-note">振り向き距離(360°)を基準にした、通常視点の換算です。ADS・スコープ倍率やFOVの違いは考慮していません。係数は公開情報をもとにした目安で、ゲームの更新で変わる場合があります(確認日 {GAMES_CHECKED_AT})。</p>
+</div>
+<style>
+  .adv { margin: 16px 0; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
+  .adv summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+</style>
+
+<script>
+  import { GAMES, findGame } from '../../lib/game/games';
+  import { cmPer360 } from '../../lib/game/edpi';
+  import { convertSensitivity } from '../../lib/game/sensitivity';
+  import { fmt, parsePositive } from '../../lib/format';
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const fromEl = $<HTMLSelectElement>('from');
+  const toEl = $<HTMLSelectElement>('to');
+  const sensEl = $<HTMLInputElement>('sens');
+  const dpiFromEl = $<HTMLInputElement>('dpi-from');
+  const dpiToEl = $<HTMLInputElement>('dpi-to');
+
+  // 感度は桁数が重要なので、ゲームに合わせて小数3〜4桁まで出す
+  const sensFmt = (n: number) => fmt(n, n < 1 ? 4 : 3);
+
+  function render() {
+    const from = findGame(fromEl.value) ?? GAMES[0];
+    const to = findGame(toEl.value) ?? GAMES[1];
+    const sens = parsePositive(sensEl.value);
+    const dpiFrom = parsePositive(dpiFromEl.value);
+    const dpiTo = parsePositive(dpiToEl.value);
+    const warn = $('warn');
+    $('out').hidden = true;
+    $('all').hidden = true;
+    warn.hidden = true;
+    $('hint').hidden = false;
+    if (sensEl.value.trim() === '') return;
+    if (sens === null || dpiFrom === null || dpiTo === null) {
+      $('hint').hidden = true;
+      warn.textContent = '感度とDPIは、0より大きい数字で入力してください。';
+      warn.hidden = false;
+      return;
+    }
+    $('hint').hidden = true;
+    const out = convertSensitivity({ sensitivity: sens, fromYaw: from.yaw, toYaw: to.yaw, fromDpi: dpiFrom, toDpi: dpiTo });
+    $('r-sens').textContent = sensFmt(out);
+    $('r-to-name').textContent = `(${to.name})`;
+    $('r-cm').textContent = fmt(cmPer360(dpiFrom, sens, from.yaw), 1);
+    $('r-note').textContent = to.note ? `${to.name}の感度は「${to.note}」です。` : '';
+    $('out').hidden = false;
+
+    const body = $('all-body');
+    body.replaceChildren(
+      ...GAMES.map((g) => {
+        const tr = document.createElement('tr');
+        if (g.id === to.id) tr.className = 'me';
+        const name = document.createElement('td');
+        name.textContent = g.name;
+        const val = document.createElement('td');
+        val.className = 'num';
+        val.textContent = sensFmt(convertSensitivity({ sensitivity: sens, fromYaw: from.yaw, toYaw: g.yaw, fromDpi: dpiFrom, toDpi: dpiTo }));
+        tr.append(name, val);
+        return tr;
+      }),
+    );
+    $('all').hidden = false;
+  }
+
+  $('swap').addEventListener('click', () => {
+    // 変換結果を新しい入力にして、往復すると元の感度に戻るようにする
+    const cur = parsePositive(sensEl.value);
+    const dFrom = parsePositive(dpiFromEl.value);
+    const dTo = parsePositive(dpiToEl.value);
+    if (cur !== null && dFrom !== null && dTo !== null) {
+      const a = findGame(fromEl.value) ?? GAMES[0];
+      const b = findGame(toEl.value) ?? GAMES[1];
+      const converted = convertSensitivity({ sensitivity: cur, fromYaw: a.yaw, toYaw: b.yaw, fromDpi: dFrom, toDpi: dTo });
+      sensEl.value = String(Number(converted.toPrecision(6)));
+    }
+    const f = fromEl.value;
+    fromEl.value = toEl.value;
+    toEl.value = f;
+    const d = dpiFromEl.value;
+    dpiFromEl.value = dpiToEl.value;
+    dpiToEl.value = d;
+    render();
+  });
+  [sensEl, dpiFromEl, dpiToEl].forEach((e) => e.addEventListener('input', render));
+  [fromEl, toEl].forEach((e) => e.addEventListener('change', render));
+  render();
+</script>

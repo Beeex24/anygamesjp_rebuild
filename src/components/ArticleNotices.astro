@@ -1,0 +1,25 @@
+---
+import { AFFILIATE_NOTICE } from '../consts';
+import { expiryOf } from '../lib/expiry';
+import { formatDate, type Post } from '../lib/site';
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const expiry = expiryOf(post);
+const ymd = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+---
+{expiry && (
+  <aside class="notice ended" role="note">
+    {expiry.kind === 'ended'
+      ? <p><strong>このセール・イベントは {ymd(expiry.endsAt)} に終了しました。</strong>記載の価格・期間・内容は当時のものです。最新の情報は公式サイトでご確認ください。</p>
+      : <p><strong>この記事は {formatDate(expiry.since)} 時点の情報です。</strong>セールやイベントはすでに終了している可能性があります。価格・期間は公式サイトで最新の情報をご確認ください。</p>}
+  </aside>
+)}
+<p class="notice pr"><span class="pr-badge">PR</span>{AFFILIATE_NOTICE}。当サイトは Amazon アソシエイト等のアフィリエイトプログラムに参加しています。</p>
+<style>
+  .notice { margin: 0 0 16px; padding: 10px 14px; border-radius: var(--radius); font-size: .85rem; line-height: 1.7; }
+  .notice p { margin: 0; }
+  .ended { background: #fff4e5; border: 1px solid #f0b86e; color: #7a4a00; }
+  .pr { background: var(--bg-soft); border: 1px solid var(--line); color: var(--text-sub); }
+  .pr-badge { display: inline-block; margin-right: 8px; padding: 0 6px; border-radius: 2px; background: var(--text-sub); color: #fff; font-size: .7rem; font-weight: 800; }
+</style>

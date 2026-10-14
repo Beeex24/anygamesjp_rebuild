@@ -13,7 +13,7 @@ MinecraftマーケットプレイスでPoggyによって制作された「Better
 
 ## Better on Bedrockとは？
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/addpack.png)
+![Better on Bedrockとは？の画像](/pcgame/minecraft/be/betterpack/addpack.png)
 
 Better on Bedrockは、カスタムの木、バイオーム、構造物の生成、100以上の新ブロック・アイテム、20種類以上の新Mob、40以上の新しい食べ物とクエスト、7体の新ボス、カスタム音楽とアンビエント音響を特徴とするダイナミックワールドです。
 
@@ -30,9 +30,9 @@ Better on Bedrockは、カスタムの木、バイオーム、構造物の生成
 
 ### 新しいMob（モンスター・動物）
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack1.png)
+![新しいMob（モンスター・動物）の画像](/pcgame/minecraft/be/betterpack/betterpack1.png)
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack7.png)
+![新しいMob（モンスター・動物）の画像(2)](/pcgame/minecraft/be/betterpack/betterpack7.png)
 
 Better on Bedrockには魅力的な新しい動物たちが登場します！
 
@@ -48,11 +48,11 @@ Better on Bedrockには魅力的な新しい動物たちが登場します！
 
 ### 100以上の新ブロック・アイテム
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack4.png)
+![100以上の新ブロック・アイテムの画像](/pcgame/minecraft/be/betterpack/betterpack4.png)
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack5.png)
+![100以上の新ブロック・アイテムの画像(2)](/pcgame/minecraft/be/betterpack/betterpack5.png)
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack6.png)
+![100以上の新ブロック・アイテムの画像(3)](/pcgame/minecraft/be/betterpack/betterpack6.png)
 
 建築とクラフトの可能性を大幅に広げる新要素
 
@@ -63,7 +63,7 @@ Better on Bedrockには魅力的な新しい動物たちが登場します！
 
 ### カスタムバイオームと構造物
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack3.png)
+![カスタムバイオームと構造物の画像](/pcgame/minecraft/be/betterpack/betterpack3.png)
 
 **新バイオーム**
 - オーバーワールド全体に散らばる独自のバイオーム
@@ -86,7 +86,7 @@ Better on Bedrockには7体の新しいボスが追加されており、それ�
 
 ### クエストシステム
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack2.png)
+![クエストシステムの画像](/pcgame/minecraft/be/betterpack/betterpack2.png)
 
 新しいクエストシステムでは、インベントリのクエストスクロールを開いて、メインクエストと購入クエストから選択できます。村人からより多くのクエストを購入することも可能です。
 
@@ -101,7 +101,7 @@ Better on Bedrockには7体の新しいボスが追加されており、それ�
 
 ## ゲームプレイの特徴
 
-![blog placeholder](/pcgame/minecraft/be/betterpack/betterpack8.png)
+![ゲームプレイの特徴の画像](/pcgame/minecraft/be/betterpack/betterpack8.png)
 
 ### ランダムスタート機能
 

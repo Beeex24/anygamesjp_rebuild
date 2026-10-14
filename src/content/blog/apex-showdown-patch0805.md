@@ -9,7 +9,7 @@ category: 'Apex Legends'
 
 ## 【速報】ショーダウンで何が変わる？重要な変更点まとめ
 
-![blog placeholder](/pcgame/apex/patch/0805/wildcard.png)
+![【速報】ショーダウンで何が変わる？重要な変更点まとめの画像](/pcgame/apex/patch/0805/wildcard.png)
 
 Apex Legends「ショーダウン」がついに配信開始！今回のアップデートは**ゲームプレイを根本から変える大型アップデート**です。新システムの追加からレジェンドの大幅強化まで、プレイヤーに大きな影響を与える変更が盛りだくさんです。
 
@@ -125,7 +125,7 @@ Apex Legends「ショーダウン」がついに配信開始！今回のアッ�
 
 ## ランクマッチ革命：ドロップゾーン導入
 
-![blog placeholder](/pcgame/apex/patch/0805/patch4.png)
+![ランクマッチ革命：ドロップゾーン導入の画像](/pcgame/apex/patch/0805/patch4.png)
 
 ### ドロップゾーンシステム
 
@@ -204,7 +204,7 @@ Apex Legends「ショーダウン」がついに配信開始！今回のアッ�
 
 ### オーラシステム
 
-![blog placeholder](/pcgame/apex/patch/0805/patch1.png)
+![オーラシステムの画像](/pcgame/apex/patch/0805/patch1.png)
 
 **装飾アイテム** として新登場
 - **ロビー・レジェンド選択・表彰台で表示**
@@ -213,9 +213,9 @@ Apex Legends「ショーダウン」がついに配信開始！今回のアッ�
 
 ### 勲章システム
 
-![blog placeholder](/pcgame/apex/patch/0805/patch2.png)
+![勲章システムの画像](/pcgame/apex/patch/0805/patch2.png)
 
-![blog placeholder](/pcgame/apex/patch/0805/patch3.png)
+![勲章システムの画像(2)](/pcgame/apex/patch/0805/patch3.png)
 
 **プレイヤーの活躍を評価**
 - **困難なダブルキル**や**チームへの貢献**を評価

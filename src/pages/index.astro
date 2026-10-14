@@ -1,1470 +1,203 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { getCollection } from "astro:content";
-import FormattedDate from "../components/FormattedDate.astro";
-import RankingWidget from "../components/RankingWidget.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleList from '../components/ArticleList.astro';
+import RankingBox from '../components/RankingBox.astro';
+import AffiliateGrid from '../components/AffiliateGrid.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import { getCollection } from 'astro:content';
+import { getAllPosts, SECTIONS, type Post, type SectionKey } from '../lib/site';
+import { TOOLS, TOOL_COLORS } from '../lib/tools';
+import { SITE_TITLE, SITE_DESCRIPTION, SOCIAL } from '../consts';
+import { postUrl, sectionLabel } from '../lib/site';
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const byDate = (xs: Post[]) => [...xs].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const get = async (key: SectionKey) => byDate((await getCollection(key)) as Post[]);
+const [game, mobile, device, mc, mod] = await Promise.all((['blog', 'mobileblog', 'device', 'minecraft_blog', 'minecraft_mod_blog'] as SectionKey[]).map(get));
+const all = await getAllPosts();
+const latest = all.slice(0, 6);
 
-const mobilePosts = (await getCollection("mobileblog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// 記事一覧タブ(各9件)
+const tabs = [
+  { key: 'all', label: 'すべての記事', posts: all.slice(0, 9) },
+  { key: 'blog', label: 'ゲーム', posts: game.slice(0, 9) },
+  { key: 'mobileblog', label: 'モバイル・ゲーム機', posts: mobile.slice(0, 9) },
+  { key: 'device', label: 'ガジェット', posts: device.slice(0, 9) },
+  { key: 'minecraft_blog', label: 'マインクラフト', posts: mc.slice(0, 9) },
+];
 
-const devicePosts = (await getCollection("device")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// ランキング風の新着ボックス(ガジェットはdeviceの記事のみ)
+const gadget = device.slice(0, 6);
 
-const minecraftblog = (await getCollection("minecraft_blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// 目玉枠: frontmatter の pickup(1〜3)で手動指定。足りない分は画像つきの新着で補う
+const withImage = all.filter((p) => p.data.heroImage);
+const picked = all.filter((p) => p.data.pickup && p.data.heroImage).sort((a, b) => (a.data.pickup ?? 0) - (b.data.pickup ?? 0));
+const pickup = [...picked, ...withImage.filter((p) => !picked.includes(p))].slice(0, 3);
 
-const minecraftmods = (await getCollection("minecraft_mod_blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// 4つのバナー(ジャンルの最新記事の画像を背景に使う)
+const tiles = [
+  { href: '/minecraft_blog/', label: 'マイクラ関連', img: mc[0]?.data.heroImage },
+  { href: '/blog/', label: 'ゲーム評価特集', img: game[0]?.data.heroImage },
+  { href: '/device/', label: '実機レビュー', img: device[0]?.data.heroImage },
+  { href: SOCIAL.youtube, label: '公式チャンネル', img: undefined, external: true },
+];
 
-const allPosts = [...posts, ...mobilePosts, ...devicePosts, ...minecraftblog, ...minecraftmods].sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const TOP_TITLE = 'ANYGAMES放送局｜Steamセール・Apex/VALORANT更新情報・マイクラMOD解説と無料ツール';
+const TOP_DESCRIPTION = 'Steamセールのお得情報、Apex・VALORANT・オーバーウォッチ2のアップデート解説、マイクラMODの導入方法、画像圧縮やeDPI計算などの無料ツールをまとめたゲーム情報サイトです。';
 
-// ページネーション設定
-const POSTS_PER_PAGE = 9; // 1ページあたりの記事数
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_TITLE,
+  url: 'https://anygamesjp.com/',
+  description: SITE_DESCRIPTION,
+};
 ---
-
-<!doctype html>
-<html lang="ja">
-
-    <BaseHead 
-      title={SITE_TITLE} 
-      description={SITE_DESCRIPTION} 
-      image="/placeholder-image.jpg"
-    />
-
-  <head>
-    <!-- Swiper.js のスタイルとスクリプト -->
-
-    <link
-    rel="stylesheet"
-    href="https://unpkg.com/swiper/swiper-bundle.min.css"
-    />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const swiperContainer = document.querySelector('.swiper-container');
-      if (swiperContainer instanceof HTMLElement) {
-        // 初期高さを設定（カードの想定高さ）
-        swiperContainer.style.minHeight = '320px';
-      }
-        // Swiperライブラリが読み込まれるまで待機
-        function initSwiper() {
-          // TypeScript型エラー回避のためanyとして扱う
-          const SwiperClass = (window as any).Swiper;
-          if (typeof SwiperClass !== 'undefined') {
-            new SwiperClass(".swiper-container", {
-              loop: true, // ループを有効化
-              autoplay: {
-                delay: 4000, // スライド間隔
-                disableOnInteraction: false, // ユーザー操作後も自動再生を継続
-              },
-              speed: 800, // アニメーション速度
-              navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              },
-              pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-              },
-              slidesPerView: 1, // デフォルトで1スライドを表示
-              spaceBetween: 20, // スライド間の余白
-              breakpoints: {
-                768: {
-                  slidesPerView: 2, // 中画面では2スライドを表示
-                  spaceBetween: 20, // スライド間の余白
-                },
-                1024: {
-                  slidesPerView: 5, // 大画面では3スライドを表示
-                  spaceBetween: 30, // スライド間の余白
-                },
-              },
-            on: {
-              init: function() {
-                // 初期化完了後に高さ制限を解除
-                setTimeout(() => {
-                  if (swiperContainer instanceof HTMLElement) {
-                    swiperContainer.style.minHeight = 'auto';
-                  }
-                }, 100);
-              }
-            }
-          });
-        } else {
-          setTimeout(initSwiper, 50); // 待機時間を短縮
-        }
-      }
-      
-      initSwiper();
-    });
-  </script>
-
-    <style>
-      /* スライダーセクションのスタイル */
-      .blog-slider-section {
-        padding: 1rem;
-        background-color: #ffffff;
-        border-radius: 8px;
-        margin: 0.5rem auto;
-        max-width: calc(100vw - 1rem);
-        width: calc(100vw - 1rem);
-        position: relative;
-        box-sizing: border-box;
-        min-height: 400px;
-      }
-
-      .blog-slider-section h2 {
-        font-size: 1.8rem;
-        text-align: center;
-        margin-bottom: 1rem;
-        color: #333;
-      }
-
-      .swiper-container {
-        width: 100%;
-        max-width: 1400px;
-        margin: 0 auto;
-        overflow: hidden; /* 画面外に出る部分を隠す */
-        height: 320px;
-        background: linear-gradient(90deg, #8f8f8f 80%, #e0e0e0 50%, #8f8f8f 80%);
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-        border-radius: 12px;
-      }
-
-      .swiper-container.swiper-initialized {
-        animation: none;
-        background: none;
-        height: auto; /* 初期化後は自動高さに */
-      }
-
-      @keyframes loading {
-      0% {
-      background-position: 200% 0;
-        }
-      100% {
-      background-position: -200% 0;
-        }
-      }
-
-      .swiper,
-      .swiper-wrapper {
-        position: relative;
-        z-index: 1;
-      }
-
-      .swiper-wrapper {
-        box-sizing: content-box;
-        display: flex;
-        height: 100%;
-        width: 100%;
-      }
-
-      .swiper-slide {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-sizing: border-box;
-        flex-shrink: 0;
-        height: 100%;
-        width: auto;
-      }
-
-      .blog-card {
-        width: 100%;
-        max-width: 350px;
-        background: #ffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-decoration: none;
-        color: inherit;
-        margin: 0 auto;
-        transition:
-          box-shadow 0.3s,
-          transform 0.3s;
-        height: 350px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .blog-card:hover {
-        transform: translateY(-10px) scale(1.03);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-      }
-
-      .blog-card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        flex-shrink: 0;
-      }
-
-      .blog-card-content {
-        padding: 0.5rem;
-      }
-
-      .blog-card-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-        color: #222;
-      }
-
-      .blog-card-date {
-        font-size: 0.8rem;
-        color: #888;
-        text-align: right;
-      }
-
-      /* Swiperナビゲーションボタンのカスタマイズ */
-      .swiper-button-next,
-      .swiper-button-prev {
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        cursor: pointer;
-        height: 48px;
-        width: 48px;
-        border-radius: 50%;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: background 0.2s;
-      }
-      .swiper-button-next {
-        right: 20px;
-        left: auto;
-      }
-      .swiper-button-prev {
-        left: 20px;
-        right: auto;
-      }
-      .swiper-button-next:after,
-      .swiper-button-prev:after {
-        font-size: 1.6rem;
-        font-weight: bold;
-      }
-      .swiper-button-next:hover,
-      .swiper-button-prev:hover {
-        background: rgba(0, 0, 0, 0.85);
-      }
-
-      /* Swiperページネーション */
-      .swiper-pagination {
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        z-index: 10;
-      }
-      .swiper-pagination-bullet {
-        background: #000;
-        opacity: 0.3;
-        width: 10px;
-        height: 10px;
-        margin: 0 4px;
-        border-radius: 50%;
-        display: inline-block;
-        transition: opacity 0.2s;
-      }
-      .swiper-pagination-bullet-active {
-        background: #4781ff;
-        opacity: 1;
-      }
-
-      /* ページネーションスタイル */
-      .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: 2rem;
-        padding: 1rem 0;
-      }
-
-      .pagination button,
-      .pagination a {
-        padding: 0.5rem 1rem;
-        background: #fff;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        color: #333;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-
-      .pagination button:hover:not(:disabled),
-      .pagination a:hover {
-        background: #4781ff;
-        color: white;
-        border-color: #4781ff;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 8px rgba(71, 129, 255, 0.3);
-      }
-
-      .pagination button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      .pagination .page-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 40px;
-        height: 40px;
-        padding: 0;
-        font-size: 0.95rem;
-      }
-
-      .pagination .page-number.active {
-        background: #4781ff;
-        color: white;
-        border-color: #4781ff;
-      }
-
-      .pagination .ellipsis {
-        padding: 0.5rem;
-        color: #666;
-      }
-
-      .view-all-link {
-        display: inline-block;
-        margin-top: 1rem;
-        padding: 0.8rem 1.5rem;
-        background: linear-gradient(135deg, #4781ff, #3366ff);
-        color: white;
-        text-decoration: none;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(71, 129, 255, 0.3);
-      }
-
-      .view-all-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(71, 129, 255, 0.4);
-        background: linear-gradient(135deg, #3366ff, #4781ff);
-      }
-
-      @media (max-width: 1024px) {
-        .blog-slider-section {
-          max-width: 100vw;
-          width: 100vw;
-        }
-        .swiper-container {
-          max-width: 98vw;
-        }
-      }
-      @media (max-width: 768px) {
-        .blog-slider-section {
-          padding: 1rem 0.5rem;
-          margin: 0;
-          max-width: 100vw;
-          width: 100vw;
-        }
-        .swiper-container {
-          max-width: 100vw;
-        }
-        .blog-card {
-          max-width: 95vw;
-          margin: 0 2px;
-          max-height: 480px;
-        }
-
-        .blog-card-title {
-          font-size: 1.2rem; 
-        }
-
-        .blog-card-description {
-          font-size: 0.92rem; /* 説明のフォントサイズをさらに小さく */
-        }
-
-        .swiper-button-next,
-        .swiper-button-prev {
-          width: 32px;
-          height: 32px;
-        }
-        .swiper-button-next {
-          right: 4px;
-        }
-        .swiper-button-prev {
-          left: 4px;
-        }
-
-        .pagination {
-          gap: 0.3rem;
-        }
-
-        .pagination button,
-        .pagination a {
-          padding: 0.4rem 0.8rem;
-          font-size: 0.85rem;
-        }
-
-        .pagination .page-number {
-          min-width: 35px;
-          height: 35px;
-        }
-      }
-    </style>
-  </head>
-
-  <style>
-    @media (max-width: 768px) {
-      /* ブログカードの画像サイズ調整 */
-      .blog-card img {
-        height: 100px; /* 高さをさらに縮小 */
-        margin: 0 auto; /* 中央揃え */
-      }
-
-      /* ブログカードのタイトルと説明のフォントサイズ調整 */
-      .blog-card-title {
-        font-size: 0.9rem; /* タイトルのフォントサイズをさらに小さく */
-      }
-
-      .blog-card-description {
-        font-size: 0.75rem; /* 説明のフォントサイズをさらに小さく */
-      }
-
-      /* ブログセクションのグリッド調整 */
-      .blog-grid {
-        grid-template-columns: 1fr; /* モバイル画面では1列表示 */
-        gap: 0.5rem; /* カード間の余白を調整 */
-      }
-
-      /* スライダーのボタンサイズ調整 */
-      .blog-slider-section .swiper-button-next,
-      .blog-slider-section .swiper-button-prev {
-        width: 25px; /* ボタンの幅をさらに縮小 */
-        height: 25px; /* ボタンの高さをさらに縮小 */
-      }
-
-      /* アフィリエイトセクションのグリッド調整 */
-      .affiliate-grid {
-        grid-template-columns: 1fr; /* モバイル画面では1列表示 */
-        gap: 1rem; /* カード間の余白を調整 */
-      }
-
-      /* 通知バーのフォントサイズ調整 */
-      .notification-bar {
-        font-size: 1rem; /* フォントサイズをさらに小さく */
-      }
-
-      /* メインタイトルのフォントサイズ調整 */
-      main h1 {
-        font-size: 1.2rem; /* タイトルのフォントサイズをさらに小さく */
-      }
-
-      main p {
-        font-size: 0.9rem; /* 説明文のフォントサイズをさらに小さく */
-      }
-
-      /* 広告セクションの非表示 */
-      .side-ads {
-        display: none; /* モバイル画面では非表示 */
-      }
-
-      .ad-top-right {
-        display: none; /* モバイル画面では非表示 */
-      }
-    
-      {
-        box-sizing: border-box;
-      }
-      html, body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-      }
-    }
-  </style>
-
-  <!-- 上部右側ディスプレイ広告 -->
-   <head>
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-     crossorigin="anonymous"></script>
-  </head>
-
-  <body>
-    <Header />
-    <main>
-      <!-- javascriptのスワイパーコンテンツ表示 -->
-
-      <section class="blog-slider-section">
-        <h2>最 新 記 事</h2>
-        <div class="swiper-container">
-          <div class="swiper-wrapper">
-            {
-              allPosts.slice(0, 10).map((post) => (
-                <div class="swiper-slide">
-                  <a href={`/${post.collection}/${post.id}/`} class="blog-card">
-                    <img src={post.data.heroImage} alt={post.data.title} />
-                    <div class="blog-card-content">
-                      <div class="blog-card-title">{post.data.title}</div>
-                      <div class="blog-card-date"><FormattedDate date={post.data.pubDate} /></div>
-                    </div>
-                  </a>
-                </div>
-              ))
-            }
-          </div>
-          <!-- スライダーのナビゲーションボタン -->
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-          <!-- スライダーのページネーション -->
-          <div class="swiper-pagination"></div>
-        </div>
-      </section>
-
-      <!-- ページ中央　タブリスト表示 -->
-
-      <html lang="ja">
-        <head>
-          <meta charset="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-          <title>タブ付き記事リスト</title>
-          <style>
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-            }
-
-            body {
-              font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-              background: linear-gradient(135deg, #e2e2e2 100%);
-              min-height: 100vh;
-              padding: 2rem;
-            }
-
-            .container {
-              max-width: 1200px;
-              margin: 0 auto;
-              background: rgba(255, 255, 255, 0.95);
-              border-radius: 20px;
-              overflow: hidden;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-              backdrop-filter: blur(10px);
-            }
-
-            .tab-header {
-              display: flex;
-              background: linear-gradient(135deg, #2c3e50, #3498db);
-              position: relative;
-              overflow: hidden;
-            }
-
-            .tab-header::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 70%
-              );
-              animation: shimmer 3s infinite;
-            }
-
-            @keyframes shimmer {
-              0% {
-                transform: translateX(-100%);
-              }
-              100% {
-                transform: translateX(200%);
-              }
-            }
-
-            .tab-button {
-              flex: 1;
-              padding: 1.5rem 2rem;
-              background: none;
-              border: none;
-              color: rgba(255, 255, 255, 0.7);
-              font-size: 1.1rem;
-              font-weight: 600;
-              cursor: pointer;
-              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-              position: relative;
-              z-index: 2;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-            }
-
-            .tab-button:hover {
-              color: rgba(255, 255, 255, 0.9);
-              transform: translateY(-2px);
-            }
-
-            .tab-button.active {
-              color: #fff;
-              background: rgba(255, 255, 255, 0.2);
-              backdrop-filter: blur(10px);
-            }
-
-            .tab-button.active::after {
-              content: "";
-              position: absolute;
-              bottom: 0;
-              left: 50%;
-              width: 50px;
-              height: 3px;
-              background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-              transform: translateX(-50%);
-              border-radius: 2px;
-            }
-
-            .tab-content {
-              padding: 2rem;
-              min-height: 600px;
-            }
-
-            .article-grid {
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-              gap: 2rem;
-              opacity: 0;
-              transform: translateY(20px);
-              animation: fadeInUp 0.6s ease forwards;
-            }
-
-            @keyframes fadeInUp {
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            .article-card {
-              background: #fff;
-              border-radius: 16px;
-              overflow: hidden;
-              box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-              position: relative;
-              cursor: pointer;
-            }
-
-            .article-card::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background: linear-gradient(
-                135deg,
-                rgba(255, 107, 107, 0.1),
-                rgba(78, 205, 196, 0.1)
-              );
-              opacity: 0;
-              transition: opacity 0.3s ease;
-            }
-
-            .article-card:hover {
-              transform: translateY(-10px) scale(1.02);
-              box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            }
-
-            .article-card:hover::before {
-              opacity: 1;
-            }
-
-            .article-image {
-              width: 100%;
-              height: 200px;
-              object-fit: cover;
-              transition: transform 0.6s ease;
-            }
-
-            .article-card:hover .article-image {
-              transform: scale(1.1);
-            }
-
-            .article-content {
-              padding: 1.5rem;
-              position: relative;
-              z-index: 2;
-            }
-
-            .article-category {
-              display: inline-block;
-              padding: 0.3rem 0.8rem;
-              background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-              color: white;
-              font-size: 0.8rem;
-              font-weight: 600;
-              border-radius: 20px;
-              margin-bottom: 1rem;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-            }
-
-            .article-title {
-              font-size: 1.3rem;
-              font-weight: 700;
-              color: #2c3e50;
-              margin-bottom: 0.8rem;
-              line-height: 1.4;
-              transition: color 0.3s ease;
-            }
-
-            .article-card:hover .article-title {
-              color: #3498db;
-            }
-
-            .article-description {
-              color: #7f8c8d;
-              font-size: 0.95rem;
-              line-height: 1.6;
-              margin-bottom: 1rem;
-            }
-
-            .article-meta {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              color: #95a5a6;
-              font-size: 0.85rem;
-            }
-
-            .article-date {
-              font-weight: 600;
-            }
-
-            .article-card-link {
-              text-decoration: none;
-              color: inherit;
-              display: block;
-              transition: transform 0.3s ease;
-            }
-
-            .article-card-link:hover {
-              transform: translateY(-10px);
-            }
-
-            .read-more {
-              background: linear-gradient(135deg, #3498db, #2980b9);
-              color: white;
-              padding: 0.5rem 1rem;
-              border-radius: 20px;
-              text-decoration: none;
-              font-size: 0.8rem;
-              font-weight: 600;
-              transition: all 0.3s ease;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-            }
-
-            .read-more:hover {
-              background: linear-gradient(135deg, #2980b9, #3498db);
-              transform: translateY(-2px);
-              box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-            }
-
-            .tab-panel {
-              display: none;
-              animation: slideIn 0.5s ease forwards;
-            }
-
-            .tab-panel.active {
-              display: block;
-            }
-
-            @keyframes slideIn {
-              from {
-                opacity: 0;
-                transform: translateX(20px);
-              }
-              to {
-                opacity: 1;
-                transform: translateX(0);
-              }
-            }
-
-            .empty-state {
-              text-align: center;
-              padding: 4rem 2rem;
-              color: #7f8c8d;
-            }
-
-            .empty-state h3 {
-              font-size: 1.5rem;
-              margin-bottom: 1rem;
-              color: #95a5a6;
-            }
-
-            .tab-section {
-              margin-bottom: 2rem;
-              text-align: center;
-            }
-
-            .tab-section h1 {
-              color: white;
-              margin-bottom: 1rem;
-              font-size: 2rem;
-            }
-
-            .tab-list {
-              display: flex;
-              justify-content: center;
-              gap: 1rem;
-              list-style: none;
-              margin-bottom: 2rem;
-            }
-
-            .tab-item {
-              padding: 0.5rem 1rem;
-              background: rgba(255, 255, 255, 0.2);
-              color: white;
-              border-radius: 10px;
-              cursor: pointer;
-              transition: all 0.3s ease;
-            }
-
-            .tab-item.active {
-              background: rgba(255, 255, 255, 0.3);
-            }
-
-            @media (max-width: 768px) {
-              .container {
-                margin: 1rem;
-                border-radius: 15px;
-              }
-
-              .tab-button {
-                padding: 1rem;
-                font-size: 0.9rem;
-              }
-
-              .tab-content {
-                padding: 1rem;
-              }
-
-              .article-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-              }
-
-              .article-card {
-                border-radius: 12px;
-              }
-
-              .article-image {
-                height: 160px;
-              }
-
-              .article-content {
-                padding: 1rem;
-              }
-
-              .article-title {
-                font-size: 1.1rem;
-              }
-
-              .tab-list {
-                flex-direction: column;
-                align-items: center;
-              }
-              .tab-section {
-                display: none;
-              }
-            }
-
-           /* アドセンス広告（モバイル）の高さを指定*/
-            @media screen and (max-width: 768px) {
-              .wpaw-google-adsense {
-                min-height: 320px;
-              }
-            }
-          </style>
-        </head>
-
-  <body>
-
-    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content: center;">
-  <RankingWidget
-    title="ゲーム情報（最新記事TOP10）"
-    posts={posts}
-    baseUrl="/blog"
-    viewAllUrl="/blog"
-    viewAllLabel="最新ゲーム記事をすべて見る"
-  />
-  <RankingWidget
-    title="ガジェット・お役立ち情報（最新記事TOP10）"
-    posts={devicePosts}
-    baseUrl="/device"
-    viewAllUrl="/device"
-    viewAllLabel="ガジェット記事をすべて見る"
-    accentColor="#4caf50"
-  />
-  <RankingWidget
-    title="マインクラフトMOD解説（最新記事TOP10）"
-    posts={minecraftmods}
-    baseUrl="/minecraft_mod_blog"
-    viewAllUrl="/minecraft_mod_blog"
-    viewAllLabel="マインクラフトMOD記事をすべて見る"
-  />
-</div>
-
-<!-- 画像リンクセクション -->
-<section class="image-links-section">
-  <a href="/blog" class="image-link-item">
-    <img src="/gameimage.png" alt="最新ゲーム記事一覧はコチラ" />
-    <span class="image-link-text">最新ゲーム情報<br />一覧はコチラ</span>
-  </a>
-  <a href="/minecraft_blog" class="image-link-item">
-    <img src="/linkimage1.png" alt="マインクラフト最新一覧はコチラ" />
-    <span class="image-link-text">マインクラフト最新情報<br />一覧はコチラ</span>
-  </a>
-  <a href="/minecraft_mod_blog" class="image-link-item">
-    <img src="/indexpage/minecraft_image/minecraft_java_image.png" alt="マインクラフト MOD一覧はコチラ" />
-    <span class="image-link-text">マインクラフト<br />MOD一覧はコチラ</span>
-  </a>
-</section>
-
-<style>
-  .image-links-section {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 1rem auto;
-    padding: 0 1rem;
-    max-width: 1200px;
-    box-sizing: border-box;
-  }
-
-  .image-link-item {
-    position: relative;
-    flex: 1;
-    min-width: 300px;
-    max-width: 320px;
-    border-radius: 8px;
-    overflow: hidden;
-    text-decoration: none;
-    display: block;
-    aspect-ratio: 16 / 9;
-  }
-
-  .image-link-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-
-  .image-link-item:hover img {
-    transform: scale(1.05);
-  }
-
-  .image-link-text {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: bold;
-    line-height: 1.5;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
-    background: rgba(0, 0, 0, 0.25);
-    padding: 0.5rem;
-    transition: background 0.3s ease;
-  }
-
-  .image-link-item:hover .image-link-text {
-    background: rgba(0, 0, 0, 0.4);
-  }
-
-  @media (max-width: 600px) {
-    .image-links-section {
-      gap: 8px;
-      padding: 0 0.5rem;
-    }
-
-    .image-link-item {
-      min-width: 140px;
-    }
-
-    .image-link-text {
-      font-size: 0.85rem;
-    }
-  }
-</style>
-
-  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-      crossorigin="anonymous"></script>
-    <!-- ads2 -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-4929223237591717"
-      data-ad-slot="5954046828"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-
-          <!-- ページ中央　タブリスト表示 -->
-          <section class="tab-section">
-            <h1>記事一覧</h1>
-            <ul class="tab-list">
-              <li class="tab-item active" data-tab="all">最新記事</li>
-              <li class="tab-item" data-tab="blog">PCゲーム記事</li>
-              <li class="tab-item" data-tab="mobileblog">スマホ＆ゲーム機記事</li>
-              <li class="tab-item" data-tab="device">デバイス記事</li>
-            </ul>
-          </section>
-
-          <div class="container">
-            <div class="tab-header">
-              <button class="tab-button active" data-tab="all"
-                >すべての記事</button
-              >
-              <button class="tab-button" data-tab="blog">PCゲーム記事</button>
-              <button class="tab-button" data-tab="mobileblog">スマホ＆ゲーム機記事</button>
-              <button class="tab-button" data-tab="device">デバイス記事</button>
-
-            </div>
-
-            <div class="tab-content">
-              <!-- すべての記事タブ -->
-
-              <div class="tab-panel active" id="all">
-                <div class="article-grid">
-                  {
-                    allPosts.slice(0, POSTS_PER_PAGE).map((post) => (
-                      <a
-                        href={`/${post.collection}/${post.id}/`}
-                        class="article-card-link"
-                      >
-                        <article class="article-card">
-                          <img
-                            src={post.data.heroImage}
-                            alt={post.data.title}
-                            class="article-image"
-                          />
-                          <div class="article-content">
-                            <span class="article-category">
-                              {post.collection}
-                            </span>
-                            <h3 class="article-title">{post.data.title}</h3>
-                            <p class="article-description">
-                              {post.data.description}
-                            </p>
-                            <div class="article-meta">
-                              <span class="article-date">
-                                <FormattedDate date={post.data.pubDate} />
-                              </span>
-                              <span class="read-more">続きを読む</span>
-                            </div>
-                          </div>
-                        </article>
-                      </a>
-                    ))
-                  }
-                </div>
-                {allPosts.length > POSTS_PER_PAGE && (
-                  <div class="pagination">
-                    <a href="/all/2" class="view-all-link">すべての記事を見る →</a>
-                  </div>
-                )}
-              </div>
-
-              <!-- ブログ記事タブ -->
-              <div class="tab-panel" id="blog">
-                <div class="article-grid">
-                  {
-                    posts.slice(0, POSTS_PER_PAGE).map((post) => (
-                      <a href={`/blog/${post.id}/`} class="article-card-link">
-                        <article class="article-card">
-                          <img
-                            src={post.data.heroImage}
-                            alt={post.data.title}
-                            class="article-image"
-                          />
-                          <div class="article-content">
-                            <span class="article-category">PCゲーム</span>
-                            <h3 class="article-title">{post.data.title}</h3>
-                            <p class="article-description">
-                              {post.data.description}
-                            </p>
-                            <div class="article-meta">
-                              <span class="article-date">
-                                <FormattedDate date={post.data.pubDate} />
-                              </span>
-                              <span class="read-more">続きを読む</span>
-                            </div>
-                          </div>
-                        </article>
-                      </a>
-                    ))
-                  }
-                </div>
-                {posts.length > POSTS_PER_PAGE && (
-                  <div class="pagination">
-                    <a href="/blog/page/2" class="view-all-link">すべてのゲーム記事を見る →</a>
-                  </div>
-                )}
-              </div>
-
-              <!-- モバイルゲーム記事タブ -->
-              <div class="tab-panel" id="mobileblog">
-                <div class="article-grid">
-                  {
-                    mobilePosts.slice(0, POSTS_PER_PAGE).map((post) => (
-                      <a href={`/mobileblog/${post.id}/`} class="article-card-link">
-                        <article class="article-card">
-                          <img
-                            src={post.data.heroImage}
-                            alt={post.data.title}
-                            class="article-image"
-                          />
-                          <div class="article-content">
-                            <span class="article-category">スマホ＆ゲーム機</span>
-                            <h3 class="article-title">{post.data.title}</h3>
-                            <p class="article-description">
-                              {post.data.description}
-                            </p>
-                            <div class="article-meta">
-                              <span class="article-date">
-                                <FormattedDate date={post.data.pubDate} />
-                              </span>
-                              <span class="read-more">続きを読む</span>
-                            </div>
-                          </div>
-                        </article>
-                      </a>
-                    ))
-                  }
-                </div>
-                {mobilePosts.length > POSTS_PER_PAGE && (
-                  <div class="pagination">
-                    <a href="/mobileblog/page/2" class="view-all-link">すべてのモバイルゲーム記事を見る →</a>
-                  </div>
-                )}
-              </div>
-
-              <!-- デバイス記事タブ -->
-              <div class="tab-panel" id="device">
-                <div class="article-grid">
-                  {
-                    devicePosts.slice(0, POSTS_PER_PAGE).map((post) => (
-                      <a href={`/device/${post.id}/`} class="article-card-link">
-                        <article class="article-card">
-                          <img
-                            src={post.data.heroImage}
-                            alt={post.data.title}
-                            class="article-image"
-                          />
-                          <div class="article-content">
-                            <span class="article-category">デバイス</span>
-                            <h3 class="article-title">{post.data.title}</h3>
-                            <p class="article-description">
-                              {post.data.description}
-                            </p>
-                            <div class="article-meta">
-                              <span class="article-date">
-                                <FormattedDate date={post.data.pubDate} />
-                              </span>
-                              <span class="read-more">続きを読む</span>
-                            </div>
-                          </div>
-                        </article>
-                      </a>
-                    ))
-                  }
-                </div>
-                {devicePosts.length > POSTS_PER_PAGE && (
-                  <div class="pagination">
-                    <a href="/device/page/2" class="view-all-link">すべてのデバイス記事を見る →</a>
-                  </div>
-                )}
-              </div>
-
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              // 既存のタブボタンのイベントリスナー
-              const tabButtons = document.querySelectorAll(".tab-button");
-              const tabItems = document.querySelectorAll(".tab-item");
-              const tabPanels = document.querySelectorAll(".tab-panel");
-
-              // タブリストのイベントリスナー
-              tabItems.forEach((item) => {
-                item.addEventListener("click", function () {
-                  const targetTab = this.getAttribute("data-tab");
-
-                  // タブリストのアクティブ状態を更新
-                  tabItems.forEach((tab) => tab.classList.remove("active"));
-                  this.classList.add("active");
-
-                  // 対応するタブボタンをクリック
-                  tabButtons.forEach((button) => {
-                    if (button.getAttribute("data-tab") === targetTab) {
-                      // 修正: HTMLElementとして型アサーションを行う
-                      (button as HTMLElement).click();
-                    }
-                  });
-                });
-              });
-
-              // 既存のタブボタンのイベントハンドラー
-              tabButtons.forEach((button) => {
-                button.addEventListener("click", function () {
-                  const targetTab = this.getAttribute("data-tab");
-
-                  // アクティブなタブボタンを切り替え
-                  tabButtons.forEach((btn) => btn.classList.remove("active"));
-                  this.classList.add("active");
-
-                  // タブリストのアクティブ状態も更新
-                  tabItems.forEach((item) => {
-                    if (item.getAttribute("data-tab") === targetTab) {
-                      item.classList.add("active");
-                    } else {
-                      item.classList.remove("active");
-                    }
-                  });
-
-                  // タブパネルを切り替え
-                  tabPanels.forEach((panel) => {
-                    panel.classList.remove("active");
-                    if (panel.id === targetTab) {
-                      panel.classList.add("active");
-                    }
-                  });
-
-                  // アニメーション効果
-                  const activeGrid = document.querySelector(
-                    `#${targetTab} .article-grid`
-                  );
-                  if (activeGrid && activeGrid instanceof HTMLElement) {
-                    activeGrid.style.animation = "none";
-                    setTimeout(() => {
-                      activeGrid.style.animation =
-                        "fadeInUp 0.6s ease forwards";
-                    }, 50);
-                  }
-                });
-              });
-            });
-          </script>
-        </body>
-      </html>
-
-  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-      crossorigin="anonymous"></script>
-    <!-- ads2 -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-4929223237591717"
-      data-ad-slot="5954046828"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-
-      <!-- ページ下部　アフィリエイトリンク(amazon) -->
-
-    <section class="affiliate-section">
-      <h2>おすすめのデバイス</h2>
-      <div class="affiliate-grid">
-        <div class="affiliate-card">
-          <img
-            src="/affiliate/mouse1.png"
-            alt="Logicool G PRO 2 LIGHTSPEED"
-          />
-          <h3>Logicool G PRO 2 LIGHTSPEED</h3>
-          <p>軽量で高性能なゲーミングマウス</p>
-          <p class="price">¥17600</p>
-          <a href="https://amzn.to/3Tt0xfd" target="_blank" class="button"
-            >Amazonで見る</a
-          >
-        </div>
-        <div class="affiliate-card">
-          <img
-            src="/affiliate/ultra.png"
-            alt="Razer Pro Type Ultra JP"
-          />
-          <h3>Razer Pro Type Ultra JP</h3>
-          <p>快適なタイピングが可能なメカニカルキーボード</p>
-          <p class="price">¥24,200</p>
-          <a href="https://amzn.to/3Ihjv5V" target="_blank" class="button"
-            >Amazonで見る</a
-          >
-        </div>
-        <div class="affiliate-card">
-          <img
-            src="/affiliate/monita1.png"
-            alt="BenQ ZOWIE XL2546K"
-          />
-          <h3>MSI MAG 274QF</h3>
-          <p>180Hz対応のゲーミングモニター</p>
-          <p class="price">¥33,800</p>
-          <a href="https://amzn.to/4nGurds" target="_blank" class="button"
-            >Amazonで見る</a
-          >
-        </div>
-        <div class="affiliate-card">
-          <img
-            src="/affiliate/pad.png"
-            alt="Logicool G ゲーミングマウスパッド"
-          />
-          <h3>Logicool G ゲーミングマウスパッド</h3>
-          <p>滑らかな操作感のマウスパッド</p>
-          <p class="price">¥1,700</p>
-          <a href="https://amzn.to/4nDooGI" target="_blank" class="button"
-            >Amazonで見る</a
-          >
-        </div>
-      </div>
+<BaseLayout title={TOP_TITLE} description={TOP_DESCRIPTION}>
+  <AdSenseScript slot="head" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+  <h1 class="sr-only">ANYGAMES放送局 - ゲーム・ガジェットの情報と無料ツール</h1>
+
+  <div class="container bare stack">
+    <section class="feature" aria-label="注目の記事">
+      {pickup.map((p, i) => (
+        <a class={`pick pick-${i}`} href={postUrl(p)}>
+          <img src={p.data.heroImage} alt="" width={i === 0 ? 960 : 480} height={i === 0 ? 540 : 270} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} decoding="async" />
+          {i === 0 && <span class="badge"><span aria-hidden="true">♛</span> Pick Up</span>}
+          <span class="cap"><small>{sectionLabel(p.collection)}</small>{p.data.title}</span>
+        </a>
+      ))}
     </section>
 
-      <style>
-        .affiliate-section {
-          padding: 2rem;
-          background-color: #f9f9f9;
-          border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          margin: 2rem auto;
-          max-width: calc(100vw - 4rem);
-          box-sizing: border-box;
-        }
+    <ul class="tiles">
+      {tiles.map((t) => (
+        <li>
+          <a class={t.external ? 'yt' : undefined} href={t.href} style={t.img ? `background-image:url('${t.img}')` : undefined}
+            {...(t.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+            <span>{t.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
 
-        .affiliate-section h2 {
-          font-size: 1.8rem;
-          margin-bottom: 1rem;
-          color: #333;
-        }
+    <section class="card" aria-labelledby="latest-h">
+      <h2 id="latest-h" class="heading-c">最新記事</h2>
+      <ArticleList posts={latest} />
+      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
+    </section>
 
-        .affiliate-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1.5rem;
-        }
+    <div class="ranks">
+      <RankingBox title="ゲーム情報(最新記事)" color="var(--rank-game)" posts={game.slice(0, 6)} href="/blog/" moreLabel="最新ゲーム記事をすべて見る" />
+      <RankingBox title="ガジェット・お役立ち情報(最新記事)" color="var(--rank-gadget)" posts={gadget} href="/device/" moreLabel="ガジェット記事をすべて見る" />
+      <RankingBox title="マインクラフトMOD解説(最新記事)" color="var(--rank-mod)" posts={mod.slice(0, 6)} href="/minecraft_mod_blog/" moreLabel="マインクラフトMOD記事をすべて見る" />
+    </div>
 
-        .affiliate-card {
-          background: #fff;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 1rem;
-          text-align: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-        }
+    <section class="card" aria-labelledby="tools-h">
+      <h2 id="tools-h" class="heading-c">無料ツール</h2>
+      <ul class="tools">
+        {TOOLS.map((t) => (
+          <li><a href={t.href} style={`--c:${TOOL_COLORS[t.category]}`}><strong>{t.name}</strong><span>{t.summary}</span></a></li>
+        ))}
+      </ul>
+      <p class="center"><a class="pill" href="/tools/">ツール一覧を見る ›</a></p>
+    </section>
 
-        .affiliate-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+    <AdSlot slot="listFeed" />
 
-        .affiliate-card img {
-          width: 100%;
-          height: auto;
-          border-radius: 4px;
-          margin-bottom: 1rem;
-        }
+    <section class="card tabsec" aria-labelledby="list-h">
+      <h2 id="list-h" class="heading-c">記事一覧</h2>
+      <div class="tabs" role="tablist" aria-label="記事のジャンル">
+        {tabs.map((t, i) => (
+          <button type="button" role="tab" id={`tab-${t.key}`} aria-controls={`panel-${t.key}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={t.key}>{t.label}</button>
+        ))}
+      </div>
+      {tabs.map((t, i) => (
+        <div role="tabpanel" id={`panel-${t.key}`} aria-labelledby={`tab-${t.key}`} hidden={i !== 0}>
+          <ArticleList posts={t.posts} />
+        </div>
+      ))}
+      <p class="center"><a class="pill" href="/all/1/">すべての記事を見る ›</a></p>
+    </section>
 
-        .affiliate-card h3 {
-          font-size: 1.2rem;
-          margin-bottom: 0.5rem;
-          color: #333;
-        }
-
-        .affiliate-card p {
-          font-size: 0.9rem;
-          color: #666;
-          margin-bottom: 1rem;
-        }
-
-        .affiliate-card .price {
-          font-size: 1.2rem;
-          font-weight: bold;
-          color: #e60023;
-          margin-bottom: 1rem;
-        }
-
-        .affiliate-card a {
-          display: inline-block;
-          padding: 0.5rem 1rem;
-          background-color: #ff9900;
-          color: #fff;
-          text-decoration: none;
-          border-radius: 4px;
-          font-weight: bold;
-          transition: background-color 0.2s ease;
-        }
-
-        .affiliate-card a:hover {
-          background-color: #cc7a00;
-        }
-      </style>
-
-  <div style="text-align: center; margin: 2rem auto; max-width: 100%;">
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4929223237591717"
-      crossorigin="anonymous"></script>
-    <!-- ads2 -->
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-4929223237591717"
-      data-ad-slot="5954046828"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <section class="card" aria-labelledby="dev-h">
+      <h2 id="dev-h" class="heading-c">おすすめのデバイス</h2>
+      <AffiliateGrid />
+    </section>
   </div>
-  
-    </main>
-    <Footer />
-  </body>
-</html>
+  <script>
+    const tabButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.tabs [role=tab]'));
+    const select = (btn: HTMLButtonElement) => {
+      tabButtons.forEach((b) => {
+        const on = b === btn;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(b.getAttribute('aria-controls') ?? '');
+        if (panel) panel.hidden = !on;
+      });
+    };
+    tabButtons.forEach((b, i) => {
+      b.addEventListener('click', () => select(b));
+      b.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const next = tabButtons[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabButtons.length) % tabButtons.length];
+        next.focus();
+        select(next);
+      });
+    });
+  </script>
+</BaseLayout>
+<style>
+  /* 列幅は必ず画面幅に固定する(広告など幅の大きい要素が入っても、他のブロックを横に押し広げない) */
+  .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 20px; }
+  .stack > :global(*) { min-width: 0; max-width: 100%; }
+  .card { background: var(--bg); border-radius: var(--card-radius); box-shadow: var(--shadow); padding: 8px 20px 24px; }
+  .center { text-align: center; margin: 22px 0 0; }
+  .pill { display: inline-block; padding: 10px 28px; border: 1.5px solid var(--accent); border-radius: 3px; color: var(--accent); font-weight: 700; text-decoration: none; font-size: .9rem; }
+  .pill:hover { background: var(--accent); color: #fff; }
+  .ranks { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .ranks { grid-template-columns: repeat(3, 1fr); } }
+  .feature { display: grid; gap: 4px; grid-template-columns: 1fr; border-radius: var(--card-radius); overflow: hidden; box-shadow: var(--shadow); background: var(--navy); }
+  .pick { position: relative; display: block; overflow: hidden; color: #fff; text-decoration: none; aspect-ratio: 16 / 9; background: var(--navy); }
+  .pick img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .pick:hover img { transform: scale(1.04); }
+  .pick::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .12) 55%, transparent 100%); }
+  .cap { position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 1; font-weight: 800; line-height: 1.4; font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+  .cap small { display: block; font-size: .72rem; font-weight: 700; opacity: .85; margin-bottom: 2px; }
+  .pick-0 { aspect-ratio: 16 / 10; }
+  .pick-0 .cap { font-size: 1.05rem; }
+  .pick:not(.pick-0) .cap { -webkit-line-clamp: 2; }
+  .pick:not(.pick-0) .cap small { display: none; }
+  .badge { position: absolute; top: 12px; left: 12px; z-index: 1; background: rgba(0, 0, 0, .75); color: #fff; padding: 6px 14px; font-size: .85rem; font-weight: 800; border: 1px solid rgba(255, 255, 255, .15); }
+  .badge span { color: #ffc107; }
+  @media (min-width: 480px) and (max-width: 859px) {
+    .feature { grid-template-columns: 1fr 1fr; }
+    .pick-0 { grid-column: 1 / -1; }
+  }
+  @media (min-width: 860px) {
+    .feature { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; height: clamp(360px, 38vw, 460px); }
+    .pick, .pick-0 { aspect-ratio: auto; }
+    .pick-0 { grid-row: 1 / 3; }
+    .pick-0 .cap { font-size: 1.5rem; left: 26px; right: 26px; bottom: 22px; }
+    .pick:not(.pick-0) .cap { font-size: .95rem; bottom: 12px; }
+  }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  @media (min-width: 860px) { .tiles { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+  .tiles a { display: grid; place-items: center; min-height: 88px; padding: 10px; background: #1c2a3d center / cover; color: #fff; font-weight: 800; font-size: 1.05rem; text-decoration: none; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow); transition: transform .2s; }
+  .tiles a::before { content: ''; position: absolute; inset: 0; background: rgba(0, 10, 25, .58); transition: background .2s; }
+  .tiles a:hover::before { background: rgba(0, 10, 25, .4); }
+  .tiles a span { position: relative; text-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+  .tiles a.yt { background: #b3141a; }
+  .tiles a.yt::before { background: rgba(0, 0, 0, .12); }
+  .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  @media (min-width: 640px) { .tools { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .tools { grid-template-columns: repeat(4, 1fr); } }
+  .tools a { display: grid; gap: 4px; padding: 14px 16px; height: 100%; border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: var(--radius); color: inherit; text-decoration: none; background: var(--bg-soft); }
+  .tools a:hover { border-color: var(--c); background: #fff; }
+  .tools strong { color: var(--c); }
+  .tools span { font-size: .82rem; color: var(--text-sub); }
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: 0 0 auto; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 3px; background: var(--bg); color: var(--text); font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
+  .tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (max-width: 640px) { .card { padding: 4px 14px 20px; } }
+</style>

@@ -1,0 +1,26 @@
+---
+/** 画像ツール共通: 複数枚処理の結果表示。idは src/lib/image/batch.ts と対応。 */
+---
+<section class="batch" id="batch" aria-labelledby="batch-title" hidden>
+  <h2 id="batch-title" class="section-title">結果</h2>
+  <p class="saved" id="batch-summary"></p>
+  <ul class="rows" id="batch-rows"></ul>
+  <div class="actions">
+    <a class="btn" id="zip" href="#" download="anygames-images.zip">すべてZIPで保存</a>
+    <button type="button" class="btn btn-sub" id="batch-reset">別の画像を選ぶ</button>
+  </div>
+</section>
+<style>
+  .batch { scroll-margin-top: 72px; }
+  .batch[hidden] { display: none; }
+  .rows { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+  /* 行は JavaScript で作るので、中身のスタイルは :global で当てる */
+  .rows :global(li) { display: grid; grid-template-columns: 56px 1fr auto; gap: 4px 12px; align-items: center; padding: 8px 12px 8px 8px; border: 1px solid var(--line); border-radius: var(--radius); }
+  .rows :global(img) { width: 56px; height: 56px; object-fit: cover; border-radius: 4px; background: var(--bg-soft); }
+  .rows :global(.name) { font-size: .85rem; font-weight: 700; word-break: break-all; }
+  .rows :global(.sub) { font-size: .78rem; color: var(--text-sub); }
+  .rows :global(.fail) { color: var(--danger); }
+  .rows :global(a) { font-size: .85rem; white-space: nowrap; }
+  .actions { display: grid; gap: 10px; margin-top: 16px; }
+  @media (min-width: 640px) { .actions { grid-template-columns: 1fr 1fr; } }
+</style>

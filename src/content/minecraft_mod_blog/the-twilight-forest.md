@@ -2,7 +2,7 @@
 title: "The Twilight Forest - 黄昏の森　導入方法から詳しく解説！何回でも噛めるスルメディメンション！【マイクラMOD】"
 description: "2011年から続くマイクラ最長寿MODのひとつ。薄暗い森に満ちた異世界「黄昏の森」へのポータルを開き、8体のボスを攻略しながら壮大な冒険を楽しめるアドベンチャーMOD。"
 pubDate: 2026-01-01
-updatedDate: 2025-01-15
+updatedDate: 2026-01-15
 heroImage: "/minecraft/mods/dimention/the_twilight_forest/forestimage.png"
 version: 
   - "1.21.1"

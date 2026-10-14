@@ -1,0 +1,23 @@
+---
+import ToolFaq from '../../../../components/tools/ToolFaq.astro';
+import ToolLayout from '../../../../layouts/ToolLayout.astro';
+import SensitivityConverter from '../../../../components/tools/SensitivityConverter.astro';
+
+const faqs = [
+  { q: 'どうやって感度を変換していますか?', a: 'ゲームごとの内部係数(ヨー値)を使い、360°振り向くためのマウス移動距離(cm/360)が同じになるように計算しています。マウスのDPIが同じなら、変換後も振り向く距離は変わりません。' },
+  { q: '変換しても、ゲームによって違和感が出るのはなぜですか?', a: 'このツールは通常視点の振り向きを基準にしています。ADS(スコープ)時の感度倍率や、視野角(FOV)の設定は、ゲームごとに異なるため考慮していません。違和感がある場合は、ゲーム内の設定で微調整してください。' },
+  { q: 'DPIが違う場合はどうすればよいですか?', a: '「詳細設定」で、変換元と変換先のDPIを入力してください。DPIを変えた場合も、振り向く距離が同じになる感度を計算します。' },
+  { q: '対応しているゲームを増やしてほしい', a: '現在は主要なFPSタイトルに対応しています。ほかのゲームも、今後追加していく予定です。' },
+  { q: '表示される感度の小数点以下は、どこまで合わせればよいですか?', a: 'ゲームによって、設定できる小数の桁数が決まっています。入力できる桁数に合わせて、四捨五入した値を設定してください。多少の誤差は、体感ではほとんど気になりません。' },
+];
+---
+<ToolLayout
+  current="sensitivity"
+  title="感度変換ツール(VALORANT・CS2・Apex・OW2など)【無料】"
+  heading="ゲーム感度変換ツール"
+  description="VALORANT・CS2・Apex Legends・Overwatch 2・CoD・R6S・Fortniteの感度を、360°の振り向き距離が同じになるよう変換できる無料ツール。DPIの違いにも対応。"
+  lead="ゲームを変えても、同じ振り向き距離でプレイできる感度を計算します。"
+>
+  <SensitivityConverter />
+  <ToolFaq faqs={faqs} />
+</ToolLayout>

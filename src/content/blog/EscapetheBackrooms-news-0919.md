@@ -9,7 +9,7 @@ category: 'others'
 
 # 【Escape the Backrooms最新速報！】ついに完全版リリース！10月23日にバージョン1.0が配信開始
 
-![blog placeholder](/pcgame/steam/etb/0928/etb1.png)
+![ついに完全版リリース！10月23日にバージョン1.0が配信開始の画像](/pcgame/steam/etb/0928/etb1.png)
 
 ## Escape the Backroomsがアーリーアクセスを卒業！完全版で何が変わる？
 
@@ -19,7 +19,7 @@ category: 'others'
 
 ### 【重要】バージョン1.0で追加される新コンテンツ
 
-![blog placeholder](/pcgame/steam/etb/0928/etb2.png)
+![【重要】バージョン1.0で追加される新コンテンツの画像](/pcgame/steam/etb/0928/etb2.png)
 
 #### 4つの新レベルが追加
 
@@ -37,7 +37,7 @@ Escape the Backroomsの全ての秘密を解き明かす準備ができたプレ
 
 ## Escape the Backroomsとは？基本的なゲーム内容
 
-![blog placeholder](/pcgame/steam/etb/0928/etb3.png)
+![Escape the Backroomsとは？基本的なゲーム内容の画像](/pcgame/steam/etb/0928/etb3.png)
 
 ### 協力プレイが鍵となるサバイバルホラー
 
@@ -56,7 +56,7 @@ Escape the Backroomsは1〜4人でプレイできるco-opホラー探索ゲー�
 
 ## Backroomsの世界観とは？
 
-![blog placeholder](/pcgame/steam/etb/backroom2.png)
+![Backroomsの世界観とは？の画像](/pcgame/steam/etb/backroom2.png)
 
 ### 人気クリーピーパスタが原作
 
@@ -120,7 +120,7 @@ Backroomsは、インターネット上で生まれた都市伝説「クリー�
 <div class="simple-related">
   <h3>🔗 関連記事</h3>
   <ul>
-    <li><a href="/blog/EscapetheBackrooms-news-0827">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
+    <li><a href="/blog/escapethebackrooms-news-0827/">【Backrooms最新速報！】Escape the Backrooms、Secret Modeとパブリッシャー契約！正式版1.0リリースへ前進</a></li>
   </ul>
 </div>
 

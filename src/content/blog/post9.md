@@ -8,7 +8,7 @@ category: 'SALE'
 
 ## 🎮 18年ぶりの復活！首都高バトルが熱いセール開催中
 
-![blog placeholder](/pcgame/sale/sale3.png)
+![18年ぶりの復活！首都高バトルが熱いセール開催中の画像](/pcgame/sale/sale3.png)
 
 首都高バトルがSteamで10%OFFセールを開催中！18年ぶりに復活したこの伝説的レーシングゲームを、今ならお得な価格で手に入れることができます。
 
@@ -20,7 +20,7 @@ category: 'SALE'
 
 ### 🏎️ ゲームの特徴
 
-![blog placeholder](/pcgame/sale/syutoko3.png)
+![ゲームの特徴の画像](/pcgame/sale/syutoko3.png)
 
 **SP（スピリットポイント）バトルシステム**
 SPバトルは、ドライバーの意志力を数値化したスピリットポイントに基づく独特なバトル機能で、単純なスピード勝負ではなく、心理戦も重要な要素となっています。
@@ -34,7 +34,7 @@ SPバトルは、ドライバーの意志力を数値化したスピリットポ
 
 ### 🚗 Early Accessの充実内容
 
-![blog placeholder](/pcgame/sale/syutoko2.png)
+![Early Accessの充実内容の画像](/pcgame/sale/syutoko2.png)
 
 現在Early Access版では以下の内容が楽しめます：
 

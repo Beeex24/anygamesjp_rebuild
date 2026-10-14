@@ -13,7 +13,7 @@ category: 'monsuto'
 
 ## 開催期間・スケジュール
 
-![blog placeholder](/mobilegame/monsuto/gacha/atogacha/atogacha1.png)
+![開催期間・スケジュールの画像](/mobilegame/monsuto/gacha/atogacha/atogacha1.png)
 
 ### 全4週間の開催予定
 
@@ -33,12 +33,12 @@ category: 'monsuto'
 ### ステップ1：ガチャを引く
 ガチャ期間中に、ホーム画面のアイコンからガチャを引きます。
 
-![blog placeholder](/mobilegame/monsuto/gacha/atogacha/atogacha3.png)
+![ステップ1：ガチャを引くの画像](/mobilegame/monsuto/gacha/atogacha/atogacha3.png)
 
 ### ステップ2：結果確認
 ガチャを引くと、鍵のかかった状態でキャラクター10体が表示されます。この段階では、まだオーブは消費されていません。
 
-![blog placeholder](/mobilegame/monsuto/gacha/atogacha/atogacha4.png)
+![ステップ2：結果確認の画像](/mobilegame/monsuto/gacha/atogacha/atogacha4.png)
 
 ### ステップ3：SNSシェア（任意）
 ポストボタンからガチャ結果画像を保存でき、画像を添付してSNSにシェアできます。シェアすることでキャンペーンにも参加可能です。
@@ -46,7 +46,7 @@ category: 'monsuto'
 ### ステップ4：受け取り決定
 受け取り期間内であれば、受け取るボタンで、オーブ50個使って表示されたキャラクターが受け取れます。
 
-![blog placeholder](/mobilegame/monsuto/gacha/atogacha/atogacha5.png)
+![ステップ4：受け取り決定の画像](/mobilegame/monsuto/gacha/atogacha/atogacha5.png)
 
 **注意**: 期間中に受け取らなかった場合、次のガチャに切り替わります。
 
@@ -68,7 +68,7 @@ category: 'monsuto'
 
 ## 特別キャンペーン情報
 
-![blog placeholder](/mobilegame/monsuto/gacha/atogacha/atogacha2.png)
+![特別キャンペーン情報の画像](/mobilegame/monsuto/gacha/atogacha/atogacha2.png)
 
 ### フォロー＆ガチャ結果投稿キャンペーン
 

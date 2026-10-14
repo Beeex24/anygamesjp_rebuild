@@ -9,7 +9,7 @@ category: 'overwatch2'
 
 ## 新サポートヒーロー「ウーヤン」がついに登場！
 
-![blog placeholder](/pcgame/overwatch2/patch/0814/patch2.png)
+![新サポートヒーロー「ウーヤン」がついに登場！の画像](/pcgame/overwatch2/patch/0814/patch2.png)
 
 オーバーウォッチ2に待望の新サポートヒーロー **「ウーヤン」** が登場します！シーズン18での正式デビューを前に、**8月15日から18日まで**の期間限定で先行体験が実施されています。
 
@@ -27,7 +27,7 @@ category: 'overwatch2'
 
 ## ウーヤンのアビリティ完全ガイド
 
-![blog placeholder](/pcgame/overwatch2/patch/0814/patch1.png)
+![ウーヤンのアビリティ完全ガイドの画像](/pcgame/overwatch2/patch/0814/patch1.png)
 
 ### 玄武之杖（げんぶしじょう）- メイン攻撃
 

@@ -2,8 +2,9 @@
 title: "【マイクラ】SEUSの魂を現代に蘇らせた！独自の大気表現が美しい影MOD『UShader』の導入方法を徹底解説！"
 description: "UShaderは、RRe36氏がかつて私的に改造していたSEUS v10.1をゼロから再現した影MODです。ボリュームクラウド・ボリュームフォグ・RTAO・TAAUなど現代的なエフェクトを追加しながら、SEUSならではの独特の光と色調を現代のマインクラフトで楽しめます。日没時の幻想的な紫がかった空が最大の個性。206種類以上に及ぶ豊富なカスタマイズ設定も魅力です。この記事ではUShaderの特徴と導入方法をわかりやすく解説します。"
 pubDate: 2026-03-01
-updatedDate: 2026-02-21
+updatedDate: 2026-03-01
 heroImage: "/minecraft/shader/ushader/image.png"
+pickup: 1
 version: 
   - "1.20.1【Latest】"
 category: "Shader【影MOD】"

@@ -18,7 +18,7 @@ category: 'apexlegends'
 
 ## 新常設モード「ワイルドカード」の詳細
 
-![blog placeholder](/pcgame/apex/showdownupdate/wildcard.png)
+![新常設モード「ワイルドカード」の詳細の画像](/pcgame/apex/showdownupdate/wildcard.png)
 
 ワイルドカードは、従来のApex Legendsの枠を超えた実験的なゲームモードです。以下の特徴があります
 
@@ -35,7 +35,7 @@ category: 'apexlegends'
 
 ## レジェンドアップデート：コースティック＆バンガロールが強化
 
-![blog placeholder](/pcgame/apex/showdownupdate/coustic.png)
+![レジェンドアップデート：コースティック＆バンガロールが強化の画像](/pcgame/apex/showdownupdate/coustic.png)
 
 長らく活躍の場から離れていた2人のレジェンドが大幅強化されます
 
@@ -46,7 +46,7 @@ category: 'apexlegends'
 
 ## エリート武器：RE-45バーストピストル
 
-![blog placeholder](/pcgame/apex/showdownupdate/re45.png)
+![エリート武器：RE-45バーストピストルの画像](/pcgame/apex/showdownupdate/re45.png)
 
 バリスティックの個人武器庫から新たなエリート武器が登場します。
 
@@ -60,7 +60,7 @@ category: 'apexlegends'
 
 ## 新システム「レジェンドアンプ」
 
-![blog placeholder](/pcgame/apex/showdownupdate/legendanp.png)
+![新システム「レジェンドアンプ」の画像](/pcgame/apex/showdownupdate/legendanp.png)
 
 ゲームの流れを変える新要素として「アンプ」が追加されます。
 
@@ -90,7 +90,7 @@ category: 'apexlegends'
 
 ## E-Districtマップ改良
 
-![blog placeholder](/pcgame/apex/showdownupdate/edirect.png)
+![E-Districtマップ改良の画像](/pcgame/apex/showdownupdate/edirect.png)
 
 E-Districtが昼間設定に変更され、大幅な改良が施されます。
 

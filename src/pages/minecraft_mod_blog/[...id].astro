@@ -1,21 +1,12 @@
 ---
-// src/pages/minecraft_mod_info/[...id].astro
-import { getCollection, render, type CollectionEntry } from 'astro:content';
-import MinecraftModLayout from '../../layouts/minecraftmodPost.astro';
+import { getCollection } from 'astro:content';
+import ModArticleLayout from '../../layouts/ModArticleLayout.astro';
+
 
 export async function getStaticPaths() {
   const posts = await getCollection('minecraft_mod_blog');
-  return posts.map(post => ({
-    params: { id: post.id },
-    props: { post }
-  }));
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
 }
-
-type Props = { post: CollectionEntry<'minecraft_mod_blog'> };
 const { post } = Astro.props;
-
-// Astro 5.x: render関数を使用してコンテンツをレンダリング
-const { Content } = await render(post);
 ---
-
-<MinecraftModLayout post={post} Content={Content} />
+<ModArticleLayout post={post} />

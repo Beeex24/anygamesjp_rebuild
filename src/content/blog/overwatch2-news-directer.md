@@ -28,7 +28,7 @@ Overwatch 2の開発チームが重視しているのは、**プレイヤーへ�
 
 ## バランス調整の裏側
 
-![blog placeholder](/pcgame/overwatch2/directer/directer2.png)
+![バランス調整の裏側の画像](/pcgame/overwatch2/directer/directer2.png)
 
 開発チームは**ヒーローのバランス調整時にこれらの環境差を考慮**しています。特定のランク層をターゲットにした調整が、他のランク帯のプレイヤーにとって違和感のない内容になるとは限らない──この課題に向き合いながら、全プレイヤーの視点を広げるための取り組みを続けています。
 
@@ -60,7 +60,7 @@ Overwatch 2の開発チームが重視しているのは、**プレイヤーへ�
 
 ### 「Hero Stats」サイト（近日公開）
 
-![blog placeholder](/pcgame/overwatch2/directer/herostatic.png)
+![「Hero Stats」サイト（近日公開）の画像](/pcgame/overwatch2/directer/herostatic.png)
 
 Battle.netチームとの共同開発により、**多くのプレイヤーが求めていた詳細データにアクセス可能**な新サイトが登場します。
 

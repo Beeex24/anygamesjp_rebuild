@@ -8,7 +8,7 @@ category: 'grandtheftautovi'
 
 # 【2025年最新】GTA 6完全ガイド｜発売日・キャラクター・舞台レオニダ州の全情報
 
-![blog placeholder](/pcgame/gtavi/Leonida.png)
+![GTA 6完全ガイド｜発売日・キャラクター・舞台レオニダ州の全情報の画像](/pcgame/gtavi/Leonida.png)
 
 ## 🚨 重要なお知らせ：GTA 6発売日が2026年5月26日に延期決定！
 
@@ -37,7 +37,7 @@ Rockstarは声明で「期待していたより遅くなってしまい、大変
 
 ## 👥 主人公とキャラクター詳細
 
-![blog placeholder](/pcgame/gtavi/Jason.png)
+![主人公とキャラクター詳細の画像](/pcgame/gtavi/Jason.png)
 
 ### ジェイソン・デュヴァル（Jason Duval）
 元軍人で、問題の多い10代を過ごした後、軍隊に入隊して人生をやり直そうとしましたが、結局フロリダキーズで地元の麻薬密売人のために働くことになってしまいました。
@@ -49,7 +49,7 @@ Rockstarは声明で「期待していたより遅くなってしまい、大変
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Lucia.png)
+![ジェイソン・デュヴァル（Jason Duval）の画像](/pcgame/gtavi/Lucia.png)
 
 ### ルシア・カミノス（Lucia Caminos）
 父親から歩けるようになったらすぐに戦い方を教わり、人生は常に困難との戦いでした。家族のために戦ったことでレオニダ刑務所に収監されましたが、幸運にも釈放されました。
@@ -61,7 +61,7 @@ Rockstarは声明で「期待していたより遅くなってしまい、大変
 
 ### 新キャラクター紹介
 
-![blog placeholder](/pcgame/gtavi/Cal.png)
+![新キャラクター紹介の画像](/pcgame/gtavi/Cal.png)
 
 **カル・ハンプトン（Cal Hampton）**
 - ジェイソンの友人で共犯者
@@ -69,21 +69,21 @@ Rockstarは声明で「期待していたより遅くなってしまい、大変
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Boobie.png)
+![新キャラクター紹介の画像(2)](/pcgame/gtavi/Boobie.png)
 
 **ブービー・アイク（Boobie Ike）**
 - Vice Cityの伝説的人物
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/DreQuan.png)
+![新キャラクター紹介の画像(3)](/pcgame/gtavi/DreQuan.png)
 
 **ドレクアン・プリースト（Dre'Quan Priest）**
 - 音楽業界の大物を目指す人物
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Real.png)
+![新キャラクター紹介の画像(4)](/pcgame/gtavi/Real.png)
 
 **リアル・ダイムズ（Real Dimez）**
 - 音楽デュオで「執拗なソーシャルメディアでの存在感」を持つ
@@ -95,7 +95,7 @@ GTA 6の舞台は、フロリダをモデルにした架空の州「レオニダ
 
 ### 確認されている主要エリア
 
-![blog placeholder](/pcgame/gtavi/Vice.png)
+![確認されている主要エリアの画像](/pcgame/gtavi/Vice.png)
 
 #### 🏙️ Vice City（バイスシティ）
 「アメリカの魅力、活気、貪欲さを一つの都市に凝縮した場所」として紹介されています。
@@ -108,35 +108,35 @@ GTA 6の舞台は、フロリダをモデルにした架空の州「レオニダ
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Leonidatwo.png)
+![Vice City（バイスシティ）の画像](/pcgame/gtavi/Leonidatwo.png)
 
 #### 🏝️ レオニダキーズ（Leonida Keys）
 フロリダキーズをモデルにした熱帯の群島で、「楽園への入り口」と表現され、「ドレスコードはカジュアル」な雰囲気が特徴です。
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Grassrivers.png)
+![レオニダキーズ（Leonida Keys）の画像](/pcgame/gtavi/Grassrivers.png)
 
 #### 🐊 グラスリバーズ（Grassrivers）
 フロリダエバーグレーズをモデルにした湿地帯で、「文字通りも比喩的にも、濁った水と絡み合ったマングローブの中に死体を隠している」危険なエリアです。
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Ambrosia.png)
+![グラスリバーズ（Grassrivers）の画像](/pcgame/gtavi/Ambrosia.png)
 
 #### 🏭 アンブロシア（Ambrosia）
 連合クリスタル製糖工場のおかげで産業の中心地となっているエリア。地元のバイカーギャングも活動しています。
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Mount.png)
+![アンブロシア（Ambrosia）の画像](/pcgame/gtavi/Mount.png)
 
 #### ⛰️ マウント・カラガ国立公園（Mount Kalaga National Park）
 レオニダ州の北端に位置し、「主要な狩猟、釣り、オフロードトレイル」を提供する山岳地帯です。
 
 &nbsp;  
 
-![blog placeholder](/pcgame/gtavi/Port.png)
+![マウント・カラガ国立公園（Mount Kalaga National Park）の画像](/pcgame/gtavi/Port.png)
 
 #### 🏚️ ポート・ゲルホーン（Port Gellhorn）
 かつて賑わっていたバケーションスポットが今では荒廃した、典型的なGTAらしいワイルドで混沌とした場所です。

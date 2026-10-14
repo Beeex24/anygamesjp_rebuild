@@ -17,7 +17,7 @@ category: 'others'
 
 ### 🔥 目玉商品：TUF Gaming F15 RTX 4060搭載モデル
 
-![blog placeholder](/devicese/primeday/salepc.png)
+![目玉商品：TUF Gaming F15 RTX 4060搭載モデルの画像](/devicese/primeday/salepc.png)
 
 #### Amazon限定モデル FX507VV シリーズ
 

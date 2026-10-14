@@ -13,7 +13,7 @@ category: 'apexlegends'
 
 ## シーズン26「ショーダウン」開始日時・基本情報
 
-![blog placeholder](/pcgame/apex/showdown/place1.png)
+![シーズン26「ショーダウン」開始日時・基本情報の画像](/pcgame/apex/showdown/place1.png)
 
 ### 📅 開始日時
 - **開始日：2025年8月5日**
@@ -38,7 +38,7 @@ category: 'apexlegends'
 
 ## 🔫 バリスティックの武器庫から復活武器
 
-![blog placeholder](/pcgame/apex/showdown/place2.png)
+![バリスティックの武器庫から復活武器の画像](/pcgame/apex/showdown/place2.png)
 
 ### スマートピストル「ウィスラー」復活！
 バリスティックの個人用武器庫から再活性化された武器がローテーションに加わります。その武器とは、ファンに愛された **スマートピストル「ウィスラー」** です。
@@ -63,7 +63,7 @@ category: 'apexlegends'
 
 ## 🎨 バトルパス「スプリット1」
 
-![blog placeholder](/pcgame/apex/showdown/battlepass.png)
+![バトルパス「スプリット1」の画像](/pcgame/apex/showdown/battlepass.png)
 
 シーズン26では新たなバトルパスも登場します。
 

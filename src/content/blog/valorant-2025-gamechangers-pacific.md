@@ -13,7 +13,7 @@ category: 'valorant'
 
 ### 出場チーム一覧
 
-![blog placeholder](/pcgame/valorant/vct/vgcp/pacific1.png)
+![出場チーム一覧の画像](/pcgame/valorant/vct/vgcp/pacific1.png)
 
 Game Changers Pacific 2025には、アジア太平洋地域から選び抜かれた8つの強豪チームが参戦します。
 

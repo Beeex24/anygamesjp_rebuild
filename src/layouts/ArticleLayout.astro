@@ -1,0 +1,122 @@
+---
+import { render, getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ArticleList from '../components/ArticleList.astro';
+import AdSlot from '../components/AdSlot.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import AffiliateGrid from '../components/AffiliateGrid.astro';
+import ArticleNotices from '../components/ArticleNotices.astro';
+import { SECTIONS, SECTION_COLORS, sectionLabel, formatDate, getAllPosts, type Post } from '../lib/site';
+import { relatedPosts } from '../lib/related';
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage } = post.data;
+const section = SECTIONS.find((s) => s.key === post.collection)!;
+
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+// 関連記事: タイトルの共通ワードが多い順(足りなければ同ジャンルの新着)
+const related = relatedPosts(post, await getAllPosts(), 6);
+
+const crumbs = [
+  { name: 'ホーム', href: '/' },
+  { name: section.label, href: section.path },
+  { name: title, href: `/${post.collection}/${post.id}/` },
+];
+---
+<BaseLayout title={title} description={description} image={heroImage} ogType="article"
+  pubDate={pubDate} updatedDate={updatedDate} breadcrumbs={crumbs}>
+  <AdSenseScript slot="head" />
+  <div class="container">
+    <Breadcrumb items={crumbs.map((c, i) => (i === crumbs.length - 1 ? { name: c.name } : c))} />
+    <article class="article">
+      {heroImage && <img class="hero" src={heroImage} alt={title} width="1200" height="630" loading="eager" fetchpriority="high" decoding="async" />}
+      <header class="head" style={`--c:${SECTION_COLORS[post.collection] ?? 'var(--accent)'}`}>
+        <p class="meta">
+          <a class="tag" href={section.path}>{sectionLabel(post.collection)}</a>
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+          {updatedDate && <time datetime={updatedDate.toISOString()}>更新: {formatDate(updatedDate)}</time>}
+        </p>
+        <h1>{title}</h1>
+      </header>
+
+      <ArticleNotices post={post} />
+
+      <AdSlot slot="postBottom" />
+
+      {toc.length >= 3 && (
+        <details class="toc" open>
+          <summary>目次</summary>
+          <ol>
+            {toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+          </ol>
+        </details>
+      )}
+
+      <div class="body prose-body"><Content /></div>
+
+    </article>
+
+    <AdSlot slot="postBottom" />
+
+    <section class="block">
+      <h2>おすすめのデバイス</h2>
+      <AffiliateGrid />
+    </section>
+
+    {related.length > 0 && (
+      <section class="block">
+        <h2>関連記事</h2>
+        <ArticleList posts={related} />
+      </section>
+    )}
+
+    <aside class="support">
+      <p>当サイトは個人で運営しています。記事が役に立ったら <a href="https://coff.ee/anygamesjp" target="_blank" rel="noopener noreferrer">コーヒーで応援</a> していただけると励みになります。広告掲載などのご相談は <a href="/about/">お問い合わせ</a> からどうぞ。</p>
+    </aside>
+  </div>
+</BaseLayout>
+<style>
+  .article { max-width: 820px; margin: 0 auto; padding-bottom: 8px; }
+  .hero { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: var(--card-radius) var(--card-radius) 0 0; background: var(--bg-soft); margin-top: 12px; }
+  .head { padding: 18px 20px 20px; background: var(--grad); border-top: 4px solid var(--c); color: #fff; border-radius: 0 0 var(--card-radius) var(--card-radius); margin-bottom: 20px; }
+  .article > .head:first-child { border-radius: var(--card-radius); margin-top: 12px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin: 0 0 10px; font-size: .8rem; }
+  .meta time { background: rgba(255, 255, 255, .22); padding: 2px 10px; border-radius: 2px; }
+  .tag { background: #fff; color: var(--c); padding: 2px 10px; border-radius: 2px; font-weight: 700; text-decoration: none; }
+  h1 { font-size: clamp(1.35rem, 4.5vw, 1.9rem); line-height: 1.45; margin: 0; text-wrap: balance; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+  .toc { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; margin: 16px 0 24px; background: var(--bg-soft); }
+  .toc summary { font-weight: 700; cursor: pointer; }
+  .toc ol { margin: 10px 0 0; padding-left: 1.2em; font-size: .9rem; display: grid; gap: 4px; }
+  .toc .d3 { margin-left: 1em; list-style: circle; font-size: .85rem; }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .block { margin: 40px 0 0; }
+  .block h2 { font-size: 1.25rem; margin: 0 0 16px; }
+  .support { max-width: var(--prose); margin: 40px auto 24px; padding: 14px 16px; border-radius: var(--radius); background: var(--bg-soft); font-size: .85rem; color: var(--text-sub); }
+  .support p { margin: 0; }
+
+  /* 記事本文（Markdown由来）。本文HTMLにはこのコンポーネントのscopeが付かないので :global を使う */
+  .body { font-size: 1.0625rem; line-height: 1.95; overflow-wrap: anywhere; }
+  .body :global(h2) { font-size: 1.4rem; line-height: 1.5; margin: 2.6em 0 .9em; padding: 0 0 .4em; border-bottom: 2px solid var(--accent); scroll-margin-top: 72px; }
+  .body :global(h3) { font-size: 1.15rem; line-height: 1.5; margin: 2em 0 .7em; padding-left: .7em; border-left: 4px solid var(--accent); scroll-margin-top: 72px; }
+  .body :global(h4) { font-size: 1.05rem; margin: 1.6em 0 .5em; }
+  .body :global(p) { margin: 0 0 1.4em; }
+  .body :global(ul), .body :global(ol) { margin: 0 0 1.4em; padding-left: 1.5em; }
+  .body :global(li) { margin-bottom: .4em; }
+  .body :global(a) { color: var(--accent); text-underline-offset: 3px; }
+  .body :global(img), .body :global(video) { max-width: 100%; height: auto; border-radius: 6px; }
+  .body :global(iframe) { max-width: 100%; }
+  .body :global(blockquote) { margin: 0 0 1.4em; padding: .8em 1.1em; border-left: 4px solid var(--line); background: var(--bg-soft); color: var(--text-sub); }
+  .body :global(blockquote p:last-child) { margin-bottom: 0; }
+  .body :global(code) { background: var(--bg-soft); padding: .1em .4em; border-radius: 4px; font-size: .9em; }
+  .body :global(pre) { overflow-x: auto; padding: 14px 16px; border-radius: var(--radius); background: #14161c; color: #e8eaf0; line-height: 1.6; margin: 0 0 1.4em; }
+  .body :global(pre code) { background: none; padding: 0; color: inherit; }
+  .body :global(table) { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.4em; font-size: .95rem; }
+  .body :global(th), .body :global(td) { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+  .body :global(th) { background: var(--bg-soft); white-space: nowrap; }
+  .body :global(hr) { border: 0; border-top: 1px solid var(--line); margin: 2.4em 0; }
+</style>

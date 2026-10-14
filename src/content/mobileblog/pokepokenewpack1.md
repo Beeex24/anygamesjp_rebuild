@@ -12,7 +12,7 @@ category: 'pokepoke'
 
 ## 🔥 新パック「空と海の導き」の基本情報
 
-![blog placeholder](/mobilegame/pokepoke/0728/pokepokeas.png)
+![新パック「空と海の導き」の基本情報の画像](/mobilegame/pokepoke/0728/pokepokeas.png)
 
 ### 配信日時・パック種類
 - **配信開始**: 2025年7月30日（水）15:00
@@ -24,7 +24,7 @@ category: 'pokepoke'
 
 ## ⭐ 注目の新カード紹介
 
-![blog placeholder](/mobilegame/pokepoke/0728/other.png)
+![⭐ 注目の新カード紹介の画像](/mobilegame/pokepoke/0728/other.png)
 
 ### ホウオウex
 ホウオウはHP150、3エネで80ダメージに加えて炎と水と雷エネルギーを1個ずつベンチのたねポケモンに好きなように配置できる強力な特性を持っています。

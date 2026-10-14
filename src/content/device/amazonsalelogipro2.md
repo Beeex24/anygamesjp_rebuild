@@ -15,7 +15,7 @@ category: 'sale'
 
 Amazonで現在開催中のタイムセールで、プロゲーマーから絶大な支持を受けているLogicool G PRO X SUPERLIGHT 2が特別価格で購入できます。通常価格¥24,500から14%OFFの¥20,980（税込）という見逃せない価格になっています。
 
-![blog placeholder](/devicese/amazonsale/logipro2.png)
+![Logicool G PRO X SUPERLIGHT 2が14%OFF！プロゲの画像](/devicese/amazonsale/logipro2.png)
 
 <div class="purchase-links">
   <a href="https://amzn.to/472I4hg" target="_blank" class="purchase-btn amazon-btn" rel="noopener noreferrer">

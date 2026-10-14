@@ -17,7 +17,7 @@ category: 'monsuto'
 
 ### 光を描きし大魔法少女 レンブラント
 
-![blog placeholder](/mobilegame/monsuto/update/jushin/laydel/laydel1.png)
+![光を描きし大魔法少女 レンブラントの画像](/mobilegame/monsuto/update/jushin/laydel/laydel1.png)
 
 - **属性**: 光属性 ★6
 - **種族**: 魔法少女
@@ -29,7 +29,7 @@ category: 'monsuto'
 
 #### 祭りを堪能せし大魔法少女 レンブラント
 
-![blog placeholder](/mobilegame/monsuto/update/jushin/laydel/laydel2.png)
+![祭りを堪能せし大魔法少女 レンブラントの画像](/mobilegame/monsuto/update/jushin/laydel/laydel2.png)
 
 - **属性**: 光属性 ★6
 - **ステータス**: 「光を描きし大魔法少女 レンブラント」と同じ
@@ -52,7 +52,7 @@ category: 'monsuto'
 
 ### 想いを纏いし決戦の聖雷勇者 レイデル
 
-![blog placeholder](/mobilegame/monsuto/update/jushin/laydel/laydel3.png)
+![想いを纏いし決戦の聖雷勇者 レイデルの画像](/mobilegame/monsuto/update/jushin/laydel/laydel3.png)
 
 - **属性**: 闇属性 ★6
 - **種族**: 聖雷勇者

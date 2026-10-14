@@ -9,7 +9,7 @@ category: 'sale'
 
 ## 【緊急告知】Rustが50%OFFの大幅値下げ中！
 
-![blog placeholder](/pcgame/steam/sale/rust/saleplice.png)
+![【緊急告知】Rustが50%OFFの大幅値下げ中！の画像](/pcgame/steam/sale/rust/saleplice.png)
 
 話題のサバイバルゲーム『Rust』がSteamで50%OFFのセール価格で販売されています。通常価格4,600円が**たったの2,300円**で購入可能な今こそ、このゲームを始める絶好のチャンスです！
 
@@ -21,7 +21,7 @@ category: 'sale'
 
 ## Rustってどんなゲーム？初心者にもわかりやすく解説
 
-![blog placeholder](/pcgame/steam/sale/rust/rust1.png)
+![Rustってどんなゲーム？初心者にもわかりやすく解説の画像](/pcgame/steam/sale/rust/rust1.png)
 
 ### 基本的なゲーム概要
 

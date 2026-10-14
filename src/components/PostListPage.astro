@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import ArticleList from './ArticleList.astro';
+import Pagination from './Pagination.astro';
+import AdSlot from './AdSlot.astro';
+import AdSenseScript from './AdSenseScript.astro';
+import { GAME_FILTERS, gameKey, type ListPageProps } from '../lib/list';
+import { GAME_HUBS, hubUrl } from '../lib/games';
+import { SECTION_COLORS, postUrl, formatDate } from '../lib/site';
+
+interface Props extends ListPageProps {
+  heading: string;
+  lead: string;
+  /** ページ1のURL（例: /blog/） */
+  basePath: string;
+  /** N ページ目のURL */
+  pageHref: (page: number) => string;
+  breadcrumb: { name: string; href?: string }[];
+  /** 現在ページ内の記事をゲーム名で絞り込むチップを表示 */
+  gameFilter?: boolean;
+  /** ゲーム別まとめページへの入口を上部に表示 */
+  showHubs?: boolean;
+}
+const { posts, currentPage, totalPages, totalPosts, heading, lead, pageHref, breadcrumb, gameFilter = false, showHubs = false } = Astro.props;
+const title = currentPage > 1 ? `${heading}（${currentPage}ページ目）` : heading;
+const present = new Set(posts.map((p) => gameKey(p.data.title)));
+const chips = GAME_FILTERS.filter((f) => present.has(f.key));
+const showChips = gameFilter && chips.length > 1;
+const color = SECTION_COLORS[posts[0]?.collection ?? ''] ?? 'var(--accent)';
+// 1ページ目だけ、最新の1件を大きく見せる
+const featured = currentPage === 1 ? posts[0] : undefined;
+const listed = featured ? posts.slice(1) : posts;
+const first = listed.slice(0, 6);
+const rest = listed.slice(6);
+---
+<BaseLayout
+  title={title}
+  description={lead}
+  breadcrumbs={breadcrumb.map((b) => ({ name: b.name, href: b.href ?? pageHref(currentPage) }))}
+>
+  <AdSenseScript slot="head" />
+  <div class="container" style={`--c:${color}`}>
+    <Breadcrumb items={breadcrumb} />
+    <header class="head">
+      <h1>{heading}</h1>
+      <p>{lead}</p>
+      <span class="count">全{totalPosts}記事</span>
+    </header>
+    {showHubs && (
+      <nav class="hubs" aria-label="ゲーム別まとめ">
+        <span class="hubs-t">ゲーム別まとめ</span>
+        {GAME_HUBS.map((h) => <a class="hub" href={hubUrl(h)}>{h.name}</a>)}
+      </nav>
+    )}
+    {featured && (
+      <a class="feature" href={postUrl(featured)} data-key={gameKey(featured.data.title)}>
+        <span class="fimg">
+          {featured.data.heroImage && <img src={featured.data.heroImage} alt="" width="800" height="450" loading="eager" fetchpriority="high" decoding="async" />}
+          <span class="flabel">最新記事</span>
+        </span>
+        <span class="ftext">
+          <time datetime={featured.data.pubDate.toISOString()}>{formatDate(featured.data.pubDate)}</time>
+          <strong>{featured.data.title}</strong>
+          <span class="fdesc">{featured.data.description}</span>
+          <span class="fmore">この記事を読む ›</span>
+        </span>
+      </a>
+    )}
+    {showChips && (
+      <div class="chips" role="group" aria-label="ゲームで絞り込む">
+        <button type="button" class="chip on" data-filter="all" aria-pressed="true">すべて</button>
+        {chips.map((c) => <button type="button" class="chip" data-filter={c.key} aria-pressed="false">{c.label}</button>)}
+      </div>
+    )}
+    <div id="list" data-filterable={showChips ? '' : undefined}>
+      <ArticleList posts={first} />
+      {rest.length > 0 && <div class="ad"><AdSlot slot="listFeed" /></div>}
+      {rest.length > 0 && <ArticleList posts={rest} />}
+    </div>
+    <p id="empty" class="empty" hidden>該当する記事がありません。</p>
+    <Pagination current={currentPage} total={totalPages} href={pageHref} />
+  </div>
+  {showChips && (
+    <script is:inline define:vars={{ keys: listed.map((p) => gameKey(p.data.title)) }}>
+      (function () {
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#list li'));
+        var chips = document.querySelectorAll('.chip');
+        var empty = document.getElementById('empty');
+        var feat = document.querySelector('.feature');
+        chips.forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var f = chip.getAttribute('data-filter');
+            chips.forEach(function (c) {
+              var on = c === chip;
+              c.classList.toggle('on', on);
+              c.setAttribute('aria-pressed', String(on));
+            });
+            var shown = 0;
+            if (feat) {
+              var fok = f === 'all' || feat.getAttribute('data-key') === f;
+              feat.hidden = !fok;
+              if (fok) shown++;
+            }
+            cards.forEach(function (li, i) {
+              var ok = f === 'all' || keys[i] === f;
+              li.hidden = !ok;
+              if (ok) shown++;
+            });
+            empty.hidden = shown > 0;
+          });
+        });
+      })();
+    </script>
+  )}
+</BaseLayout>
+<style>
+  .head { margin: 8px 0 18px; padding: 4px 0 4px 14px; border-left: 8px solid var(--c); }
+  h1 { font-size: clamp(1.4rem, 4vw, 1.8rem); margin: 0 0 4px; letter-spacing: .03em; font-weight: 800; }
+  .head p { margin: 0 0 4px; color: var(--text-sub); font-size: .9rem; }
+  .count { display: inline-block; color: var(--c); font-size: .8rem; font-weight: 800; }
+  .feature { display: grid; grid-template-columns: 1fr; margin-bottom: 20px; border-radius: var(--card-radius); overflow: hidden; background: var(--bg); border: 1px solid var(--line); border-top: 4px solid var(--c); color: inherit; text-decoration: none; }
+  .feature[hidden] { display: none; }
+  .fimg { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--bg-soft); overflow: hidden; }
+  .fimg img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
+  .feature:hover .fimg img { transform: scale(1.04); }
+  .flabel { position: absolute; left: 12px; top: 12px; background: #ff3d57; color: #fff; font-size: .78rem; font-weight: 800; padding: 2px 10px; border-radius: 2px; }
+  .ftext { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+  .ftext time { font-size: .8rem; color: var(--text-sub); }
+  .ftext strong { font-size: 1.2rem; line-height: 1.5; }
+  .feature:hover strong { color: var(--c); }
+  .fdesc { font-size: .9rem; color: var(--text-sub); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .fmore { align-self: flex-start; margin-top: auto; padding: 8px 20px; border-radius: 3px; background: var(--c); color: #fff; font-weight: 700; font-size: .85rem; }
+  @media (min-width: 760px) {
+    .feature { grid-template-columns: 1.15fr 1fr; }
+    .fimg { aspect-ratio: auto; min-height: 280px; }
+    .ftext { padding: 24px 28px; justify-content: center; }
+    .ftext strong { font-size: 1.4rem; }
+  }
+  .hubs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .hubs-t { font-size: .85rem; font-weight: 800; color: var(--text-sub); margin-right: 4px; }
+  .hub { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1.5px solid var(--c); border-radius: 3px; background: var(--c); color: #fff; font-size: .9rem; font-weight: 700; text-decoration: none; }
+  .hub:hover { filter: brightness(1.1); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .chip { border: 1.5px solid var(--c); background: var(--bg); color: var(--c); border-radius: 3px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+  .chip.on { background: var(--c); color: #fff; }
+  .ad { margin: 20px 0; }
+  .empty { text-align: center; color: var(--text-sub); padding: 32px 0; }
+  #list :global(li[hidden]) { display: none; }
+</style>

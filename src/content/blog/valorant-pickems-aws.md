@@ -9,7 +9,7 @@ category: 'valorant'
 
 ## VALORANT Champions Paris Pick'Emsが復活！新要素ファクション戦で更なる興奮を
 
-![blog placeholder](/pcgame/valorant/event/pickems/pickems.png)
+![VALORANT Champions Paris Pick'Emsが復活！新要素の画像](/pcgame/valorant/event/pickems/pickems.png)
 
 VALORANTの世界最高峰の大会「Champions Paris 2024」で、ファンが試合結果を予想して楽しめるPick'Emsが復活します。今回はAWSによってパワーアップし、新要素の「ファクション戦」が導入されるなど、これまで以上に盛り上がること間違いなしです。
 
@@ -79,7 +79,7 @@ Champions Paris Pick'Emsの最大の目玉が、新導入されるファクシ�
 
 ## 豪華な報酬ラインナップ
 
-![blog placeholder](/pcgame/valorant/event/pickems/pickems1.png)
+![豪華な報酬ラインナップの画像](/pcgame/valorant/event/pickems/pickems1.png)
 
 Pick'Emsでは、参加度合いと成績に応じて様々な報酬が用意されています。
 

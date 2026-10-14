@@ -9,7 +9,7 @@ category: 'overwatch2'
 
 ## オーバーウォッチ2とナーフの夢のコラボが実現
 
-![blog placeholder](/pcgame/overwatch2/nerf/ownerf1.png)
+![オーバーウォッチ2とナーフの夢のコラボが実現の画像](/pcgame/overwatch2/nerf/ownerf1.png)
 
 **シューティング玩具の代名詞「ナーフ」とオーバーウォッチ2がついにコラボ！**
 
@@ -19,7 +19,7 @@ category: 'overwatch2'
 
 ### キャスディ用レジェンダリースキン「やっぱりナーフだろ」
 
-![blog placeholder](/pcgame/overwatch2/nerf/ownerf2.png)
+![キャスディ用レジェンダリースキン「やっぱりナーフだろ」の画像](/pcgame/overwatch2/nerf/ownerf2.png)
 
 今回のコラボの目玉となるのが、**キャスディ専用のレジェンダリースキン「やっぱりナーフだろ」**です。
 
@@ -48,7 +48,7 @@ category: 'overwatch2'
 
 ## 新ゲームモード「やっぱナーフでしょ」詳細
 
-![blog placeholder](/pcgame/overwatch2/nerf/ownerf3.png)
+![新ゲームモード「やっぱナーフでしょ」詳細の画像](/pcgame/overwatch2/nerf/ownerf3.png)
 
 ### ゲームルール概要
 

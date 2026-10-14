@@ -1,68 +1,34 @@
-# Astro Starter Kit: Blog
+# ANYGAMES (anygamesjp.com)
 
-```sh
-npm create astro@latest -- --template blog
+ゲーム・ガジェットの情報メディア + ブラウザで使える無料Webツール。Astro 5 の静的サイトです。
+
+## コマンド
+
+| コマンド | 内容 |
+| --- | --- |
+| `npm ci` | 依存パッケージのインストール(ロックファイルどおり) |
+| `npm run dev` | 開発サーバー(http://localhost:4321) |
+| `npm run build` | `dist/` に本番ファイルを生成 |
+| `npm run preview` | ビルド結果のプレビュー |
+| `npx astro check` | 型チェック(エラー0を維持) |
+
+## 構成
+
+```
+src/content/      記事(blog / mobileblog / device / minecraft_blog / minecraft_mod_blog)
+src/pages/        ルーティング(記事URLは /<ジャンル>/<ファイル名>/ を維持)
+src/layouts/      BaseLayout / ArticleLayout / ModArticleLayout / ToolLayout
+src/components/   共通部品(ヘッダー・フッター・記事カード・一覧ページなど)
+src/lib/image/    画像ツールの処理(WASMコーデック・Web Worker)
+src/lib/tools.ts  ツール一覧(追加するときはここ)
+src/styles/       デザイントークン(tokens.css)・MODページ用テーマ(mc.css)
+public/           画像・.htaccess・robots.txt など(そのまま配信)
+scripts/          OGP画像の生成スクリプト
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 運用メモ
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- 公開手順は [DEPLOY.md](./DEPLOY.md)
+- お問い合わせフォームは `.env`(`.env.example` を参照)が必要
+- Astro は 5 系で固定。`npm audit fix --force` は実行しない
+- トップの目玉記事は frontmatter の `pickup: 1〜3` で指定

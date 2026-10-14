@@ -9,7 +9,7 @@ category: 'valorant'
 
 ## パッチ11.04の主な変更点まとめ
 
-![blog placeholder](/pcgame/valorant/patch/1104/patch1.png)
+![パッチ11.04の主な変更点まとめの画像](/pcgame/valorant/patch/1104/patch1.png)
 
 VALORANTの最新パッチ11.04が実装され、多くの重要な変更が行われました。今回のアップデートでは、**アビスのマッププール復活**、**チェンバーとセージの調整**、そして待望の**フィリピンサーバー開設**など、プレイヤーにとって大きな影響を与える変更が含まれています。
 
@@ -22,7 +22,7 @@ VALORANTの最新パッチ11.04が実装され、多くの重要な変更が行�
 - コンペティティブとデスマッチのキューに復活
 - プレイヤーからのフィードバックを受けて再実装
 
-![blog placeholder](/pcgame/valorant/abiss/abiss.png)
+![マップ変更：アビス復活・アイスボックス除外の画像](/pcgame/valorant/abiss/abiss.png)
 
 **アイスボックス**
 
@@ -35,7 +35,7 @@ VALORANTの最新パッチ11.04が実装され、多くの重要な変更が行�
 
 ### チェンバー（Chamber）の強化
 
-![blog placeholder](/pcgame/valorant/chara/chanber.png)
+![チェンバー（Chamber）の強化の画像](/pcgame/valorant/chara/chanber.png)
 
 **トレードマーク**に重要な変更が加えられました
 
@@ -47,7 +47,7 @@ VALORANTの最新パッチ11.04が実装され、多くの重要な変更が行�
 
 ### セージ（Sage）の調整
 
-![blog placeholder](/pcgame/valorant/chara/sage.png)
+![セージ（Sage）の調整の画像](/pcgame/valorant/chara/sage.png)
 
 **コントローラー寄りのセンチネル**としての特徴を強化
 
@@ -63,7 +63,7 @@ VALORANTの最新パッチ11.04が実装され、多くの重要な変更が行�
 
 ### ソーヴァ（Sova）の調整
 
-![blog placeholder](/pcgame/valorant/chara/sova.png)
+![ソーヴァ（Sova）の調整の画像](/pcgame/valorant/chara/sova.png)
 
 **ハンターズフューリー**のビジュアルエフェクトを最適化
 - エフェクトの収束速度を向上

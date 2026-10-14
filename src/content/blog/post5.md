@@ -9,7 +9,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ## シーズン17の主要アップデート概要
 
-![blog placeholder](/pcgame/overwatch2/over5.png)
+![シーズン17の主要アップデート概要の画像](/pcgame/overwatch2/over5.png)
 
 シーズン17では以下の大型アップデートが実装されています：
 
@@ -24,7 +24,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ## 革新的な「マップ投票」システム詳細
 
-![blog placeholder](/pcgame/overwatch2/over6.png)
+![革新的な「マップ投票」システム詳細の画像](/pcgame/overwatch2/over6.png)
 
 ### マップ投票の仕組み
 
@@ -60,7 +60,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ### 新マップ2種追加
 
-![blog placeholder](/pcgame/overwatch2/over7.png)
+![新マップ2種追加の画像](/pcgame/overwatch2/over7.png)
 
 **ESPERANCA**
 - スタジアム独自のプッシュルール適用
@@ -128,7 +128,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ### D.Va用ミシック・スキン「ホランイ」
 
-![blog placeholder](/pcgame/overwatch2/over8.png)
+![D.Va用ミシック・スキン「ホランイ」の画像](/pcgame/overwatch2/over8.png)
 
 韓国の伝承に登場するアムールトラの精霊をモチーフとした美しいスキンです。
 
@@ -140,7 +140,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ### リーパー用ミシック武器スキン「スティール・デス」
 
-![blog placeholder](/pcgame/overwatch2/over9.png)
+![リーパー用ミシック武器スキン「スティール・デス」の画像](/pcgame/overwatch2/over9.png)
 
 死神の鎌を彷彿とさせる恐ろしい武器スキンです。
 
@@ -155,7 +155,7 @@ heroImage: '/pcgame/overwatch2/overfor.png'
 
 ## バトルパス報酬一覧
 
-![blog placeholder](/pcgame/overwatch2/over11.png)
+![バトルパス報酬一覧の画像](/pcgame/overwatch2/over11.png)
 
 ### プレミアム報酬ハイライト
 

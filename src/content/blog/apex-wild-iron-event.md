@@ -9,7 +9,7 @@ category: 'apexlegends'
 
 ## ワイルドアイアンイベント開催中！爆発的な戦場で新たな戦略が誕生
 
-![blog placeholder](/pcgame/apex/event/wildiron/wild1.png)
+![ワイルドアイアンイベント開催中！爆発的な戦場で新たな戦略が誕生の画像](/pcgame/apex/event/wildiron/wild1.png)
 
 **2025年9月16日から9月30日**まで開催される「ワイルドアイアンイベント」が遂にスタート！このイベントでは、サイバネティック技術 vs 自然の力をテーマとした新コンテンツが登場し、従来のApexとは一味違う爆発的なバトルが楽しめます。
 
@@ -22,7 +22,7 @@ category: 'apexlegends'
 
 ## ミシックフラットライン：爆発的威力の新武器
 
-![blog placeholder](/pcgame/apex/event/wildiron/flatline1.png)
+![ミシックフラットライン：爆発的威力の新武器の画像](/pcgame/apex/event/wildiron/flatline1.png)
 
 ### 基本性能と特殊能力
 
@@ -81,7 +81,7 @@ category: 'apexlegends'
 
 ### マッドマギーの強化
 
-![blog placeholder](/pcgame/apex/event/wildiron/maggie.png)
+![マッドマギーの強化の画像](/pcgame/apex/event/wildiron/maggie.png)
 
 **主な強化点：**
 - **レッキングボール**の威力大幅増加
@@ -117,7 +117,7 @@ category: 'apexlegends'
 
 ### イベントパックシステム
 
-![blog placeholder](/pcgame/apex/event/wildiron/event.png)
+![イベントパックシステムの画像](/pcgame/apex/event/wildiron/event.png)
 
 **パック内容：**
 - イベントアイテム1種（確定）

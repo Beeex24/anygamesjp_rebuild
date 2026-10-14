@@ -8,7 +8,7 @@ category: 'SALE'
 
 ## 🎯 Sons of the Forest 史上最安値セール開催中！
 
-![blog placeholder](/pcgame/sale/forest2.png)
+![Sons of the Forest 史上最安値セール開催中！の画像](/pcgame/sale/forest2.png)
 
 **The Forest**の開発チームEndnight Gamesが手がける最新作「**Sons of the Forest**」が、Steamで史上最安値の66%OFFセールを実施中です！
 
@@ -22,7 +22,7 @@ category: 'SALE'
 
 ## 🌲 Sons of the Forest とは？
 
-![blog placeholder](/pcgame/sale/forest3.png)
+![Sons of the Forest とは？の画像](/pcgame/sale/forest3.png)
 
 Sons of the Forestは、行方不明の億万長者を探すため孤島に送られたプレイヤーが、人食い族の住む地獄のような環境でサバイバルを繰り広げるオープンワールド・サバイバルホラーゲームです。
 

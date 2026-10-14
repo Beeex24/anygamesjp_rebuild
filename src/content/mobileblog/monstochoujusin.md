@@ -22,7 +22,7 @@ category: 'monsuto'
 
 ## 🎯 超・獣神くじの参加方法
 
-![blog placeholder](/mobilegame/monsuto/0728/dFJgyYzq20250724a.png)
+![超・獣神くじの参加方法の画像](/mobilegame/monsuto/0728/dFJgyYzq20250724a.png)
 
 ### ステップ1：くじに応募
 -  ホーム画面のアイコンをタップ
@@ -44,13 +44,13 @@ category: 'monsuto'
 - 選択した★5以上キャラクター1体が**必ず排出**
 - **限定キャラクターも選択可能**
 
-![blog placeholder](/mobilegame/monsuto/0728/mybestgacha.png)
+![1等（10名様）の画像](/mobilegame/monsuto/0728/mybestgacha.png)
 
 ### 2等（50名様）
 **マイベストテンガチャ×1**
 - 選択した★5以上キャラクター10体の中から**必ず1体排出**
 
-![blog placeholder](/mobilegame/monsuto/0728/mybestgachaten.png)
+![2等（50名様）の画像](/mobilegame/monsuto/0728/mybestgachaten.png)
 
 ### 3等（1,000名様）
 **限定も排出！初獲得★6確定ガチャ玉×1**
@@ -58,14 +58,14 @@ category: 'monsuto'
 - **限定キャラクターも対象**
 - 特級以上のわくわくの実2つ付き
 
-![blog placeholder](/mobilegame/monsuto/0728/hatsukakugacha.png)
+![3等（1,000名様）の画像](/mobilegame/monsuto/0728/hatsukakugacha.png)
 
 ### 4等（10,000名様）
 **初獲得★6確定ガチャ玉×1**
 - ★6の初獲得キャラが獣神化または獣神化・改で排出
 - LV極＆＋値MAX、特級以上わくわくの実2つ付き
 
-![blog placeholder](/mobilegame/monsuto/0728/hatsugacha2.png)
+![4等（10,000名様）の画像](/mobilegame/monsuto/0728/hatsugacha2.png)
 
 ### 5等（100,000名様）
 **解放の書詰め合わせ×1**
@@ -79,7 +79,7 @@ category: 'monsuto'
 **★6確定ガチャ玉×1**
 - 獣神化または獣神化・改の★6キャラ1体確定
 
-![blog placeholder](/mobilegame/monsuto/0728/hosiroku.png)
+![7等（500,000名様）の画像](/mobilegame/monsuto/0728/hosiroku.png)
 
 ### 8等（500,000名様）
 **クエストチケット2枚セット×1**
@@ -87,7 +87,7 @@ category: 'monsuto'
 
 ## 🎮 応募で貰える「トク玉で引ける！オールスター感謝ガチャ」
 
-![blog placeholder](/mobilegame/monsuto/0728/orusta.png)
+![応募で貰える「トク玉で引ける！オールスター感謝ガチャ」の画像](/mobilegame/monsuto/0728/orusta.png)
 
 くじに応募するたびに**トク玉1個**を獲得し、特別なガチャを引くことができます。
 

@@ -12,7 +12,7 @@ VALORANTの大型アップデート「パッチ11.00」が配信開始！今回�
 
 ### 🗺️ 新マップ「カロード」が遂に実装！
 
-![blog placeholder](/pcgame/valorant/carode/carode19.png)
+![新マップ「カロード」が遂に実装！の画像](/pcgame/valorant/carode/carode19.png)
 
 今回最大の目玉は、**中世の要塞を舞台にした新マップ「カロード」** の追加です。
 
@@ -36,7 +36,7 @@ VALORANTの大型アップデート「パッチ11.00」が配信開始！今回�
 
 ## ⚔️ エージェント大幅調整 - ウェイレイ強化が話題
 
-![blog placeholder](/pcgame/valorant/carode/wayray.jpg)
+![エージェント大幅調整 - ウェイレイ強化が話題の画像](/pcgame/valorant/carode/wayray.jpg)
 
 
 ### ✨ ウェイレイ - 大幅強化でメタ入り確実
@@ -70,7 +70,7 @@ VALORANTの大型アップデート「パッチ11.00」が配信開始！今回�
 
 ## 🏆 コンペティティブシステム大幅変更
 
-![blog placeholder](/pcgame/valorant/carode/rank.png)
+![コンペティティブシステム大幅変更の画像](/pcgame/valorant/carode/rank.png)
 
 ### 🎯 ランク振り分け改善
 
@@ -86,23 +86,23 @@ VALORANTの大型アップデート「パッチ11.00」が配信開始！今回�
 ## 🗺️ マッププール変更
 
 **追加：**
-![blog placeholder](/pcgame/valorant/bind/bind.png)
+![マッププール変更の画像](/pcgame/valorant/bind/bind.png)
 - バインド（コンペティティブ・デスマッチ復帰）
 &nbsp;  
 &nbsp;  
 
-![blog placeholder](/pcgame/valorant/carode/carode3.png)
+![マッププール変更の画像(2)](/pcgame/valorant/carode/carode3.png)
 - カロード（新マップ）
 &nbsp;  
 &nbsp;  
 
 **除外：**
-![blog placeholder](/pcgame/valorant/parl/parl.png)
+![マッププール変更の画像(3)](/pcgame/valorant/parl/parl.png)
 - パール
 &nbsp;  
 &nbsp;  
 
-![blog placeholder](/pcgame/valorant/split/split.png)
+![マッププール変更の画像(4)](/pcgame/valorant/split/split.png)
 - スプリット
 &nbsp;  
 &nbsp;  

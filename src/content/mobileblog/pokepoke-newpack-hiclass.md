@@ -10,7 +10,7 @@ category: 'pokepoke'
 
 ## ハイクラスパックexとは？特別な拡張パックの魅力
 
-![blog placeholder](/mobilegame/pokepoke/0928/image1.png)
+![ハイクラスパックexとは？特別な拡張パックの魅力の画像](/mobilegame/pokepoke/0928/image1.png)
 
 2025年9月30日（火）15時00分から、ポケモンTCGポケット（ポケポケ）に特別な拡張パック「**ハイクラスパックex**」が登場します。この期間限定パックは、これまでに登場した人気カードを一挙に再収録する画期的な内容となっています。
 
@@ -31,7 +31,7 @@ category: 'pokepoke'
 
 ## 新コレクション機能も同時実装
 
-![blog placeholder](/mobilegame/pokepoke/0928/image2.png)
+![新コレクション機能も同時実装の画像](/mobilegame/pokepoke/0928/image2.png)
 
 ### コレクションファイル・コレクションボード
 
@@ -44,13 +44,13 @@ category: 'pokepoke'
 
 ## 10月開催予定のイベント一覧
 
-![blog placeholder](/mobilegame/pokepoke/0928/image3.png)
+![10月開催予定のイベント一覧の画像](/mobilegame/pokepoke/0928/image3.png)
 
 ### ①ライチュウexドロップイベント（10月上旬）
 
 特別な「ひとりで」バトルに挑戦することで、**プロモカードパック Aシリーズ 第13弾**を獲得できます。
 
-![blog placeholder](/mobilegame/pokepoke/0928/image4.png)
+![①ライチュウexドロップイベント（10月上旬）の画像](/mobilegame/pokepoke/0928/image4.png)
 
 ### ②ボーナスウィーク（10月上旬）
 
@@ -58,7 +58,7 @@ category: 'pokepoke'
 - パック砂時計
 - その他特別報酬
 
-![blog placeholder](/mobilegame/pokepoke/0928/image5.png)
+![②ボーナスウィーク（10月上旬）の画像](/mobilegame/pokepoke/0928/image5.png)
 
 ### ③ゲットチャレンジイベント（10月中旬）
 
@@ -68,7 +68,7 @@ category: 'pokepoke'
 
 さらに、イベントショップチケットが獲得できるミッションも同時開催されます。
 
-![blog placeholder](/mobilegame/pokepoke/0928/image6.png)
+![③ゲットチャレンジイベント（10月中旬）の画像](/mobilegame/pokepoke/0928/image6.png)
 
 ### ④ミラー仕様カード大量発生イベント（10月下旬）
 
@@ -77,7 +77,7 @@ category: 'pokepoke'
 
 ## リアルイベント情報
 
-![blog placeholder](/mobilegame/pokepoke/0928/image7.png)
+![リアルイベント情報の画像](/mobilegame/pokepoke/0928/image7.png)
 
 ### プレゼントコード入りステッカー配布
 

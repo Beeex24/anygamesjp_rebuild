@@ -9,7 +9,7 @@ category: 'sale'
 
 ## PEAKがついに史上最安値セール開始！
 
-![blog placeholder](/pcgame/steam/sale/peak/saleplice.png)
+![PEAKがついに史上最安値セール開始！の画像](/pcgame/steam/sale/peak/saleplice.png)
 
 2025年8月現在、大人気の協力クライミングゲーム「PEAK」がSteamで史上最安値となる**38%オフセール**を実施中です！Aggro Crab Gamesが開発・パブリッシングを手がけるこの作品は、最大4人のフレンドと一緒に謎の島の山頂を目指すスリリングな協力ゲームとなっています。
 
@@ -25,7 +25,7 @@ category: 'sale'
 
 ## ゲーム内容・システム詳細
 
-![blog placeholder](/pcgame/steam/sale/peak/peak2.png)
+![ゲーム内容・システム詳細の画像](/pcgame/steam/sale/peak/peak2.png)
 
 ### 協力クライミングの基本ルール
 

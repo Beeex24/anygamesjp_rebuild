@@ -9,7 +9,7 @@ category: 'monsuto'
 
 ## 【9月13日開始】モンスト×〈物語〉シリーズコラボ第2弾の概要
 
-![blog placeholder](/mobilegame/monsuto/event/monogatari/monogatari1.png)
+![【9月13日開始】モンスト×〈物語〉シリーズコラボ第2弾の概要の画像](/mobilegame/monsuto/event/monogatari/monogatari1.png)
 
 ついに **『〈物語〉シリーズ』とモンストのコラボイベント第2弾** が2025年9月13日（土）12時より期間限定で開催されます！今回のコラボでは、第1弾で登場した人気キャラクターの新バージョンや追加キャラクターが総勢**11体**の新キャラクターとして登場。
 
@@ -20,7 +20,7 @@ category: 'monsuto'
 
 ## 限定コラボキャラクター一覧
 
-![blog placeholder](/mobilegame/monsuto/event/monogatari/monogatari2.png)
+![限定コラボキャラクター一覧の画像](/mobilegame/monsuto/event/monogatari/monogatari2.png)
 
 ### ガチャ排出対象キャラクター（5体）
 
@@ -34,7 +34,7 @@ category: 'monsuto'
 
 ### 有料限定キャラクター
 
-![blog placeholder](/mobilegame/monsuto/event/monogatari/monogatari3.png)
+![有料限定キャラクターの画像](/mobilegame/monsuto/event/monogatari/monogatari3.png)
 
 **栂の木二中のファイヤーシスターズ（★6）**
 - **属性**：火
@@ -161,7 +161,7 @@ category: 'monsuto'
 
 ### 第2弾新クエスト（5種類）
 
-![blog placeholder](/mobilegame/monsuto/event/monogatari/monogatari5.png)
+![第2弾新クエスト（5種類）の画像](/mobilegame/monsuto/event/monogatari/monogatari5.png)
 
 #### 影縫余弦（★5・火属性）
 - **初回クリア報酬**：オーブ×5
@@ -183,7 +183,7 @@ category: 'monsuto'
 
 ### 超究極「なでこメドゥーサ 其ノ貳」
 
-![blog placeholder](/mobilegame/monsuto/event/monogatari/monogatari6.png)
+![超究極「なでこメドゥーサ 其ノ貳」の画像](/mobilegame/monsuto/event/monogatari/monogatari6.png)
 
 **開催期間**：9月15日（月）19:00 ～ 9月30日（火）23:59
 

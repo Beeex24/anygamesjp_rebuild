@@ -9,7 +9,7 @@ category: 'sale'
 
 **🚀 大型セール開催中！**
 
-![blog placeholder](/pcgame/steam/ksp1.png)
+![75%OFF！Kerbal Space Program Steamセール開催中！の画像](/pcgame/steam/ksp1.png)
 
 人気宇宙開発シミュレーションゲーム「**Kerbal Space Program**」が現在、**Steamで75%OFFの大幅割引** を実施中です！8月5日までの限定セールとなっているので、気になっている方はお見逃しなく！
 

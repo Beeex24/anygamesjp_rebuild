@@ -17,7 +17,7 @@ category: 'switch2'
 
 ## ソロプレイモード：ヒノカミ血風譚
 
-![blog placeholder](/mobilegame/switch/soft/kimetsu/kimetsu2.png)
+![ソロプレイモード：ヒノカミ血風譚の画像](/mobilegame/switch/soft/kimetsu/kimetsu2.png)
 
 ### 収録ストーリー
 
@@ -37,7 +37,7 @@ category: 'switch2'
 
 ## バーサスモード：対戦
 
-![blog placeholder](/mobilegame/switch/soft/kimetsu/kimetsu3.png)
+![バーサスモード：対戦の画像](/mobilegame/switch/soft/kimetsu/kimetsu3.png)
 
 ### 参戦キャラクター
 
@@ -126,7 +126,7 @@ category: 'switch2'
 
 ### 数量限定版（フィギュアマルチスタンド付き）
 
-![blog placeholder](/mobilegame/switch/soft/kimetsu/tokusou.png)
+![数量限定版（フィギュアマルチスタンド付き）の画像](/mobilegame/switch/soft/kimetsu/tokusou.png)
 *amazon公式サイトより*
 - **価格**: 14,960円（税込）
 - **内容**: 

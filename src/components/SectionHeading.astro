@@ -1,0 +1,13 @@
+---
+interface Props { title: string; href?: string; linkLabel?: string }
+const { title, href, linkLabel = '一覧を見る' } = Astro.props;
+---
+<div class="row">
+  <h2 class="section-title">{title}</h2>
+  {href && <a href={href}>{linkLabel} ›</a>}
+</div>
+<style>
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .row :global(.section-title) { margin: 0; }
+  a { font-size: .875rem; white-space: nowrap; padding: 8px 0; }
+</style>

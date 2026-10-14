@@ -1,0 +1,133 @@
+---
+import { PART_DEFAULTS } from '../../lib/pc/psu';
+---
+<div class="calc" id="psu">
+  <div class="fields two">
+    <label class="field">CPUの最大消費電力(W)
+      <input type="text" id="cpu" inputmode="decimal" placeholder="例 125" autocomplete="off" />
+      <small>「最大ターボ・パワー」など、最大時の値を入れると安全です</small>
+    </label>
+    <label class="field">グラボの消費電力(W)
+      <input type="text" id="gpu" inputmode="decimal" placeholder="例 320" autocomplete="off" />
+      <small>「TGP」「TBP」などの値。無い場合は0</small>
+    </label>
+  </div>
+
+  <details class="adv">
+    <summary>そのほかのパーツ(目安値を入力済み)</summary>
+    <div class="fields" style="padding-bottom:14px">
+      <label class="field">マザーボード(W)
+        <input type="text" id="board" inputmode="decimal" value={String(PART_DEFAULTS.motherboard)} autocomplete="off" />
+      </label>
+      <div class="pair">
+        <label class="field">メモリ(枚数)<input type="text" id="mem-n" inputmode="numeric" value="2" autocomplete="off" /></label>
+        <label class="field">1枚あたり(W)<input type="text" id="mem-w" inputmode="decimal" value={String(PART_DEFAULTS.memoryPerStick)} autocomplete="off" /></label>
+      </div>
+      <div class="pair">
+        <label class="field">SSD(台数)<input type="text" id="ssd-n" inputmode="numeric" value="1" autocomplete="off" /></label>
+        <label class="field">1台あたり(W)<input type="text" id="ssd-w" inputmode="decimal" value={String(PART_DEFAULTS.ssdPerUnit)} autocomplete="off" /></label>
+      </div>
+      <div class="pair">
+        <label class="field">HDD(台数)<input type="text" id="hdd-n" inputmode="numeric" value="0" autocomplete="off" /></label>
+        <label class="field">1台あたり(W)<input type="text" id="hdd-w" inputmode="decimal" value={String(PART_DEFAULTS.hddPerUnit)} autocomplete="off" /></label>
+      </div>
+      <div class="pair">
+        <label class="field">ファン(個数)<input type="text" id="fan-n" inputmode="numeric" value="3" autocomplete="off" /></label>
+        <label class="field">1個あたり(W)<input type="text" id="fan-w" inputmode="decimal" value={String(PART_DEFAULTS.fanPerUnit)} autocomplete="off" /></label>
+      </div>
+      <label class="field">その他の合計(W)
+        <input type="text" id="other" inputmode="decimal" value="0" autocomplete="off" />
+        <small>USB機器、RGBライティング、水冷ポンプなど</small>
+      </label>
+    </div>
+  </details>
+
+  <div class="fields">
+    <label class="field">電源の使い方(最大消費時の負荷率)
+      <select id="load">
+        <option value="70" selected>標準(70%まで)</option>
+        <option value="60">余裕を持つ(60%まで)</option>
+        <option value="50">しっかり余裕(50%まで)</option>
+      </select>
+      <small>数字が小さいほど余裕のある容量になります。パーツを増やす予定があるときにもおすすめです。</small>
+    </label>
+  </div>
+
+  <section class="result-card" aria-live="polite">
+    <h2>推奨する電源容量</h2>
+    <p class="hint" id="hint">CPUとグラボの消費電力を入力すると、結果が表示されます。</p>
+    <div id="out" hidden>
+      <p class="big"><span id="r-rec"></span><small id="r-rec-suffix">以上</small></p>
+      <p class="sub">パーツの合計消費電力: <b id="r-total"></b> W</p>
+      <p class="sub">負荷率から逆算した必要容量: <b id="r-req"></b> W</p>
+      <p class="sub" id="r-extra"></p>
+    </div>
+    <p class="warn" id="warn" role="alert" hidden></p>
+  </section>
+  <p class="calc-note">パーツ別の消費電力のうち、CPU・グラボ以外は一般的な概算の目安です。電源容量は、グラフィックボードのメーカーが公表する推奨電源容量も確認し、大きい方を選んでください。実際の最大消費電力はパーツの組み合わせで変わり、グラボは一瞬だけ公表値を超える電力を使うことがあります。</p>
+</div>
+<style>
+  .adv { margin: 16px 0; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 14px; }
+  .adv summary { cursor: pointer; padding: 14px 0; font-weight: 700; min-height: 44px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+</style>
+
+<script>
+  import { STANDARD_PSU_WATTS, recommendPsu, type PsuInput } from '../../lib/pc/psu';
+  import { fmt, parseNonNegative } from '../../lib/format';
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const el = (id: string) => $<HTMLInputElement>(id);
+  const IDS = ['cpu', 'gpu', 'board', 'mem-n', 'mem-w', 'ssd-n', 'ssd-w', 'hdd-n', 'hdd-w', 'fan-n', 'fan-w', 'other'];
+
+  function render() {
+    const out = $('out');
+    const warn = $('warn');
+    const hint = $('hint');
+    out.hidden = true;
+    warn.hidden = true;
+    hint.hidden = false;
+    if (el('cpu').value.trim() === '' || el('gpu').value.trim() === '') return;
+
+    const v: Record<string, number | null> = {};
+    for (const id of IDS) v[id] = parseNonNegative(el(id).value);
+    // 空欄は0として扱うが、数字以外・負の数はエラーにする
+    for (const id of IDS) {
+      if (v[id] === null && el(id).value.trim() === '' && id !== 'cpu' && id !== 'gpu') v[id] = 0;
+    }
+    if (IDS.some((id) => v[id] === null)) {
+      hint.hidden = true;
+      warn.textContent = '各項目は、0以上の数字で入力してください。';
+      warn.hidden = false;
+      return;
+    }
+    const n = (id: string) => v[id] as number;
+    const input: PsuInput = {
+      cpu: n('cpu'), gpu: n('gpu'), motherboard: n('board'), other: n('other'),
+      memorySticks: n('mem-n'), memoryPerStick: n('mem-w'),
+      ssdCount: n('ssd-n'), ssdPerUnit: n('ssd-w'),
+      hddCount: n('hdd-n'), hddPerUnit: n('hdd-w'),
+      fanCount: n('fan-n'), fanPerUnit: n('fan-w'),
+    };
+    const load = Number($<HTMLSelectElement>('load').value);
+    const r = recommendPsu(input, load);
+
+    hint.hidden = true;
+    $('r-total').textContent = fmt(r.total, 0);
+    $('r-req').textContent = fmt(r.required, 0);
+    const max = STANDARD_PSU_WATTS[STANDARD_PSU_WATTS.length - 1];
+    if (r.recommended === null) {
+      $('r-rec').textContent = `${max}W超`;
+      $('r-rec-suffix').textContent = '';
+      $('r-extra').textContent = `一般的な電源の最大容量(${max}W)を超えます。パーツの構成や入力値をご確認ください。`;
+    } else {
+      $('r-rec').textContent = `${r.recommended}W`;
+      $('r-rec-suffix').textContent = '以上';
+      $('r-extra').textContent = '';
+    }
+    out.hidden = false;
+  }
+  [...IDS].forEach((id) => el(id).addEventListener('input', render));
+  $('load').addEventListener('change', render);
+  render();
+</script>
